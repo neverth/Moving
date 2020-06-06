@@ -140,6 +140,34 @@ public class Part2 {
         return res;
     }
 
+    /**
+     * 3. 无重复字符的最长子串
+     */
+    public int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> windows = new HashMap<>();
+
+        int left = 0, right = 0;
+        int maxlen = 0;
+
+        while(right < s.length()){
+
+            char c1 = s.charAt(right++);
+
+            windows.put(c1, windows.getOrDefault(c1, 0) + 1);
+
+            while(windows.get(c1) > 1){
+
+                char c2 = s.charAt(left++);
+
+                windows.put(c2, windows.get(c2) - 1);
+            }
+
+            maxlen = Math.max(maxlen, right - left);
+
+        }
+        return maxlen;
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
         int[] a = {1, 3, 4, 2, 2};
@@ -156,7 +184,7 @@ public class Part2 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part2.findAnagrams("abab", "ab"));
+        System.out.println(part2.lengthOfLongestSubstring("aaaabbbb"));
 
     }
 }
