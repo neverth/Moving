@@ -1,9 +1,6 @@
 package fun.neverth;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * todo
@@ -168,6 +165,111 @@ public class Part2 {
         return maxlen;
     }
 
+
+    /**
+     * 146. LRU缓存机制
+     */
+    static class LRUCache {
+
+        class Node{
+
+            private int key, val;
+
+            private Node prev, next;
+
+            public Node(int k , int v){
+                this.key = k;
+                this.val = v;
+            }
+        }
+
+        class DoubleList{
+
+            private Node head, tail;
+
+            private int size;
+
+            public DoubleList() {
+                this.head = new Node(0, 0);
+                this.tail = new Node(0, 0);
+                head.next = tail;
+                tail.prev = head;
+            }
+
+            public void addFirst(Node a){
+                a.next = head.next;
+                a.prev = head;
+                a.next.prev = a;
+                head.next = a;
+                size++;
+            }
+
+            public void remove(Node a){
+                a.prev.next = a.next;
+                a.next.prev = a.prev;
+                size--;
+            }
+
+            public Node removeLast(){
+
+                if (tail.prev == head){
+                    return null;
+                }
+
+                Node realTail = tail.prev;
+
+                remove(realTail);
+
+                return realTail;
+            }
+
+        }
+
+        private Map<Integer, Node> map;
+
+        private DoubleList doubleList;
+
+        private int capacity;
+
+        public LRUCache(int capacity) {
+            this.capacity = capacity;
+            map = new HashMap<>();
+            doubleList = new DoubleList();
+
+        }
+
+        public int get(int key) {
+
+            if (!map.containsKey(key)){
+                return -1;
+            }
+
+            int val = map.get(key).val;
+
+            put(key, val);
+
+            return val;
+        }
+
+        public void put(int key, int value) {
+
+            Node node = new Node(key, value);
+
+            if (map.containsKey(key)){
+                doubleList.remove(map.get(key));
+
+            } else{
+                if(capacity == doubleList.size){
+
+                    Node realTail = doubleList.removeLast();
+                    map.remove(realTail.key);
+                }
+            }
+            doubleList.addFirst(node);
+            map.put(key, node);
+        }
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
         int[] a = {1, 3, 4, 2, 2};
@@ -185,6 +287,10 @@ public class Part2 {
         n3.right = n5;
 
         System.out.println(part2.lengthOfLongestSubstring("aaaabbbb"));
+
+//        LRUCache lruCache = new LRUCache(2);
+//        lruCache.put(1, 1);
+//        System.out.println(lruCache.get(1));
 
     }
 }
