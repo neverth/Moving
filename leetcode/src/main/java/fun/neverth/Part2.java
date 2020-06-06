@@ -1,6 +1,8 @@
 package fun.neverth;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,6 +46,100 @@ public class Part2 {
         return right - left == s1.length();
     }
 
+    /**
+     * 567. 字符串的排列 ②
+     */
+    public boolean checkInclusion1(String s1, String s2) {
+        Map<Character, Integer> windows = new HashMap<>();
+        Map<Character, Integer> needs = new HashMap<>();
+
+        for (int i = 0; i < s1.length(); i++){
+            needs.put(s1.charAt(i), needs.getOrDefault(s1.charAt(i), 0) + 1);
+        }
+
+        int left = 0, right = 0;
+        int count = 0;
+
+        while(right < s2.length()){
+            char c1 = s2.charAt(right++);
+
+            if(needs.containsKey(c1)){
+                windows.put(c1, windows.getOrDefault(c1, 0) + 1);
+
+                if(windows.get(c1).compareTo(needs.get(c1)) == 0){
+                    count++;
+                }
+            }
+
+            while(right - left >= s1.length()){
+
+                if(count == needs.size()){
+                    return true;
+                }
+
+                char c2 = s2.charAt(left++);
+
+                if(needs.containsKey(c2)){
+                    if(windows.get(c2).compareTo(needs.get(c2)) == 0){
+                        count--;
+                    }
+                    windows.put(c2, windows.getOrDefault(c2, 0) - 1);
+
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 438. 找到字符串中所有字母异位词
+     */
+    public List<Integer> findAnagrams(String s, String p) {
+
+        Map<Character, Integer> windows = new HashMap<>();
+        Map<Character, Integer> needs = new HashMap<>();
+        List<Integer> res = new ArrayList<>();
+
+        for(int i = 0; i < p.length(); i++){
+            needs.put(p.charAt(i), needs.getOrDefault(p.charAt(i), 0) + 1);
+        }
+
+        int left = 0, right = 0;
+        int count = 0;
+
+        while(right < s.length()){
+
+            char c1 = s.charAt(right++);
+
+            if(needs.containsKey(c1)){
+
+                windows.put(c1, windows.getOrDefault(c1, 0) + 1);
+                if(needs.get(c1).compareTo(windows.get(c1)) == 0){
+                    count++;
+                }
+            }
+
+            while(count == needs.size()){
+
+                if(right - left == p.length()
+//                        && !s.substring(left, right).equals(p) 字母异位词指字母相同，但排列不同的字符串 ？？？
+                ){
+                    res.add(left);
+                }
+                char c2 = s.charAt(left++);
+
+                if(needs.containsKey(c2)){
+                    if(needs.get(c2).compareTo(windows.get(c2)) == 0){
+                        count--;
+                    }
+                    windows.put(c2, windows.getOrDefault(c2, 0) - 1);
+                }
+            }
+        }
+
+        return res;
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
         int[] a = {1, 3, 4, 2, 2};
@@ -60,7 +156,7 @@ public class Part2 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part2.checkInclusion("adc", "edacr"));
+        System.out.println(part2.findAnagrams("abab", "ab"));
 
     }
 }
