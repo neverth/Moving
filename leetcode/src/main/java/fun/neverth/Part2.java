@@ -467,6 +467,66 @@ public class Part2 {
         return -1;
     }
 
+    /**
+     * 204. 计数质数
+     */
+    public int countPrimes(int n) {
+
+        if(n < 2){
+            return 0;
+        }
+
+        int count = 0;
+
+        for(int i = 2; i < n; i++){
+
+            boolean flag = true;
+
+            for(int j = 2; j * j <= i; j++){
+                if(i % j == 0){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                count++;
+            }
+
+        }
+        return count;
+    }
+
+    public int countPrimes1(int n) {
+
+        if(n < 2){
+            return 0;
+        }
+
+        boolean[] isPrimes = new boolean[n];
+
+        Arrays.fill(isPrimes, true);
+
+        for (int i = 2; i * i <= n; i++) {
+            if (isPrimes[i]){
+
+                for (int j = i * i; j < n; j += i) {
+                    isPrimes[j] = false;
+                }
+
+            }
+        }
+        
+        int count = 0;
+        for (int i = 2; i < n; i++) {
+            if (isPrimes[i]){
+                count ++;
+            }
+            
+        }
+
+        return count;
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
         int[] a = {1, 3, 4, 2, 2};
@@ -486,7 +546,7 @@ public class Part2 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part2.slidingPuzzle(c));
+        System.out.println(part2.countPrimes1(10));
 
     }
 }
