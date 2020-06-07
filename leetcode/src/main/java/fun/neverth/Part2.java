@@ -1,6 +1,7 @@
 package fun.neverth;
 
 import com.sun.java.swing.plaf.windows.resources.windows;
+import sun.security.util.ArrayUtil;
 
 import java.util.*;
 
@@ -393,10 +394,86 @@ public class Part2 {
         return -1;
     }
 
+    /**
+     * 773. 滑动谜题
+     * bfs
+     */
+    public String slidingPuzzleSwap(String target, int left, int right){
+        char[] c = target.toCharArray();
+
+        char t = c[left];
+        c[left] = c[right];
+        c[right] = t;
+
+        return String.copyValueOf(c);
+
+    }
+
+    public int slidingPuzzle(int[][] board) {
+
+        StringBuilder sb = new StringBuilder();
+        for(int[] i: board){
+            for(int j: i){
+                sb.append(j);
+            }
+        }
+
+        List<List<Integer>> neighbor = new ArrayList<>();
+
+        neighbor.add(Arrays.asList(1, 3));
+        neighbor.add(Arrays.asList(0 ,4, 2));
+        neighbor.add(Arrays.asList(1, 5));
+        neighbor.add(Arrays.asList(0, 4));
+        neighbor.add(Arrays.asList(3, 1, 5));
+        neighbor.add(Arrays.asList(4, 2));
+
+        String target = "123450";
+        String start = sb.toString();
+
+        Queue<String> q = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+
+        q.offer(start);
+        visited.add(start);
+
+        int step = 0;
+        while(!q.isEmpty()){
+
+            int sz = q.size();
+
+            for(int i = 0; i < sz; i++){
+                String cur = q.poll();
+
+                if(cur.equals(target)){
+                    return step;
+                }
+
+                int zeroIndex = 0;
+                while(cur.charAt(zeroIndex) != '0'){
+                    zeroIndex++;
+                }
+
+                for(int j: neighbor.get(zeroIndex)){
+                    String curSwap = slidingPuzzleSwap(cur, zeroIndex, j);
+                    if(!visited.contains(curSwap)){
+                        q.offer(curSwap);
+                        visited.add(curSwap);
+                    }
+                }
+
+            }
+            step++;
+        }
+        return -1;
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
         int[] a = {1, 3, 4, 2, 2};
         String[] b = {"0000"};
+
+        int[][] c = new int[][]{{1, 2, 3}, {5, 4, 0}};
+
 
         Common.TreeNode n1 = new Common.TreeNode(3);
         Common.TreeNode n2 = new Common.TreeNode(9);
@@ -409,7 +486,7 @@ public class Part2 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part2.strStr3("hello", "ll"));
+        System.out.println(part2.slidingPuzzle(c));
 
     }
 }
