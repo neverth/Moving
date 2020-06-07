@@ -527,6 +527,35 @@ public class Part2 {
         return count;
     }
 
+    /**
+     * 7. 整数反转
+     */
+    public int reverse(int x) {
+
+        int res = 0;
+
+        while (x != 0){
+            int pop = x % 10;
+
+            if (res > Integer.MAX_VALUE / 10
+                    || (res == Integer.MAX_VALUE / 10 && pop > 7)){
+                return 0;
+            }
+
+            if (res < Integer.MIN_VALUE / 10
+                    || (res == Integer.MIN_VALUE / 10 && pop < -8)){
+                return 0;
+
+            }
+
+            res = res * 10 + pop;
+
+            x = x / 10;
+        }
+
+        return res;
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
         int[] a = {1, 3, 4, 2, 2};
@@ -546,7 +575,7 @@ public class Part2 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part2.countPrimes1(10));
+        System.out.println(part2.reverse(123));
 
     }
 }
