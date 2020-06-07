@@ -556,9 +556,53 @@ public class Part2 {
         return res;
     }
 
+    /**
+     * 875. 爱吃香蕉的珂珂
+     */
+    public int minEatingSpeed(int[] piles, int H) {
+
+        int max = 0;
+        for(int i: piles){
+            if(i > max){
+                max = i;
+            }
+        }
+
+        int left = 1, right = max;
+
+        while(left <= right){
+
+            int mid = left + (right - left) / 2;
+
+            int needTime = 0;
+
+            for (int i : piles) {
+
+                if (i % mid == 0) {
+                    needTime += i / mid;
+
+                } else {
+                    needTime += i / mid + 1;
+
+                }
+            }
+            if (needTime == H){
+                return mid;
+
+            }else if(needTime < H){
+                right = mid - 1;
+
+            }else{
+                left = mid + 1;
+
+            }
+        }
+        return right + 1;
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
-        int[] a = {1, 3, 4, 2, 2};
+        int[] a = {332484035, 524908576, 855865114, 632922376, 222257295, 690155293, 112677673, 679580077, 337406589, 290818316, 877337160, 901728858, 679284947, 688210097, 692137887, 718203285, 629455728, 941802184};
         String[] b = {"0000"};
 
         int[][] c = new int[][]{{1, 2, 3}, {5, 4, 0}};
@@ -575,7 +619,7 @@ public class Part2 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part2.reverse(123));
+        System.out.println(part2.minEatingSpeed(a, 823855818));
 
     }
 }
