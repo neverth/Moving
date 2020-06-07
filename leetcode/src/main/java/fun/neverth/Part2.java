@@ -1,5 +1,7 @@
 package fun.neverth;
 
+import com.sun.java.swing.plaf.windows.resources.windows;
+
 import java.util.*;
 
 /**
@@ -270,6 +272,127 @@ public class Part2 {
         }
     }
 
+    public int strStr(String haystack, String needle) {
+
+        if (needle.length() == 0){
+            return 0;
+        }
+
+        Map<Character, Integer> windows = new HashMap<>();
+        Map<Character, Integer> needs = new HashMap<>();
+        List<Integer> res = new ArrayList<>();
+
+        for(int i = 0; i < needle.length(); i++){
+            needs.put(needle.charAt(i), needs.getOrDefault(needle.charAt(i), 0) + 1);
+        }
+
+        int left = 0, right = 0;
+        int count = 0;
+
+        while(right < haystack.length()){
+
+            char c1 = haystack.charAt(right++);
+
+            if(needs.containsKey(c1)){
+
+                windows.put(c1, windows.getOrDefault(c1, 0) + 1);
+                if(needs.get(c1).compareTo(windows.get(c1)) == 0){
+                    count++;
+                }
+            }
+
+            while(count == needs.size()){
+
+                if(right - left == needle.length()
+                        && haystack.substring(left, right).equals(needle)
+                ){
+                    return left;
+                }
+                char c2 = haystack.charAt(left++);
+
+                if(needs.containsKey(c2)){
+                    if(needs.get(c2).compareTo(windows.get(c2)) == 0){
+                        count--;
+                    }
+                    windows.put(c2, windows.getOrDefault(c2, 0) - 1);
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    public int strStr1(String haystack, String needle) {
+
+        int m = haystack.length();
+        int n = needle.length();
+
+        for (int i = 0; i < m - n + 1; i++) {
+            if (haystack.substring(i, i + n).equals(needle)){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public int strStr2(String haystack, String needle) {
+
+        int m = haystack.length();
+        int n = needle.length();
+
+        for (int i = 0; i < m - n + 1; i++) {
+            int j;
+            for (j = 0; j < n; j++) {
+                if (needle.charAt(j) != haystack.charAt(i + j)){
+                    break;
+                }
+            }
+
+            if (j == n){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public int strStr3(String haystack, String needle) {
+        int m = needle.length();
+
+        int[][] dp = new int[m][256];
+
+        int X = 0;
+
+        dp[0][needle.charAt(0)] = 1;
+
+        for (int i = 1; i < m; i++) {
+
+            for (int j = 0; j < 256; j++) {
+
+                dp[i][j] = dp[X][j];
+            }
+
+            dp[i][needle.charAt(i)] = i + 1;
+
+            X = dp[X][needle.charAt(i)];
+        }
+
+        int s = 0;
+
+        for (int i = 0; i < haystack.length(); i++) {
+
+            s = dp[s][haystack.charAt(i)];
+
+            if (s == m) {
+                return i - m + 1;
+
+            }
+        }
+
+        return -1;
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
         int[] a = {1, 3, 4, 2, 2};
@@ -286,11 +409,7 @@ public class Part2 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part2.lengthOfLongestSubstring("aaaabbbb"));
-
-//        LRUCache lruCache = new LRUCache(2);
-//        lruCache.put(1, 1);
-//        System.out.println(lruCache.get(1));
+        System.out.println(part2.strStr3("hello", "ll"));
 
     }
 }
