@@ -776,9 +776,53 @@ public class Part2 {
         return slow + 1;
     }
 
+    /**
+     * 80. 删除排序数组中的重复项 II
+     */
+    public int removeDuplicates2(int[] nums) {
+        int len = nums.length;
+
+        int slow = 0, fast = 1;
+        boolean isTwo = false;
+
+        while(fast < len){
+
+            if(nums[slow] != nums[fast] ){
+                slow++;
+                nums[slow] = nums[fast];
+                isTwo = false;
+
+            }else{
+                if(!isTwo){
+                    slow++;
+                    nums[slow] = nums[fast];
+                    isTwo = true;
+                }
+            }
+            fast++;
+
+        }
+        return slow + 1;
+    }
+
+    /**
+     * 80. 删除排序数组中的重复项 II
+     *
+     * 牛逼
+     */
+    public int removeDuplicates3(int[] nums) {
+        int i = 0;
+        for (int n : nums) {
+            if (i < 2 || n > nums[i - 2]){
+                nums[i++] = n;
+            }
+        }
+        return i;
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
-        int[] a = {1,1,2,2, 6, 7, 8, 8, 8};
+        int[] a = {1,1,1,1,2,2,3};
         String[] b = {"0000"};
 
         int[][] c = new int[][]{{1, 2, 3}, {5, 4, 0}};
@@ -795,7 +839,7 @@ public class Part2 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part2.removeDuplicates1(a));
+        System.out.println(part2.removeDuplicates3(a));
 
     }
 }
