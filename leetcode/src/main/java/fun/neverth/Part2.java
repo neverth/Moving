@@ -849,6 +849,39 @@ public class Part2 {
         return head;
     }
 
+    /**
+     * 24. 两两交换链表中的节点
+     */
+    public ListNode swapPairs(ListNode head) {
+        if(head == null){
+            return null;
+        }
+
+        ListNode newHead = new ListNode(-1);
+        newHead.next = head;
+
+        ListNode p = newHead;
+
+        while(p.next != null){
+
+            if (p.next.next == null){
+                break;
+            }
+
+            ListNode temp = p.next.next;
+
+            p.next.next = p.next.next.next;
+
+            temp.next = p.next;
+
+            p.next = temp;
+
+            p = p.next.next;
+        }
+
+        return newHead.next;
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
         int[] a = {1, 1, 1, 1, 2, 2, 3};
@@ -864,16 +897,15 @@ public class Part2 {
         Common.TreeNode n5 = new Common.TreeNode(7);
 
         ListNode l1 = new ListNode(1);
-        ListNode l2 = new ListNode(1);
-        ListNode l3 = new ListNode(2);
-        ListNode l4 = new ListNode(3);
+        ListNode l2 = new ListNode(2);
+        ListNode l3 = new ListNode(3);
+        ListNode l4 = new ListNode(4);
         ListNode l5 = new ListNode(3);
 
-        l1.next = l2;
-        l2.next = l3;
-        l3.next = l4;
-        l4.next = l5;
-        l5.next = null;
+        l1.next = null;
+        l2.next = null;
+        l3.next = null;
+        l4.next = null;
 
 
         n1.left = n2;
@@ -881,7 +913,7 @@ public class Part2 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part2.deleteDuplicates(l1));
+        System.out.println(part2.swapPairs(l1));
 
     }
 }
