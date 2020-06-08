@@ -600,9 +600,56 @@ public class Part2 {
         return right + 1;
     }
 
+    /**
+     * 1011. 在 D 天内送达包裹的能力
+     */
+    public int shipWithinDays(int[] weights, int D) {
+        int sum = 0;
+        int min = 0;
+        for (int weight : weights) {
+            sum += weight;
+            min = Math.max(min, weight);
+        }
+
+        int left = min, right = sum;
+
+        while(left <= right){
+
+            int tempSum = 0;
+            int needTime = 0;
+
+            int mid = left + (right - left) / 2;
+
+            for (int j = 0; j < weights.length; j++) {
+
+                if(tempSum + weights[j] <= mid){
+                    tempSum += weights[j];
+                    if (j == weights.length - 1){
+                        needTime ++;
+                    }
+
+                } else{
+                    j --;
+                    needTime ++;
+                    tempSum = 0;
+                }
+            }
+
+            if (needTime <= D){
+                right = mid - 1;
+
+            }else {
+                left = mid + 1;
+            }
+
+        }
+
+        return left;
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
-        int[] a = {332484035, 524908576, 855865114, 632922376, 222257295, 690155293, 112677673, 679580077, 337406589, 290818316, 877337160, 901728858, 679284947, 688210097, 692137887, 718203285, 629455728, 941802184};
+        int[] a = {1,2,3,4,5,6,7,8,9,10};
         String[] b = {"0000"};
 
         int[][] c = new int[][]{{1, 2, 3}, {5, 4, 0}};
@@ -619,7 +666,7 @@ public class Part2 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part2.minEatingSpeed(a, 823855818));
+        System.out.println(part2.shipWithinDays(a, 5));
 
     }
 }
