@@ -37,7 +37,7 @@ public class Part2 {
 
                 map.put(c2, map.getOrDefault(c2, 0) + 1);
 
-                if(right - left == s1.length()){
+                if (right - left == s1.length()) {
                     return true;
                 }
             }
@@ -53,34 +53,34 @@ public class Part2 {
         Map<Character, Integer> windows = new HashMap<>();
         Map<Character, Integer> needs = new HashMap<>();
 
-        for (int i = 0; i < s1.length(); i++){
+        for (int i = 0; i < s1.length(); i++) {
             needs.put(s1.charAt(i), needs.getOrDefault(s1.charAt(i), 0) + 1);
         }
 
         int left = 0, right = 0;
         int count = 0;
 
-        while(right < s2.length()){
+        while (right < s2.length()) {
             char c1 = s2.charAt(right++);
 
-            if(needs.containsKey(c1)){
+            if (needs.containsKey(c1)) {
                 windows.put(c1, windows.getOrDefault(c1, 0) + 1);
 
-                if(windows.get(c1).compareTo(needs.get(c1)) == 0){
+                if (windows.get(c1).compareTo(needs.get(c1)) == 0) {
                     count++;
                 }
             }
 
-            while(right - left >= s1.length()){
+            while (right - left >= s1.length()) {
 
-                if(count == needs.size()){
+                if (count == needs.size()) {
                     return true;
                 }
 
                 char c2 = s2.charAt(left++);
 
-                if(needs.containsKey(c2)){
-                    if(windows.get(c2).compareTo(needs.get(c2)) == 0){
+                if (needs.containsKey(c2)) {
+                    if (windows.get(c2).compareTo(needs.get(c2)) == 0) {
                         count--;
                     }
                     windows.put(c2, windows.getOrDefault(c2, 0) - 1);
@@ -100,36 +100,36 @@ public class Part2 {
         Map<Character, Integer> needs = new HashMap<>();
         List<Integer> res = new ArrayList<>();
 
-        for(int i = 0; i < p.length(); i++){
+        for (int i = 0; i < p.length(); i++) {
             needs.put(p.charAt(i), needs.getOrDefault(p.charAt(i), 0) + 1);
         }
 
         int left = 0, right = 0;
         int count = 0;
 
-        while(right < s.length()){
+        while (right < s.length()) {
 
             char c1 = s.charAt(right++);
 
-            if(needs.containsKey(c1)){
+            if (needs.containsKey(c1)) {
 
                 windows.put(c1, windows.getOrDefault(c1, 0) + 1);
-                if(needs.get(c1).compareTo(windows.get(c1)) == 0){
+                if (needs.get(c1).compareTo(windows.get(c1)) == 0) {
                     count++;
                 }
             }
 
-            while(count == needs.size()){
+            while (count == needs.size()) {
 
-                if(right - left == p.length()
+                if (right - left == p.length()
 //                        && !s.substring(left, right).equals(p) 字母异位词指字母相同，但排列不同的字符串 ？？？
-                ){
+                ) {
                     res.add(left);
                 }
                 char c2 = s.charAt(left++);
 
-                if(needs.containsKey(c2)){
-                    if(needs.get(c2).compareTo(windows.get(c2)) == 0){
+                if (needs.containsKey(c2)) {
+                    if (needs.get(c2).compareTo(windows.get(c2)) == 0) {
                         count--;
                     }
                     windows.put(c2, windows.getOrDefault(c2, 0) - 1);
@@ -149,13 +149,13 @@ public class Part2 {
         int left = 0, right = 0;
         int maxlen = 0;
 
-        while(right < s.length()){
+        while (right < s.length()) {
 
             char c1 = s.charAt(right++);
 
             windows.put(c1, windows.getOrDefault(c1, 0) + 1);
 
-            while(windows.get(c1) > 1){
+            while (windows.get(c1) > 1) {
 
                 char c2 = s.charAt(left++);
 
@@ -174,19 +174,19 @@ public class Part2 {
      */
     static class LRUCache {
 
-        class Node{
+        class Node {
 
             private int key, val;
 
             private Node prev, next;
 
-            public Node(int k , int v){
+            public Node(int k, int v) {
                 this.key = k;
                 this.val = v;
             }
         }
 
-        class DoubleList{
+        class DoubleList {
 
             private Node head, tail;
 
@@ -199,7 +199,7 @@ public class Part2 {
                 tail.prev = head;
             }
 
-            public void addFirst(Node a){
+            public void addFirst(Node a) {
                 a.next = head.next;
                 a.prev = head;
                 a.next.prev = a;
@@ -207,15 +207,15 @@ public class Part2 {
                 size++;
             }
 
-            public void remove(Node a){
+            public void remove(Node a) {
                 a.prev.next = a.next;
                 a.next.prev = a.prev;
                 size--;
             }
 
-            public Node removeLast(){
+            public Node removeLast() {
 
-                if (tail.prev == head){
+                if (tail.prev == head) {
                     return null;
                 }
 
@@ -243,7 +243,7 @@ public class Part2 {
 
         public int get(int key) {
 
-            if (!map.containsKey(key)){
+            if (!map.containsKey(key)) {
                 return -1;
             }
 
@@ -258,11 +258,11 @@ public class Part2 {
 
             Node node = new Node(key, value);
 
-            if (map.containsKey(key)){
+            if (map.containsKey(key)) {
                 doubleList.remove(map.get(key));
 
-            } else{
-                if(capacity == doubleList.size){
+            } else {
+                if (capacity == doubleList.size) {
 
                     Node realTail = doubleList.removeLast();
                     map.remove(realTail.key);
@@ -275,7 +275,7 @@ public class Part2 {
 
     public int strStr(String haystack, String needle) {
 
-        if (needle.length() == 0){
+        if (needle.length() == 0) {
             return 0;
         }
 
@@ -283,36 +283,36 @@ public class Part2 {
         Map<Character, Integer> needs = new HashMap<>();
         List<Integer> res = new ArrayList<>();
 
-        for(int i = 0; i < needle.length(); i++){
+        for (int i = 0; i < needle.length(); i++) {
             needs.put(needle.charAt(i), needs.getOrDefault(needle.charAt(i), 0) + 1);
         }
 
         int left = 0, right = 0;
         int count = 0;
 
-        while(right < haystack.length()){
+        while (right < haystack.length()) {
 
             char c1 = haystack.charAt(right++);
 
-            if(needs.containsKey(c1)){
+            if (needs.containsKey(c1)) {
 
                 windows.put(c1, windows.getOrDefault(c1, 0) + 1);
-                if(needs.get(c1).compareTo(windows.get(c1)) == 0){
+                if (needs.get(c1).compareTo(windows.get(c1)) == 0) {
                     count++;
                 }
             }
 
-            while(count == needs.size()){
+            while (count == needs.size()) {
 
-                if(right - left == needle.length()
+                if (right - left == needle.length()
                         && haystack.substring(left, right).equals(needle)
-                ){
+                ) {
                     return left;
                 }
                 char c2 = haystack.charAt(left++);
 
-                if(needs.containsKey(c2)){
-                    if(needs.get(c2).compareTo(windows.get(c2)) == 0){
+                if (needs.containsKey(c2)) {
+                    if (needs.get(c2).compareTo(windows.get(c2)) == 0) {
                         count--;
                     }
                     windows.put(c2, windows.getOrDefault(c2, 0) - 1);
@@ -329,7 +329,7 @@ public class Part2 {
         int n = needle.length();
 
         for (int i = 0; i < m - n + 1; i++) {
-            if (haystack.substring(i, i + n).equals(needle)){
+            if (haystack.substring(i, i + n).equals(needle)) {
                 return i;
             }
         }
@@ -345,12 +345,12 @@ public class Part2 {
         for (int i = 0; i < m - n + 1; i++) {
             int j;
             for (j = 0; j < n; j++) {
-                if (needle.charAt(j) != haystack.charAt(i + j)){
+                if (needle.charAt(j) != haystack.charAt(i + j)) {
                     break;
                 }
             }
 
-            if (j == n){
+            if (j == n) {
                 return i;
             }
         }
@@ -398,7 +398,7 @@ public class Part2 {
      * 773. 滑动谜题
      * bfs
      */
-    public String slidingPuzzleSwap(String target, int left, int right){
+    public String slidingPuzzleSwap(String target, int left, int right) {
         char[] c = target.toCharArray();
 
         char t = c[left];
@@ -412,8 +412,8 @@ public class Part2 {
     public int slidingPuzzle(int[][] board) {
 
         StringBuilder sb = new StringBuilder();
-        for(int[] i: board){
-            for(int j: i){
+        for (int[] i : board) {
+            for (int j : i) {
                 sb.append(j);
             }
         }
@@ -421,7 +421,7 @@ public class Part2 {
         List<List<Integer>> neighbor = new ArrayList<>();
 
         neighbor.add(Arrays.asList(1, 3));
-        neighbor.add(Arrays.asList(0 ,4, 2));
+        neighbor.add(Arrays.asList(0, 4, 2));
         neighbor.add(Arrays.asList(1, 5));
         neighbor.add(Arrays.asList(0, 4));
         neighbor.add(Arrays.asList(3, 1, 5));
@@ -437,25 +437,25 @@ public class Part2 {
         visited.add(start);
 
         int step = 0;
-        while(!q.isEmpty()){
+        while (!q.isEmpty()) {
 
             int sz = q.size();
 
-            for(int i = 0; i < sz; i++){
+            for (int i = 0; i < sz; i++) {
                 String cur = q.poll();
 
-                if(cur.equals(target)){
+                if (cur.equals(target)) {
                     return step;
                 }
 
                 int zeroIndex = 0;
-                while(cur.charAt(zeroIndex) != '0'){
+                while (cur.charAt(zeroIndex) != '0') {
                     zeroIndex++;
                 }
 
-                for(int j: neighbor.get(zeroIndex)){
+                for (int j : neighbor.get(zeroIndex)) {
                     String curSwap = slidingPuzzleSwap(cur, zeroIndex, j);
-                    if(!visited.contains(curSwap)){
+                    if (!visited.contains(curSwap)) {
                         q.offer(curSwap);
                         visited.add(curSwap);
                     }
@@ -472,23 +472,23 @@ public class Part2 {
      */
     public int countPrimes(int n) {
 
-        if(n < 2){
+        if (n < 2) {
             return 0;
         }
 
         int count = 0;
 
-        for(int i = 2; i < n; i++){
+        for (int i = 2; i < n; i++) {
 
             boolean flag = true;
 
-            for(int j = 2; j * j <= i; j++){
-                if(i % j == 0){
+            for (int j = 2; j * j <= i; j++) {
+                if (i % j == 0) {
                     flag = false;
                     break;
                 }
             }
-            if(flag){
+            if (flag) {
                 count++;
             }
 
@@ -498,7 +498,7 @@ public class Part2 {
 
     public int countPrimes1(int n) {
 
-        if(n < 2){
+        if (n < 2) {
             return 0;
         }
 
@@ -507,7 +507,7 @@ public class Part2 {
         Arrays.fill(isPrimes, true);
 
         for (int i = 2; i * i <= n; i++) {
-            if (isPrimes[i]){
+            if (isPrimes[i]) {
 
                 for (int j = i * i; j < n; j += i) {
                     isPrimes[j] = false;
@@ -515,13 +515,13 @@ public class Part2 {
 
             }
         }
-        
+
         int count = 0;
         for (int i = 2; i < n; i++) {
-            if (isPrimes[i]){
-                count ++;
+            if (isPrimes[i]) {
+                count++;
             }
-            
+
         }
 
         return count;
@@ -534,16 +534,16 @@ public class Part2 {
 
         int res = 0;
 
-        while (x != 0){
+        while (x != 0) {
             int pop = x % 10;
 
             if (res > Integer.MAX_VALUE / 10
-                    || (res == Integer.MAX_VALUE / 10 && pop > 7)){
+                    || (res == Integer.MAX_VALUE / 10 && pop > 7)) {
                 return 0;
             }
 
             if (res < Integer.MIN_VALUE / 10
-                    || (res == Integer.MIN_VALUE / 10 && pop < -8)){
+                    || (res == Integer.MIN_VALUE / 10 && pop < -8)) {
                 return 0;
 
             }
@@ -562,15 +562,15 @@ public class Part2 {
     public int minEatingSpeed(int[] piles, int H) {
 
         int max = 0;
-        for(int i: piles){
-            if(i > max){
+        for (int i : piles) {
+            if (i > max) {
                 max = i;
             }
         }
 
         int left = 1, right = max;
 
-        while(left <= right){
+        while (left <= right) {
 
             int mid = left + (right - left) / 2;
 
@@ -586,13 +586,13 @@ public class Part2 {
 
                 }
             }
-            if (needTime == H){
+            if (needTime == H) {
                 return mid;
 
-            }else if(needTime < H){
+            } else if (needTime < H) {
                 right = mid - 1;
 
-            }else{
+            } else {
                 left = mid + 1;
 
             }
@@ -613,7 +613,7 @@ public class Part2 {
 
         int left = min, right = sum;
 
-        while(left <= right){
+        while (left <= right) {
 
             int tempSum = 0;
             int needTime = 0;
@@ -622,23 +622,23 @@ public class Part2 {
 
             for (int j = 0; j < weights.length; j++) {
 
-                if(tempSum + weights[j] <= mid){
+                if (tempSum + weights[j] <= mid) {
                     tempSum += weights[j];
-                    if (j == weights.length - 1){
-                        needTime ++;
+                    if (j == weights.length - 1) {
+                        needTime++;
                     }
 
-                } else{
-                    j --;
-                    needTime ++;
+                } else {
+                    j--;
+                    needTime++;
                     tempSum = 0;
                 }
             }
 
-            if (needTime <= D){
+            if (needTime <= D) {
                 right = mid - 1;
 
-            }else {
+            } else {
                 left = mid + 1;
             }
 
@@ -661,15 +661,15 @@ public class Part2 {
         left_max[0] = height[0];
         right_max[len - 1] = height[len - 1];
 
-        for(int i = 1; i < len; i++){
+        for (int i = 1; i < len; i++) {
             left_max[i] = Math.max(left_max[i - 1], height[i]);
         }
 
-        for(int i = len - 2; i >= 0; i--){
+        for (int i = len - 2; i >= 0; i--) {
             right_max[i] = Math.max(right_max[i + 1], height[i]);
         }
 
-        for (int i = 1; i < len - 1; i++){
+        for (int i = 1; i < len - 1; i++) {
             res += Math.min(left_max[i], right_max[i]) - height[i];
         }
 
@@ -679,7 +679,7 @@ public class Part2 {
     public int trap1(int[] height) {
 
         int len = height.length;
-        if(len == 0){
+        if (len == 0) {
             return 0;
         }
         int res = 0;
@@ -689,17 +689,17 @@ public class Part2 {
         int left_max = height[0];
         int right_max = height[len - 1];
 
-        while(left <= right){
+        while (left <= right) {
 
             left_max = Math.max(left_max, height[left]);
             right_max = Math.max(right_max, height[right]);
 
-            if (left_max < right_max){
+            if (left_max < right_max) {
                 res += left_max - height[left];
                 left++;
 
 
-            } else{
+            } else {
                 res += right_max - height[left];
                 right--;
 
@@ -711,7 +711,7 @@ public class Part2 {
 
     /**
      * 26. 删除排序数组中的重复项
-     *
+     * <p>
      * 方法太低效了吧，还花了这么多时间，真菜！
      */
     public int removeDuplicates(int[] nums) {
@@ -719,7 +719,7 @@ public class Part2 {
 
         int len = nums.length;
 
-        if (len < 2){
+        if (len < 2) {
             return len;
         }
 
@@ -728,20 +728,20 @@ public class Part2 {
         int realLen = len;
 
         int temp = nums[0];
-        while(right < realLen){
+        while (right < realLen) {
 
             remainLen = realLen;
 
-            if(temp == nums[right]){
+            if (temp == nums[right]) {
                 left = right;
                 remainLen -= left;
 
-                while(nums[right] == temp){
+                while (nums[right] == temp) {
                     right++;
                     remainLen--;
                     realLen--;
 
-                    if (remainLen == 0){
+                    if (remainLen == 0) {
                         break;
                     }
 
@@ -757,15 +757,15 @@ public class Part2 {
     public int removeDuplicates1(int[] nums) {
         int len = nums.length;
 
-        if (len < 2){
+        if (len < 2) {
             return len;
         }
 
         int slow = 0, fast = 1;
 
-        while(fast < len){
+        while (fast < len) {
 
-            if (nums[slow] != nums[fast]){
+            if (nums[slow] != nums[fast]) {
 
                 slow++;
                 nums[slow] = nums[fast];
@@ -785,15 +785,15 @@ public class Part2 {
         int slow = 0, fast = 1;
         boolean isTwo = false;
 
-        while(fast < len){
+        while (fast < len) {
 
-            if(nums[slow] != nums[fast] ){
+            if (nums[slow] != nums[fast]) {
                 slow++;
                 nums[slow] = nums[fast];
                 isTwo = false;
 
-            }else{
-                if(!isTwo){
+            } else {
+                if (!isTwo) {
                     slow++;
                     nums[slow] = nums[fast];
                     isTwo = true;
@@ -807,22 +807,51 @@ public class Part2 {
 
     /**
      * 80. 删除排序数组中的重复项 II
-     *
+     * <p>
      * 牛逼
      */
     public int removeDuplicates3(int[] nums) {
         int i = 0;
         for (int n : nums) {
-            if (i < 2 || n > nums[i - 2]){
+            if (i < 2 || n > nums[i - 2]) {
                 nums[i++] = n;
             }
         }
         return i;
     }
 
+    public static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
+        }
+    }
+
+    /**
+     * 83. 删除排序链表中的重复元素
+     */
+    public ListNode deleteDuplicates(ListNode head) {
+        if(head == null){
+            return null;
+        }
+        ListNode slow = head, fast = head.next;
+
+        while(fast != null){
+            if(slow.val != fast.val){
+                slow.next = fast;
+                slow = slow.next;
+            }
+            fast = fast.next;
+        }
+        slow.next = null;
+        return head;
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
-        int[] a = {1,1,1,1,2,2,3};
+        int[] a = {1, 1, 1, 1, 2, 2, 3};
         String[] b = {"0000"};
 
         int[][] c = new int[][]{{1, 2, 3}, {5, 4, 0}};
@@ -834,12 +863,25 @@ public class Part2 {
         Common.TreeNode n4 = new Common.TreeNode(15);
         Common.TreeNode n5 = new Common.TreeNode(7);
 
+        ListNode l1 = new ListNode(1);
+        ListNode l2 = new ListNode(1);
+        ListNode l3 = new ListNode(2);
+        ListNode l4 = new ListNode(3);
+        ListNode l5 = new ListNode(3);
+
+        l1.next = l2;
+        l2.next = l3;
+        l3.next = l4;
+        l4.next = l5;
+        l5.next = null;
+
+
         n1.left = n2;
         n1.right = n3;
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part2.removeDuplicates3(a));
+        System.out.println(part2.deleteDuplicates(l1));
 
     }
 }
