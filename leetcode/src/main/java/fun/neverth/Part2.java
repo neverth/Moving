@@ -709,9 +709,76 @@ public class Part2 {
         return res;
     }
 
+    /**
+     * 26. 删除排序数组中的重复项
+     *
+     * 方法太低效了吧，还花了这么多时间，真菜！
+     */
+    public int removeDuplicates(int[] nums) {
+        int left = 0, right = 1;
+
+        int len = nums.length;
+
+        if (len < 2){
+            return len;
+        }
+
+        int remainLen = len;
+
+        int realLen = len;
+
+        int temp = nums[0];
+        while(right < realLen){
+
+            remainLen = realLen;
+
+            if(temp == nums[right]){
+                left = right;
+                remainLen -= left;
+
+                while(nums[right] == temp){
+                    right++;
+                    remainLen--;
+                    realLen--;
+
+                    if (remainLen == 0){
+                        break;
+                    }
+
+                }
+                System.arraycopy(nums, right, nums, left, remainLen);
+                right = left;
+            }
+            temp = nums[right++];
+        }
+        return realLen;
+    }
+
+    public int removeDuplicates1(int[] nums) {
+        int len = nums.length;
+
+        if (len < 2){
+            return len;
+        }
+
+        int slow = 0, fast = 1;
+
+        while(fast < len){
+
+            if (nums[slow] != nums[fast]){
+
+                slow++;
+                nums[slow] = nums[fast];
+
+            }
+            fast++;
+        }
+        return slow + 1;
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
-        int[] a = {0,1,0,2,1,0,1,3,2,1,2,1};
+        int[] a = {1,1,2,2, 6, 7, 8, 8, 8};
         String[] b = {"0000"};
 
         int[][] c = new int[][]{{1, 2, 3}, {5, 4, 0}};
@@ -728,7 +795,7 @@ public class Part2 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part2.trap1(a));
+        System.out.println(part2.removeDuplicates1(a));
 
     }
 }
