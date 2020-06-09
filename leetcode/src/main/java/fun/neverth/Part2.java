@@ -847,7 +847,7 @@ public class Part2 {
         }
         slow.next = null;
         return head;
-    }
+    } 
 
     /**
      * 24. 两两交换链表中的节点
@@ -880,6 +880,39 @@ public class Part2 {
         }
 
         return newHead.next;
+    }
+
+    /**
+     * 25. K 个一组翻转链表
+     */
+    public ListNode reverse(ListNode a, ListNode b){
+        ListNode pre, cur, next;
+        pre = null; cur = a; next = a;
+        while (cur != b) {
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return pre;
+
+    }
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null){
+            return null;
+        }
+        ListNode a, b;
+        a = b = head;
+        for (int i = 0; i < k; i++) {
+            if (b == null){
+                return head;
+            }
+            b = b.next;
+        }
+        ListNode newHead = reverse(a, b);
+        a.next = reverseKGroup(b, k);
+        return newHead;
     }
 
     public static void main(String[] args) {
