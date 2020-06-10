@@ -1,8 +1,10 @@
 package fun.neverth;
 
+import com.sun.imageio.plugins.wbmp.WBMPImageReader;
 import com.sun.java.swing.plaf.windows.resources.windows;
 import sun.security.util.ArrayUtil;
 
+import javax.swing.plaf.nimbus.AbstractRegionPainter;
 import java.util.*;
 
 /**
@@ -915,6 +917,37 @@ public class Part2 {
         return newHead;
     }
 
+    /**
+     * 5. 最长回文子串
+     */
+    public String longestPalindrome(String s) {
+        int len = s.length();
+        String res = "";
+
+        for(int i = 0; i < len; i++){
+
+            String res1 = palindrome(s, i, i);
+
+            String res2 = palindrome(s, i, i + 1);
+
+            res = res.length() > res1.length() ? res : res1;
+
+            res = res.length() > res2.length() ? res : res2;
+
+        }
+        return res;
+    }
+
+    public String palindrome(String s, int left, int right){
+
+        while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)){
+            left--;
+            right++;
+        }
+
+        return s.substring(left + 1, right);
+    }
+
     public static void main(String[] args) {
         Part2 part2 = new Part2();
         int[] a = {1, 1, 1, 1, 2, 2, 3};
@@ -946,7 +979,7 @@ public class Part2 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part2.swapPairs(l1));
+        System.out.println(part2.longestPalindrome("babad"));
 
     }
 }
