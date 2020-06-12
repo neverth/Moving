@@ -1,7 +1,9 @@
 package fun.neverth;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * todo
@@ -117,6 +119,25 @@ public class Part3 {
 
         return res;
     }
+
+    /**
+     * 217. 存在重复元素-哈希表解决,或者排序
+     */
+    public boolean containsDuplicate(int[] nums) {
+        Set<Integer> set = new HashSet<>(nums.length);
+
+        for (int num : nums) {
+
+            if (set.contains(num)) {
+                return true;
+            }
+            set.add(num);
+
+        }
+
+        return false;
+    }
+
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
