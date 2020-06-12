@@ -12,7 +12,7 @@ public class Part3 {
 
     public static class ListNode {
         int val;
-        Part2.ListNode next;
+        ListNode next;
 
         ListNode(int x) {
             val = x;
@@ -221,6 +221,24 @@ public class Part3 {
         while (j >= 0) {
             A[k--] = B[j--];
         }
+    }
+
+    /**
+     * 面试题06. 从尾到头打印链表
+     */
+    public int[] reversePrint(ListNode head) {
+        Deque<Integer> stack = new LinkedList<>();
+
+        while(head != null) {
+            stack.push(head.val);
+            head = head.next;
+        }
+        int[] res = new int[stack.size()];
+        int cnt = 0;
+        while(!stack.isEmpty()) {
+            res[cnt++] = stack.pop();
+        }
+        return res;
     }
 
     public static void main(String[] args) {
