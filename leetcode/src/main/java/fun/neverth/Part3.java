@@ -1,9 +1,6 @@
 package fun.neverth;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * todo
@@ -133,6 +130,25 @@ public class Part3 {
             }
             set.add(num);
 
+        }
+
+        return false;
+    }
+
+    /**
+     * 219. 存在重复元素 II-哈希表解决
+     */
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        int n = nums.length;
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for(int i = 0;i < n;i++){
+
+            if(map.get(nums[i]) != null && (i - map.get(nums[i])) <= k){
+                return true;
+            }
+
+            map.put(nums[i], i);
         }
 
         return false;
