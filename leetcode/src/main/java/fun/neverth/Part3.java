@@ -19,6 +19,16 @@ public class Part3 {
         }
     }
 
+    public static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode(int x) {
+            val = x;
+        }
+    }
+
     /**
      * 53. 最大子序和
      */
@@ -229,22 +239,97 @@ public class Part3 {
     public int[] reversePrint(ListNode head) {
         Deque<Integer> stack = new LinkedList<>();
 
-        while(head != null) {
+        while (head != null) {
             stack.push(head.val);
             head = head.next;
         }
         int[] res = new int[stack.size()];
         int cnt = 0;
-        while(!stack.isEmpty()) {
+        while (!stack.isEmpty()) {
             res[cnt++] = stack.pop();
         }
         return res;
     }
 
+
+    /**
+     * 面试题07. 重建二叉树 && 105. 从前序与中序遍历序列构造二叉树-递归写法
+     */
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+
+        if (preorder.length == 0 || inorder.length == 0) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(preorder[0]);
+
+        for (int i = 0; i < preorder.length; i++) {
+
+            if (preorder[0] == inorder[i]) {
+                root.left = buildTree(
+                        Arrays.copyOfRange(preorder, 1, i + 1),
+                        Arrays.copyOfRange(inorder, 0, i)
+                );
+
+                root.right = buildTree(
+                        Arrays.copyOfRange(preorder, i + 1, preorder.length),
+                        Arrays.copyOfRange(inorder, i + 1, inorder.length)
+                );
+                break;
+            }
+        }
+        return root;
+    }
+
+
+    /**
+     * 面试题07. 重建二叉树 && 105. 从前序与中序遍历序列构造二叉树-非递归写法
+     */
+    public TreeNode buildTree1(int[] preorder, int[] inorder) {
+
+        if (preorder.length == 0 || inorder.length == 0) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(preorder[0]);
+
+        Stack<TreeNode> stack = new Stack<>();
+
+        stack.push(root);
+
+        int inorderIndex = 0;
+
+        for (int i = 1; i < preorder.length; i++) {
+
+            int preorderVal = preorder[i];
+
+            TreeNode node = stack.peek();
+
+            if (node.val != inorder[inorderIndex]) {
+
+                node.left = new TreeNode(preorderVal);
+                stack.push(node.left);
+
+            } else {
+
+                while (!stack.isEmpty() && stack.peek().val == inorder[inorderIndex]) {
+                    node = stack.pop();
+                    inorderIndex++;
+                }
+
+                node.right = new TreeNode(preorderVal);
+                stack.push(node.right);
+            }
+        }
+        return root;
+    }
+
+
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
-        int[] a = {1, 3, 4, 2, 2};
+        int[] a = {3,9,20,15,7};
+        int[] a1 = {9,3,15,20,7};
         String[] b = {"0000"};
 
         int[][] c = new int[][]{
@@ -278,7 +363,7 @@ public class Part3 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part3.searchMatrix(c, 5));
+        System.out.println(part3.buildTree(a, a1));
 
     }
 
