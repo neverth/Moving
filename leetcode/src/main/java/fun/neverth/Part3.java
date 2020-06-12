@@ -29,12 +29,12 @@ public class Part3 {
 
         dp[0] = nums[0];
 
-        for (int i = 1; i < len; i++){
+        for (int i = 1; i < len; i++) {
             dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
         }
 
         int res = Integer.MIN_VALUE;
-        for (int value: dp){
+        for (int value : dp) {
             res = Math.max(value, res);
         }
         return res;
@@ -46,10 +46,10 @@ public class Part3 {
     public int findRepeatNumber(int[] nums) {
         int len = nums.length;
 
-        for(int i = 0; i < len; i++){
+        for (int i = 0; i < len; i++) {
 
-            while(nums[i] != i){
-                if(nums[i] == nums[nums[i]]){
+            while (nums[i] != i) {
+                if (nums[i] == nums[nums[i]]) {
                     return nums[i];
                 }
                 swap(nums, i, nums[i]);
@@ -58,7 +58,7 @@ public class Part3 {
         return -1;
     }
 
-    public void swap(int[] nums, int a, int b){
+    public void swap(int[] nums, int a, int b) {
         int temp = nums[a];
 
         nums[a] = nums[b];
@@ -74,20 +74,20 @@ public class Part3 {
 
         int left = 1, right = len - 1;
 
-        while(left <= right){
+        while (left <= right) {
 
             int mid = left + (right - left) / 2;
 
             int n = 0;
-            for(int value: nums){
-                if(value <= mid){
+            for (int value : nums) {
+                if (value <= mid) {
                     n++;
                 }
             }
 
-            if(n > mid){
+            if (n > mid) {
                 right = mid - 1;
-            }else{
+            } else {
                 left = mid + 1;
             }
 
@@ -106,7 +106,7 @@ public class Part3 {
 
             int index = Math.abs(nums[i]) - 1;
 
-            if (nums[index] < 0){
+            if (nums[index] < 0) {
                 res.add(Math.abs(index + 1));
             }
 
@@ -142,9 +142,9 @@ public class Part3 {
         int n = nums.length;
         HashMap<Integer, Integer> map = new HashMap<>();
 
-        for(int i = 0;i < n;i++){
+        for (int i = 0; i < n; i++) {
 
-            if(map.get(nums[i]) != null && (i - map.get(nums[i])) <= k){
+            if (map.get(nums[i]) != null && (i - map.get(nums[i])) <= k) {
                 return true;
             }
 
@@ -161,7 +161,7 @@ public class Part3 {
 
         int n = matrix.length;
 
-        if(n == 0){
+        if (n == 0) {
             return false;
         }
 
@@ -169,15 +169,15 @@ public class Part3 {
 
         int r = 0, c = m - 1;
 
-        while(r < n && c >= 0){
+        while (r < n && c >= 0) {
 
-            if(matrix[r][c] == target){
+            if (matrix[r][c] == target) {
                 return true;
 
-            }else if(matrix[r][c] > target){
+            } else if (matrix[r][c] > target) {
                 c--;
 
-            }else{
+            } else {
                 r++;
             }
         }
@@ -191,30 +191,50 @@ public class Part3 {
      */
     public String replaceSpace(String s) {
         StringBuilder sb = new StringBuilder();
-        for(int i = 0 ; i < s.length(); i++){
+        for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if(c == ' '){
+            if (c == ' ') {
                 sb.append("%20");
-            }
-            else{
+            } else {
                 sb.append(c);
             }
         }
         return sb.toString();
     }
 
+    /**
+     * 面试题 10.01. 合并排序的数组
+     */
+    public void merge(int[] A, int m, int[] B, int n) {
+        int k = m + n - 1, i = m - 1, j = n - 1;
+
+        while (i >= 0 && j >= 0) {
+            if (A[i] < B[j]) {
+                A[k--] = B[j--];
+
+            } else {
+                A[k--] = A[i--];
+
+            }
+        }
+
+        while (j >= 0) {
+            A[k--] = B[j--];
+        }
+    }
+
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
-        int[] a = {1,3,4,2,2};
+        int[] a = {1, 3, 4, 2, 2};
         String[] b = {"0000"};
 
         int[][] c = new int[][]{
-                {1,4,7,11,15},
-                {2,5,8,12,19},
-                {3,6,9,16,22},
-                {10,13,14,17,24},
-                {18,21,23,26,30},
+                {1, 4, 7, 11, 15},
+                {2, 5, 8, 12, 19},
+                {3, 6, 9, 16, 22},
+                {10, 13, 14, 17, 24},
+                {18, 21, 23, 26, 30},
         };
 
 
