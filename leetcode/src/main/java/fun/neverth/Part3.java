@@ -154,13 +154,50 @@ public class Part3 {
         return false;
     }
 
+    /**
+     * 240. 搜索二维矩阵 II && 面试题04. 二维数组中的查找
+     */
+    public boolean searchMatrix(int[][] matrix, int target) {
+
+        int n = matrix.length;
+
+        if(n == 0){
+            return false;
+        }
+
+        int m = matrix[0].length;
+
+        int r = 0, c = m - 1;
+
+        while(r < n && c >= 0){
+
+            if(matrix[r][c] == target){
+                return true;
+
+            }else if(matrix[r][c] > target){
+                c--;
+
+            }else{
+                r++;
+            }
+        }
+
+        return false;
+    }
+
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
         int[] a = {1,3,4,2,2};
         String[] b = {"0000"};
 
-        int[][] c = new int[][]{{1, 2, 3}, {5, 4, 0}};
+        int[][] c = new int[][]{
+                {1,4,7,11,15},
+                {2,5,8,12,19},
+                {3,6,9,16,22},
+                {10,13,14,17,24},
+                {18,21,23,26,30},
+        };
 
 
         Common.TreeNode n1 = new Common.TreeNode(3);
@@ -185,7 +222,7 @@ public class Part3 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part3.findDuplicate(a));
+        System.out.println(part3.searchMatrix(c, 5));
 
     }
 
