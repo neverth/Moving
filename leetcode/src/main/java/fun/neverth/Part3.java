@@ -324,12 +324,41 @@ public class Part3 {
         return root;
     }
 
+    /**
+     * 106. 从中序与后序遍历序列构造二叉树
+     */
+    public TreeNode buildTree2(int[] inorder, int[] postorder) {
+        if (inorder.length == 0 || postorder.length == 0) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(postorder[postorder.length - 1]);
+
+        for (int i = 0; i < inorder.length; i++) {
+
+            if (root.val == inorder[i]) {
+
+                root.left = buildTree(
+                        Arrays.copyOfRange(inorder, 0, i),
+                        Arrays.copyOfRange(postorder, 0, i)
+                );
+
+                root.right = buildTree(
+                        Arrays.copyOfRange(inorder, i + 1, inorder.length),
+                        Arrays.copyOfRange(postorder, i, postorder.length - 1)
+
+                );
+                break;
+            }
+        }
+        return root;
+    }
 
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
-        int[] a = {3,9,20,15,7};
-        int[] a1 = {9,3,15,20,7};
+        int[] a = {9,3,15,20,7};
+        int[] a1 = {9,15,7,20,3};
         String[] b = {"0000"};
 
         int[][] c = new int[][]{
@@ -363,7 +392,7 @@ public class Part3 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part3.buildTree(a, a1));
+        System.out.println(part3.buildTree2(a, a1));
 
     }
 
