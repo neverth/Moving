@@ -490,10 +490,45 @@ public class Part3 {
         return numbers[left];
     }
 
+    /**
+     * 33. 搜索旋转排序数组
+     */
+    public int search(int[] numbers, int target) {
+        int left = 0, right = numbers.length - 1;
+
+        while (left <= right) {
+
+            int mid = left + (right - left) / 2;
+
+            if (numbers[mid] == target) {
+                return mid;
+
+            } else if (numbers[left] <= numbers[mid]) {
+
+                if (target >= numbers[left] && target < numbers[mid]) {
+                    right = mid - 1;
+
+                } else {
+                    left = mid + 1;
+                }
+
+            } else if (numbers[mid] <= numbers[right]) {
+
+                if (target > numbers[mid] && target <= numbers[right]) {
+                    left = mid + 1;
+
+                } else {
+                    right = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
+
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
-        int[] a = {4,5,6,7,0,1,2};
+        int[] a = {4, 5, 6, 7, 0, 1, 2};
         int[] a1 = {9, 15, 7, 20, 3};
         String[] b = {"0000"};
 
