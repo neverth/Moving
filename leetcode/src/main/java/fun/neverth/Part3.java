@@ -392,6 +392,37 @@ public class Part3 {
         return next;
     }
 
+    /**
+     * 面试题09. 用两个栈实现队列
+     */
+    private final Stack<Integer> stack1 = new Stack<>();
+    private final Stack<Integer> stack2 = new Stack<>();
+
+    public void appendTail(int value) {
+        stack1.push(value);
+    }
+
+    public int deleteHead() {
+        int res;
+
+        while(!stack1.isEmpty()){
+            stack2.push(stack1.pop());
+        }
+
+        if(!stack2.isEmpty()){
+            res = stack2.pop();
+        }else{
+            res = -1;
+        }
+
+
+        while(!stack2.isEmpty()){
+            stack1.push(stack2.pop());
+        }
+
+        return res;
+    }
+
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
