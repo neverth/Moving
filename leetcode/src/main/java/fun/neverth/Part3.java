@@ -551,10 +551,10 @@ public class Part3 {
 
         if (
                 i >= board.length
-                || i < 0
-                || j >= board[0].length
-                || j < 0
-                || board[i][j] != word.charAt(k)
+                        || i < 0
+                        || j >= board[0].length
+                        || j < 0
+                        || board[i][j] != word.charAt(k)
         ) {
 
             return false;
@@ -578,6 +578,43 @@ public class Part3 {
         return res;
     }
 
+    /**
+     * 面试题13. 机器人的运动范围
+     */
+    public int movingCount(int m, int n, int k) {
+        return backtrack(m, n, k, 0, 0, new boolean[m][n]);
+    }
+
+    public int backtrack(int m, int n, int k, int i, int j, boolean[][] visited) {
+
+        if (i >= m || i < 0 || j >= n || j < 0 || visited[i][j]) {
+            return 0;
+        }
+
+        int sum = 0, num1 = i, num2 = j;
+
+        while(num1 > 0){
+            sum += num1 % 10;
+            num1 /= 10;
+        }
+
+        while(num2 > 0){
+            sum += num2 % 10;
+            num2 /= 10;
+        }
+
+        if (sum > k) {
+            return 0;
+        }
+
+        visited[i][j] = true;
+
+        return backtrack(m, n, k, i + 1, j, visited) +
+                backtrack(m, n, k, i - 1, j, visited) +
+                backtrack(m, n, k, i, j + 1, visited) +
+                backtrack(m, n, k, i, j - 1, visited) + 1;
+
+    }
 
     public static void main(String[] args) {
         Part3 part3 = new Part3();
@@ -617,7 +654,7 @@ public class Part3 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part3.search(a, 3));
+        System.out.println(part3.movingCount(1, 2, 1));
 
     }
 
