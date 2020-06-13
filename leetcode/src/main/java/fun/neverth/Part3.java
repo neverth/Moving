@@ -358,29 +358,29 @@ public class Part3 {
     /**
      * 面试题07. 二叉树的下一个节点
      */
-    public TreeNode getNext(TreeNode node){
-        if (node == null){
+    public TreeNode getNext(TreeNode node) {
+        if (node == null) {
             return null;
         }
 
         TreeNode next = null;
 
-        if (node.right != null){
+        if (node.right != null) {
 
             TreeNode temp = node.right;
 
-            while(temp.left != null){
+            while (temp.left != null) {
                 temp = temp.left;
             }
 
             next = temp;
 
-        }else if(node.parent != null){
+        } else if (node.parent != null) {
 
             TreeNode cur = node;
             TreeNode parent = node.parent;
 
-            while (parent != null && cur == parent.left){
+            while (parent != null && cur == parent.left) {
                 cur = parent;
                 parent = parent.parent;
             }
@@ -405,18 +405,18 @@ public class Part3 {
     public int deleteHead() {
         int res;
 
-        while(!stack1.isEmpty()){
+        while (!stack1.isEmpty()) {
             stack2.push(stack1.pop());
         }
 
-        if(!stack2.isEmpty()){
+        if (!stack2.isEmpty()) {
             res = stack2.pop();
-        }else{
+        } else {
             res = -1;
         }
 
 
-        while(!stack2.isEmpty()){
+        while (!stack2.isEmpty()) {
             stack1.push(stack2.pop());
         }
 
@@ -428,7 +428,7 @@ public class Part3 {
      */
     public int fib(int n) {
 
-        if(n == 0){
+        if (n == 0) {
             return 0;
         }
 
@@ -437,7 +437,7 @@ public class Part3 {
         dp[0] = 0;
         dp[1] = 1;
 
-        for(int i = 2; i <= n; i++){
+        for (int i = 2; i <= n; i++) {
             dp[i] = dp[i - 1] + dp[i - 2];
             dp[i] = dp[i] % 1000000007;
         }
@@ -449,7 +449,7 @@ public class Part3 {
      * 面试题10- II. 青蛙跳台阶问题 && 70. 爬楼梯
      */
     public int numWays(int n) {
-        if(n == 0 || n == 1){
+        if (n == 0 || n == 1) {
             return 1;
         }
 
@@ -458,18 +458,43 @@ public class Part3 {
         dp[1] = 1;
         dp[2] = 2;
 
-        for(int i = 3; i <= n; i++){
+        for (int i = 3; i <= n; i++) {
             dp[i] = dp[i - 1] + dp[i - 2];
             dp[i] = dp[i] % 1000000007;
         }
 
         return dp[n];
     }
+
+    /**
+     * 面试题11. 旋转数组的最小数字 && 153. 寻找旋转排序数组中的最小值
+     * && 154. 寻找旋转排序数组中的最小值 II
+     */
+    public int minArray(int[] numbers) {
+        int left = 0, right = numbers.length - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (numbers[mid] > numbers[right]) {
+                left = mid + 1;
+
+            } else if (numbers[mid] < numbers[right]) {
+                right = mid;
+
+            } else {
+                right--;
+            }
+
+        }
+        return numbers[left];
+    }
+
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
-        int[] a = {9,3,15,20,7};
-        int[] a1 = {9,15,7,20,3};
+        int[] a = {4,5,6,7,0,1,2};
+        int[] a1 = {9, 15, 7, 20, 3};
         String[] b = {"0000"};
 
         int[][] c = new int[][]{
@@ -503,7 +528,7 @@ public class Part3 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part3.buildTree2(a, a1));
+        System.out.println(part3.search(a, 3));
 
     }
 
