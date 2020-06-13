@@ -23,6 +23,7 @@ public class Part3 {
         int val;
         TreeNode left;
         TreeNode right;
+        TreeNode parent;
 
         TreeNode(int x) {
             val = x;
@@ -352,6 +353,43 @@ public class Part3 {
             }
         }
         return root;
+    }
+
+    /**
+     * 面试题07. 二叉树的下一个节点
+     */
+    public TreeNode getNext(TreeNode node){
+        if (node == null){
+            return null;
+        }
+
+        TreeNode next = null;
+
+        if (node.right != null){
+
+            TreeNode temp = node.right;
+
+            while(temp.left != null){
+                temp = temp.left;
+            }
+
+            next = temp;
+
+        }else if(node.parent != null){
+
+            TreeNode cur = node;
+            TreeNode parent = node.parent;
+
+            while (parent != null && cur == parent.left){
+                cur = parent;
+                parent = parent.parent;
+            }
+
+            next = parent;
+
+        }
+
+        return next;
     }
 
     public static void main(String[] args) {
