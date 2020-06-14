@@ -681,6 +681,28 @@ public class Part3 {
         return (int) res;
     }
 
+    /**
+     * 面试题15. 二进制中1的个数 && 191. 位1的个数
+     */
+    public int hammingWeight(int n) {
+        int res = 0;
+        while(n != 0){
+            res += n & 1;
+            n >>>= 1;
+        }
+
+        return res;
+    }
+
+    public int hammingWeight1(int n) {
+        int res = 0;
+        while(n != 0) {
+            res++;
+            n &= n - 1;
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
@@ -719,7 +741,7 @@ public class Part3 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part3.cuttingRope1(120));
+        System.out.println(part3.hammingWeight(0b00000000000000000000000000001011));
 
     }
 
