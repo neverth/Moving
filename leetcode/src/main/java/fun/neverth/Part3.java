@@ -593,12 +593,12 @@ public class Part3 {
 
         int sum = 0, num1 = i, num2 = j;
 
-        while(num1 > 0){
+        while (num1 > 0) {
             sum += num1 % 10;
             num1 /= 10;
         }
 
-        while(num2 > 0){
+        while (num2 > 0) {
             sum += num2 % 10;
             num2 /= 10;
         }
@@ -620,11 +620,11 @@ public class Part3 {
      * 面试题14- I. 剪绳子 && 343. 整数拆分
      */
     public int cuttingRope(int n) {
-        if(n < 2){
+        if (n < 2) {
             return 0;
-        }else if (n == 2){
+        } else if (n == 2) {
             return 1;
-        }else if(n == 3){
+        } else if (n == 3) {
             return 2;
         }
 
@@ -634,20 +634,51 @@ public class Part3 {
         dp[3] = 2;
 
         /*
-        * 关键一步 dp[i]由四种状态组成
-        * 1.拆j数字分成小块整数拆分求最大 i - j不拆开 就是dp[j] * (i - j)
-        * 2.拆i - j这个数字整数拆分求最大j不拆开就是dp[i - j] * j
-        * 3.两个都整数拆分分别求最大就是 dp[i - j] * dp[j]
-        * 4. i和i - j都不整数拆分 就是i * (i - j)
-        * 然后四个求出最大值
-        */
-        for(int i = 4; i <= n; i++){
-            for(int j = 1; j < i; j++){
+         * 关键一步 dp[i]由四种状态组成
+         * 1.拆j数字分成小块整数拆分求最大 i - j不拆开 就是dp[j] * (i - j)
+         * 2.拆i - j这个数字整数拆分求最大j不拆开就是dp[i - j] * j
+         * 3.两个都整数拆分分别求最大就是 dp[i - j] * dp[j]
+         * 4. i和i - j都不整数拆分 就是i * (i - j)
+         * 然后四个求出最大值
+         */
+        for (int i = 4; i <= n; i++) {
+            for (int j = 1; j < i; j++) {
                 dp[i] = Math.max(dp[i], Math.max(j * dp[i - j], j * (i - j)));
             }
         }
 
         return dp[n];
+    }
+
+    /**
+     * 面试题14- II. 剪绳子 II
+     */
+    public int cuttingRope1(int n) {
+        if (n < 2) {
+            return 0;
+        } else if (n == 2) {
+            return 1;
+        } else if (n == 3) {
+            return 2;
+        }
+
+        long res = 1;
+        if (n % 3 == 1) {
+            res = 4;
+            n -= 4;
+
+        } else if (n % 3 == 2) {
+            res = 2;
+            n -= 2;
+
+        }
+
+        while (n > 0) {
+            res = res * 3;
+            res = res % 1000000007;
+            n -= 3;
+        }
+        return (int) res;
     }
 
     public static void main(String[] args) {
@@ -688,7 +719,7 @@ public class Part3 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part3.movingCount(1, 2, 1));
+        System.out.println(part3.cuttingRope1(120));
 
     }
 
