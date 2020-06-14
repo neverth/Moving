@@ -616,6 +616,40 @@ public class Part3 {
 
     }
 
+    /**
+     * 面试题14- I. 剪绳子 && 343. 整数拆分
+     */
+    public int cuttingRope(int n) {
+        if(n < 2){
+            return 0;
+        }else if (n == 2){
+            return 1;
+        }else if(n == 3){
+            return 2;
+        }
+
+        int[] dp = new int[n + 1];
+
+        dp[2] = 1;
+        dp[3] = 2;
+
+        /*
+        * 关键一步 dp[i]由四种状态组成
+        * 1.拆j数字分成小块整数拆分求最大 i - j不拆开 就是dp[j] * (i - j)
+        * 2.拆i - j这个数字整数拆分求最大j不拆开就是dp[i - j] * j
+        * 3.两个都整数拆分分别求最大就是 dp[i - j] * dp[j]
+        * 4. i和i - j都不整数拆分 就是i * (i - j)
+        * 然后四个求出最大值
+        */
+        for(int i = 4; i <= n; i++){
+            for(int j = 1; j < i; j++){
+                dp[i] = Math.max(dp[i], Math.max(j * dp[i - j], j * (i - j)));
+            }
+        }
+
+        return dp[n];
+    }
+
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
