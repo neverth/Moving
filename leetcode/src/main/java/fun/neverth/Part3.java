@@ -826,6 +826,35 @@ public class Part3 {
         }
     }
 
+    /**
+     * 面试题18. 删除链表的节点
+     */
+    public ListNode deleteNode(ListNode head, int val) {
+        if(head == null){
+            return null;
+        }
+
+        ListNode p = head;
+
+        if(p.val == val){
+            if(p.next == null){
+                return null;
+            }
+            head = head.next;
+        }
+
+        while(p.next.val != val){
+            p = p.next;
+
+            if(p.next == null){
+                return head;
+            }
+        }
+
+        p.next = p.next.next;
+
+        return head;
+    }
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
@@ -863,7 +892,7 @@ public class Part3 {
         n1.right = n3;
         n3.left = n4;
         n3.right = n5;
-        part3.printNumbers2(10);
+        part3.printNumbers2(3);
         System.out.println();
 
     }
