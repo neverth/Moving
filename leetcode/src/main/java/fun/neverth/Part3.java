@@ -686,7 +686,7 @@ public class Part3 {
      */
     public int hammingWeight(int n) {
         int res = 0;
-        while(n != 0){
+        while (n != 0) {
             res += n & 1;
             n >>>= 1;
         }
@@ -696,9 +696,36 @@ public class Part3 {
 
     public int hammingWeight1(int n) {
         int res = 0;
-        while(n != 0) {
+        while (n != 0) {
             res++;
             n &= n - 1;
+        }
+        return res;
+    }
+
+    /**
+     * 面试题16. 数值的整数次方 && 50. Pow(x, n)
+     */
+    public double myPow(double x, int n) {
+
+        if (x == 0) {
+            return 0;
+        }
+
+        long b = n;
+
+        double res = 1.0;
+
+        if (b < 0) {
+            x = 1 / x;
+            b = -b;
+        }
+        while (b > 0) {
+            if ((b & 1) == 1) {
+                res *= x;
+            }
+            x *= x;
+            b >>= 1;
         }
         return res;
     }
@@ -741,7 +768,7 @@ public class Part3 {
         n3.left = n4;
         n3.right = n5;
 
-        System.out.println(part3.hammingWeight(0b00000000000000000000000000001011));
+        System.out.println(part3.myPow(2, 10));
 
     }
 
