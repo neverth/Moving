@@ -221,9 +221,7 @@ out
 gen
 /outfile/
 .idea
-test.*
 main*.html
 __pycache__
 /data/
-test*
 data*
