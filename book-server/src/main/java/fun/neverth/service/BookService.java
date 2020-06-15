@@ -1,5 +1,6 @@
 package fun.neverth.service;
 
+import fun.neverth.bean.form.BookForm;
 import fun.neverth.bean.po.BookDO;
 import fun.neverth.bean.vo.BookVO;
 import fun.neverth.repository.BookRepository;
@@ -27,7 +28,6 @@ public class BookService {
         List<BookDO> bookDOList = bookRepository.findAll();
         List<BookVO> bookVOList = new ArrayList<>();
 
-
         for (BookDO bookDo : bookDOList) {
             BookVO bookVO = new BookVO();
             BeanUtils.copyProperties(bookDo, bookVO);
@@ -40,11 +40,19 @@ public class BookService {
     public BookVO getBookById(Long id) {
         Optional<BookDO> optional = bookRepository.findById(id);
 
-        BookVO bookVO = new BookVO();
+        if (optional.isPresent()) {
+            BookDO bookDO = optional.get();
 
-        optional.ifPresent(bookDO -> BeanUtils.copyProperties(bookDO, bookVO));
+            BookVO bookVO = new BookVO();
 
-        return bookVO;
+            BeanUtils.copyProperties(bookDO, bookVO);
+
+            return bookVO;
+
+        } else {
+
+            return null;
+        }
     }
 
     public int updateBookAmount(Long id, int amount) {
@@ -62,5 +70,40 @@ public class BookService {
 
             return -1;
         }
+    }
+
+    public BookVO updateBook(BookForm bookForm) {
+        if (bookForm != null){
+            BookDO bookDO = new BookDO();
+            BeanUtils.copyProperties(bookForm, bookDO);
+
+            BookDO save = bookRepository.save(bookDO);
+
+            BookVO bookVO = new BookVO();
+            BeanUtils.copyProperties(save, bookVO);
+
+            return bookVO;
+        }
+
+        return null;
+    }
+
+    public BookVO addBook(BookForm form){
+        if (form != null){
+            BookDO bookDO = new BookDO();
+            BeanUtils.copyProperties(form, bookDO);
+            BookDO save = bookRepository.save(bookDO);
+
+            BookVO bookVO = new BookVO();
+            BeanUtils.copyProperties(save, bookVO);
+
+            return bookVO;
+        }
+
+        return null;
+    }
+
+    public void deleteBook(Long id){
+        bookRepository.deleteById(id);
     }
 }

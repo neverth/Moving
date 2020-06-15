@@ -13,13 +13,13 @@ import java.util.HashMap;
  */
 public class Result<T> extends HashMap<String, Object> implements Serializable {
 
-    public Result (){
-        put("code", HttpStatus.OK);
+    public Result(){
+        put("code", HttpStatus.OK.value());
         put("message", "success");
     }
 
     private Result(T data) {
-        put("code", HttpStatus.OK);
+        put("code", HttpStatus.OK.value());
         put("message", "success");
         put("data", data);
     }
@@ -35,5 +35,13 @@ public class Result<T> extends HashMap<String, Object> implements Serializable {
 
     public static <T> Result<T> success(T data){
         return new Result<>(data);
+    }
+
+    public static <T> Result<T> error(){
+        return new Result<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "发生错误");
+    }
+
+    public static <T> Result<T> error(String message){
+        return new Result<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), message);
     }
 }

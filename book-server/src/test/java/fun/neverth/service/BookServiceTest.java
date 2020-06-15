@@ -1,5 +1,6 @@
 package fun.neverth.service;
 
+import fun.neverth.bean.form.BookForm;
 import fun.neverth.bean.vo.BookVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,10 +33,25 @@ public class BookServiceTest {
     }
 
     @Test
-    public void a(){
-        long id = 2;
+    public void getBookByIdTest(){
+        long id = 22;
         BookVO bookById = bookService.getBookById(id);
         System.out.println(bookById);
+    }
+
+    @Test
+    public void updateBookAmountTest(){
+        long id = 1;
+        int amount = bookService.updateBookAmount(id, 100);
+        System.out.println(amount);
+    }
+
+    @Test
+    public void addBookTest(){
+        BookForm bookForm = new BookForm();
+        bookForm.setBookName("niemide");
+        BookVO bookVO = bookService.addBook(bookForm);
+        System.out.println(bookVO);
     }
 
 }

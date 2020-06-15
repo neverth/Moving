@@ -1,32 +1,26 @@
-package fun.neverth.bean.po;
+package fun.neverth.bean.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
-
 /**
  * todo
  *
  * @author NeverTh
- * @date 2020/6/15 19:55
+ * @date 2020/6/16 1:31
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Entity(name = "book")
-@Table(name = "t_book")
-public class BookDO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BookForm {
+
     private Long id;
 
     private String number;
 
-    @Column(name = "book_name")
     private String bookName;
 
     private String isbn;
@@ -35,7 +29,6 @@ public class BookDO {
 
     private String press;
 
-    @Column(name = "pub_date")
     private String pubDate;
 
     private String price;

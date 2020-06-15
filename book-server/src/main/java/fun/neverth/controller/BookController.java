@@ -1,5 +1,6 @@
 package fun.neverth.controller;
 
+import fun.neverth.bean.form.BookForm;
 import fun.neverth.bean.po.BookDO;
 import fun.neverth.bean.vo.BookVO;
 import fun.neverth.repository.BookRepository;
@@ -7,9 +8,11 @@ import fun.neverth.service.BookService;
 import fun.neverth.util.Result;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,22 +23,85 @@ import java.util.List;
  */
 
 @RestController
+@RequestMapping("/book")
 public class BookController {
-
-    @Autowired
-    private BookRepository bookRepository;
 
     @Autowired
     private BookService bookService;
 
     @GetMapping("/get")
-    public BookVO getBook(){
-        BookVO bookVO = new BookVO();
-        List<BookDO> bookDOList = bookRepository.findAll();
+    public Result<List<BookVO>> getBook(
+            @RequestParam(value = "id", required = false) String id
+    ) {
+        List<BookVO> bookVOs;
+        try {
+            if (id == null) {
+                bookVOs = bookService.getAllBooks();
 
-        BeanUtils.copyProperties(bookDOList.get(0), bookVO);
+            } else {
+                bookVOs = new ArrayList<>();
+                bookVOs.add(bookService.getBookById(Long.parseLong(id)));
+            }
 
-        return bookVO;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
+
+        if (bookVOs != null) {
+            return Result.success(bookVOs);
+        }
+
+        return Result.error();
+    }
+
+    @PostMapping("/add")
+    public Result<BookVO> addBook(BookForm bookForm) {
+        BookVO bookVO;
+        try {
+            bookVO = bookService.addBook(bookForm);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
+
+        if (bookVO != null) {
+            return Result.success(bookVO);
+        }
+
+        return Result.error();
+    }
+
+    @PostMapping("/update")
+    public Result<BookVO> updateBook(BookForm bookForm) {
+        BookVO bookVO;
+        try {
+            bookVO = bookService.updateBook(bookForm);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
+
+        if (bookVO != null) {
+            return Result.success(bookVO);
+        }
+
+        return Result.error();
+    }
+
+    @PostMapping("/delete")
+    public Result<String> deleteBook(@RequestParam("id") String id) {
+        try {
+            bookService.deleteBook(Long.parseLong(id));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
+
+        return Result.success();
     }
 
 }
