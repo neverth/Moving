@@ -730,6 +730,102 @@ public class Part3 {
         return res;
     }
 
+    /**
+     * 面试题17. 打印从1到最大的n位数
+     */
+    public int[] printNumbers(int n) {
+        int num = (int) Math.pow(10, n) - 1;
+
+        int[] res = new int[num];
+
+        for (int i = 0; i < num; i++) {
+            res[i] = i + 1;
+        }
+
+        return res;
+    }
+
+    /**
+     * 面试题17. 打印从1到最大的n位数 -- 使用字符串构造
+     */
+    public void printNumbers1(int n) {
+        StringBuilder str = new StringBuilder();
+
+        for (int i = 0; i < n; i++) {
+            str.append('0');
+        }
+
+        while (!increment(str)) {
+
+            int index = 0;
+            while (index < str.length() && str.charAt(index) == '0') {
+                index++;
+            }
+            System.out.println(str.toString().substring(index));
+        }
+    }
+
+    public boolean increment(StringBuilder str) {
+        boolean isOverflow = false;
+        for (int i = str.length() - 1; i >= 0; i--) {
+            char s = (char) (str.charAt(i) + 1);
+
+            if (s > '9') {
+                str.replace(i, i + 1, "0");
+                if (i == 0) {
+                    isOverflow = true;
+                }
+            } else {
+                str.replace(i, i + 1, String.valueOf(s));
+                break;
+            }
+        }
+        return isOverflow;
+    }
+
+    /**
+     * 面试题17. 打印从1到最大的n位数 -- 全排列
+     */
+    public int[] printNumbers2(int n) {
+        List<Integer> list = new ArrayList<>();
+
+        dfs(list, n, 0, new StringBuilder());
+
+        int[] res = new int[list.size()];
+
+        for (int i = 0; i < res.length; i++) {
+            res[i] = list.get(i);
+        }
+
+        return res;
+    }
+
+    private void dfs(List<Integer> list, int n, int i, StringBuilder sb) {
+        if (i == n) {
+
+            while (sb.length() != 0 && sb.charAt(0) == '0') {
+                sb.deleteCharAt(0);
+            }
+
+            if (sb.length() != 0) {
+                list.add(Integer.valueOf(sb.toString()));
+            }
+
+            return;
+        }
+        for (int j = 0; j < 10; j++) {
+
+            sb.append(j);
+
+            dfs(list, n, i + 1, sb);
+
+            if (sb.length() != 0) {
+                sb.deleteCharAt(sb.length() - 1);
+            }
+
+        }
+    }
+
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
@@ -767,8 +863,8 @@ public class Part3 {
         n1.right = n3;
         n3.left = n4;
         n3.right = n5;
-
-        System.out.println(part3.myPow(2, 10));
+        part3.printNumbers2(10);
+        System.out.println();
 
     }
 
