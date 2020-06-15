@@ -1,6 +1,7 @@
 package fun.neverth;
 
 import com.sun.deploy.net.proxy.ProxyUnavailableException;
+import com.sun.scenario.animation.shared.ClipEnvelope;
 
 import java.util.*;
 
@@ -830,23 +831,23 @@ public class Part3 {
      * 面试题18. 删除链表的节点
      */
     public ListNode deleteNode(ListNode head, int val) {
-        if(head == null){
+        if (head == null) {
             return null;
         }
 
         ListNode p = head;
 
-        if(p.val == val){
-            if(p.next == null){
+        if (p.val == val) {
+            if (p.next == null) {
                 return null;
             }
             head = head.next;
         }
 
-        while(p.next.val != val){
+        while (p.next.val != val) {
             p = p.next;
 
-            if(p.next == null){
+            if (p.next == null) {
                 return head;
             }
         }
@@ -855,6 +856,66 @@ public class Part3 {
 
         return head;
     }
+
+    /**
+     * 面试题19. 正则表达式匹配 && 10. 正则表达式匹配
+     */
+    public boolean isMatch(String s, String p) {
+
+        if (p.isEmpty()) {
+            return s.isEmpty();
+        }
+
+        boolean first = !s.isEmpty() && (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.');
+
+        if (p.length() >= 2 && p.charAt(1) == '*') {
+            return isMatch(s, p.substring(2)) || (first && isMatch(s.substring(1), p));
+
+        } else {
+            return first && isMatch(s.substring(1), p.substring(1));
+        }
+    }
+
+    /**
+     * 面试题19. 正则表达式匹配 && 10. 正则表达式匹配
+     */
+    public boolean isMatch1(String s, String p) {
+
+        if (p.isEmpty()) {
+            return s.isEmpty();
+        }
+
+        HashMap<String, Boolean> isMatchMemo = new HashMap<>();
+
+        return isMatch1Dp(isMatchMemo, s, p, 0, 0);
+    }
+
+    public boolean isMatch1Dp(HashMap<String, Boolean> isMatchMemo,
+                              String s, String p, int i, int j){
+        if (isMatchMemo.containsKey(i + "-" + j)){
+            return isMatchMemo.get(i + "-" + j);
+        }
+
+        if (j == p.length()){
+            return i == s.length();
+        }
+
+        boolean first = i < s.length() && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.');
+
+        boolean res;
+
+        if (j <= p.length() - 2 && p.charAt(j + 1) == '*'){
+            res = isMatch1Dp(isMatchMemo, s, p, i, j + 2)
+                    || (first && isMatch1Dp(isMatchMemo, s, p, i + 1, j));
+
+        }else{
+            res = first && isMatch1Dp(isMatchMemo, s, p, i + 1, j + 1);
+        }
+
+        isMatchMemo.put(i + "-" + j, res);
+        return res;
+    }
+
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
@@ -892,8 +953,7 @@ public class Part3 {
         n1.right = n3;
         n3.left = n4;
         n3.right = n5;
-        part3.printNumbers2(3);
-        System.out.println();
+        System.out.println(part3.isMatch("ab", ".*"));
 
     }
 
