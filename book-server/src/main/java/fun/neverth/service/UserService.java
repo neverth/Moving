@@ -5,6 +5,7 @@ import fun.neverth.bean.form.UserForm;
 import fun.neverth.bean.vo.UserVO;
 import fun.neverth.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.Optional;
  * @author NeverTh
  * @date 2020/6/16 10:18
  */
+@Service
 public class UserService {
 
     @Resource

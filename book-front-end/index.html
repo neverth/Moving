@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图书借阅系统</title>
+    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.6.10/vue.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/echarts/4.7.0/echarts.js"></script>
+    <link href="https://cdn.staticfile.org/bootstrap-select/1.13.12/css/bootstrap-select.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/bootstrap-select/1.13.12/js/bootstrap-select.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <style>
+        tr:hover {
+            background-color: #f3ecec;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+<div id="header">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="./index.html">图书借阅系统</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li style="margin-right: 15px">
+                        <a v-if="hadLogin == false" href="javascript:" data-toggle="modal" data-target="#loginModal">
+                            登陆
+                        </a>
+                        <a v-if="hadLogin == true" href="javascript:" data-toggle="modal">
+                            {{user.name}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" style="margin-top: 10%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">登陆</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div style="width: 50%; float: left">
+                            欢迎登陆
+                        </div>
+                        <div style="width: 50%; float: right">
+                            <div class="form-group">
+                                <label class="control-label">账号</label>
+                                <input type="text" class="form-control" name="name"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">密码</label>
+                                <input type="password" class="form-control" name="password"/>
+                            </div>
+                        </div>
+                        <div style="clear: both"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default">注册</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="submit()">登陆</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="content" style="width: 80%; padding: 10px; margin: 0 auto">
+    <div id="book_show">
+        <h3>图书列表</h3>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>书名</th>
+                    <th>作者</th>
+                    <th>出版社</th>
+                    <th>出版日期</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(book, index) in bookList" @click="details($event, book)">
+                    <td>{{index}}</td>
+                    <td>{{book.bookName}}</td>
+                    <td>{{book.author}}</td>
+                    <td>{{book.press}}</td>
+                    <td>{{book.pubDate}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation" style="text-align:center;">
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+</body>
+<script src="js/common.js"></script>
+<script>
+    let book_show = new Vue({
+        el: '#book_show',
+        data: {
+            bookList: [],
+        },
+        mounted() {
+            axios.get(DOMAIN + '/book/get')
+                .then(response => (this.bookList = response.data.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+        },
+        methods: {
+            details(event, book) {
+                window.location.href = "./book-detail.html?id=" + book.id;
+                console.log(book)
+            }
+        }
+    });
+</script>
+</html>

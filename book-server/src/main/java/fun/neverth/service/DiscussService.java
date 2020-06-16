@@ -2,9 +2,12 @@ package fun.neverth.service;
 
 import fun.neverth.bean.entity.Discuss;
 import fun.neverth.bean.form.DiscussForm;
+import fun.neverth.bean.vo.BookVO;
 import fun.neverth.bean.vo.DiscussVO;
+import fun.neverth.bean.vo.UserVO;
 import fun.neverth.repository.DiscussRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -17,9 +20,16 @@ import java.util.Optional;
  * @author NeverTh
  * @date 2020/6/16 10:42
  */
+@Service
 public class DiscussService {
     @Resource
     private DiscussRepository discussRepository;
+
+    @Resource
+    private BookService bookService;
+
+    @Resource
+    private UserService userService;
 
     public List<DiscussVO> getAllDiscuss() {
         List<Discuss> discussList = discussRepository.findAll();
@@ -59,6 +69,13 @@ public class DiscussService {
         for (Discuss discuss : discussList) {
             DiscussVO discussVO = new DiscussVO();
             BeanUtils.copyProperties(discuss, discussVO);
+
+            UserVO user = userService.getUserById(discuss.getUserId());
+            user.setPassword(null);
+            BookVO book = bookService.getBookById(discuss.getBookId());
+
+            discussVO.setBookVO(book);
+            discussVO.setUserVO(user);
             discussVOs.add(discussVO);
         }
 

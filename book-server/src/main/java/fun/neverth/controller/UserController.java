@@ -7,6 +7,7 @@ import fun.neverth.util.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,10 +52,20 @@ public class UserController {
 
     @PostMapping("/login")
     public Result<UserVO> userLogin(
-            @RequestParam("name") String name,
-            @RequestParam("password") String password
+            @RequestBody UserForm userForm,
+            HttpSession session
     ) {
+        String name = userForm.getName();
+        String password = userForm.getPassword();
+
+        if (name == null || password == null){
+            return Result.error("参数错误");
+        }
+
         List<UserVO> userByName = userService.getUserByName(name);
+        session.setAttribute("hadLogin", false);
+        session.setAttribute("user_id", -1);
+
         if (userByName.size() != 1){
             return Result.error("用户不存在");
 
@@ -62,9 +73,30 @@ public class UserController {
             return Result.error("用户密码错误");
 
         }else{
+            session.setAttribute("hadLogin", true);
+            session.setAttribute("user_id", userByName.get(0).getId());
             userByName.get(0).setPassword("");
             return Result.success(userByName.get(0));
         }
+    }
+
+    @GetMapping("/hadLogin")
+    public Result<UserVO> hadLogin(HttpSession session) {
+
+        Object hadLogin = session.getAttribute("hadLogin");
+        Object userId = session.getAttribute("user_id");
+
+        if (hadLogin == null || userId == null){
+            return Result.error(555, "未登录");
+        }
+
+        if ((Boolean)hadLogin){
+            if ((long)userId != -1){
+                return Result.success(userService.getUserById((long)userId));
+            }
+        }
+
+        return Result.error(404, "未登录");
     }
 
     @PostMapping("/add")

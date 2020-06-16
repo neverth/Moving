@@ -44,4 +44,8 @@ public class Result<T> extends HashMap<String, Object> implements Serializable {
     public static <T> Result<T> error(String message){
         return new Result<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), message);
     }
+
+    public static <T> Result<T> error(int code, String message){
+        return new Result<>(code, message);
+    }
 }

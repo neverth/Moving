@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.6.10/vue.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/echarts/4.7.0/echarts.js"></script>
+    <link href="https://cdn.staticfile.org/bootstrap-select/1.13.12/css/bootstrap-select.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/bootstrap-select/1.13.12/js/bootstrap-select.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+</head>
+<body>
+<div id="header">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="./index.html">图书借阅系统</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li style="margin-right: 15px">
+                        <a v-if="hadLogin == false" href="javascript:" data-toggle="modal" data-target="#loginModal">
+                            登陆
+                        </a>
+                        <a v-if="hadLogin == true" href="javascript:" data-toggle="modal">
+                            {{user.name}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" style="margin-top: 10%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">登陆</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div style="width: 50%; float: left">
+                            欢迎登陆
+                        </div>
+                        <div style="width: 50%; float: right">
+                            <div class="form-group">
+                                <label class="control-label">账号</label>
+                                <input type="text" class="form-control" name="name"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">密码</label>
+                                <input type="password" class="form-control" name="password"/>
+                            </div>
+                        </div>
+                        <div style="clear: both"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default">注册</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="submit()">登陆</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="content" style="width: 80%; padding: 10px; margin: 0 auto">
+    <div id="book_detail">
+        <h3>{{book.bookName}}</h3>
+        <ul class="list-group" style="width: 50%">
+            <li class="list-group-item">作者：{{book.author}}</li>
+            <li class="list-group-item">isbn：{{book.isbn}}</li>
+            <li class="list-group-item">出版社：{{book.press}}</li>
+            <li class="list-group-item">价格：{{book.price}}</li>
+            <li class="list-group-item">出版日期：{{book.pubDate}}</li>
+            <li class="list-group-item">可借数目：{{book.amount}}</li>
+        </ul>
+
+    </div>
+    <div id="discuss">
+        <h3>评论</h3>
+        <div style="width: 50%">
+            <div class="list-group">
+                <div class="list-group-item " v-for="(dis, index) in discuss">
+                    <span class="list-group-item-heading" style="font-size: 20px">{{dis.userVO.name}}</span>
+                    <span class="list-group-item-heading" style="font-size: 12px; margin-left: 10px">{{dis.date}}</span>
+                    <p class="list-group-item-text" style="margin-top: 5px">{{dis.comment}}</p>
+                </div>
+            </div>
+            <div class="list-group">
+                <div class="list-group-item " >
+                    <span class="list-group-item-heading" style="font-size: 20px">{{hadLogin == false ? '登录发表评论': user.name}}</span>
+                    <input type="text" class="form-control"/>
+                    <button type="button" class="btn btn-info" @click="addDiscuss($event)">添加评论</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="js/common.js"></script>
+<script>
+    let param = parseParamFormLocation(location);
+
+    let book_detail = new Vue({
+        el: '#book_detail',
+        data: {
+            book: {},
+        },
+        mounted() {
+            axios.get(DOMAIN + '/book/get?id=' + param.id)
+                .then(response => (this.book = response.data.data[0]))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+        },
+        methods: {}
+    });
+
+    let discuss = new Vue({
+        el: '#discuss',
+        data: {
+            discuss: {},
+            hadLogin: G_hadLogin,
+            user: G_user
+        },
+        mounted() {
+            axios.get(DOMAIN + '/discuss/get?id=' + param.id, {
+                withCredentials: true
+
+            }).then(response => {
+                if (response.data.code === 200){
+                    this.discuss = response.data.data;
+                }
+            }).catch(function (error) { // 请求失败处理
+                console.log(error);
+            });
+            while(G_headerReady === false){
+                console.log(123123)
+            }
+            this.hadLogin = G_hadLogin
+            this.user = G_user
+        },
+        methods: {
+            addDiscuss(event) {
+                if (header.hadLogin === false){
+                    alert("请先登录");
+                    return
+                }
+                let comment = "";
+                $("#discuss input").each((index, e)=>{
+                    comment = e.value;
+                })
+                if (comment === ""){
+                    alert("请输入评论");
+                    return
+                }
+                let nowTime = dateFormat("YYYY-mm-dd HH:MM:SS", new Date())
+                axios.post(DOMAIN + '/discuss/add', {
+                    bookId: param.id,
+                    userId: 1,
+                    comment: comment,
+                    date: nowTime
+                }, {
+                    withCredentials: true
+
+                }).then(response => {
+                    if (response.data.code === 200){
+                        this.discuss.push({
+                            "userVO": {
+                                "name": header.user.name,
+                            },
+                            "comment": comment,
+                            "date": nowTime
+                        })
+                    }
+
+                }).catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+            }
+        }
+    });
+
+
+</script>
+</html>

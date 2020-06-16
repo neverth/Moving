@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = "fun.neverth")
 @EnableJpaRepositories(basePackages = "fun.neverth.repository")
-@EntityScan(basePackages = "fun.neverth.bean.po")
+@EntityScan(basePackages = "fun.neverth.bean.entity")
 public class ApplicationMain {
 
     public static void main(String[] args) {

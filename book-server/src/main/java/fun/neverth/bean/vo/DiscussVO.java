@@ -15,7 +15,11 @@ public class DiscussVO {
 
     private Long bookId;
 
+    private BookVO bookVO;
+
     private Long userId;
+
+    private UserVO userVO;
 
     private String comment;
 
