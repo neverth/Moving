@@ -1,13 +1,13 @@
 package fun.neverth.service;
 
 import fun.neverth.bean.form.BookForm;
-import fun.neverth.bean.po.BookDO;
+import fun.neverth.bean.entity.Book;
 import fun.neverth.bean.vo.BookVO;
 import fun.neverth.repository.BookRepository;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,16 +21,16 @@ import java.util.Optional;
 @Service
 public class BookService {
 
-    @Autowired
+    @Resource
     private BookRepository bookRepository;
 
     public List<BookVO> getAllBooks() {
-        List<BookDO> bookDOList = bookRepository.findAll();
+        List<Book> bookList = bookRepository.findAll();
         List<BookVO> bookVOList = new ArrayList<>();
 
-        for (BookDO bookDo : bookDOList) {
+        for (Book book : bookList) {
             BookVO bookVO = new BookVO();
-            BeanUtils.copyProperties(bookDo, bookVO);
+            BeanUtils.copyProperties(book, bookVO);
             bookVOList.add(bookVO);
         }
 
@@ -38,14 +38,14 @@ public class BookService {
     }
 
     public BookVO getBookById(Long id) {
-        Optional<BookDO> optional = bookRepository.findById(id);
+        Optional<Book> optional = bookRepository.findById(id);
 
         if (optional.isPresent()) {
-            BookDO bookDO = optional.get();
+            Book book = optional.get();
 
             BookVO bookVO = new BookVO();
 
-            BeanUtils.copyProperties(bookDO, bookVO);
+            BeanUtils.copyProperties(book, bookVO);
 
             return bookVO;
 
@@ -56,15 +56,15 @@ public class BookService {
     }
 
     public int updateBookAmount(Long id, int amount) {
-        Optional<BookDO> optional = bookRepository.findById(id);
+        Optional<Book> optional = bookRepository.findById(id);
 
-        BookDO bookDO;
+        Book book;
         if (optional.isPresent()) {
-            bookDO = optional.get();
+            book = optional.get();
 
-            bookDO.setAmount(amount);
+            book.setAmount(amount);
 
-            return bookRepository.save(bookDO).getAmount();
+            return bookRepository.save(book).getAmount();
 
         } else {
 
@@ -74,10 +74,10 @@ public class BookService {
 
     public BookVO updateBook(BookForm bookForm) {
         if (bookForm != null){
-            BookDO bookDO = new BookDO();
-            BeanUtils.copyProperties(bookForm, bookDO);
+            Book book = new Book();
+            BeanUtils.copyProperties(bookForm, book);
 
-            BookDO save = bookRepository.save(bookDO);
+            Book save = bookRepository.save(book);
 
             BookVO bookVO = new BookVO();
             BeanUtils.copyProperties(save, bookVO);
@@ -90,9 +90,9 @@ public class BookService {
 
     public BookVO addBook(BookForm form){
         if (form != null){
-            BookDO bookDO = new BookDO();
-            BeanUtils.copyProperties(form, bookDO);
-            BookDO save = bookRepository.save(bookDO);
+            Book book = new Book();
+            BeanUtils.copyProperties(form, book);
+            Book save = bookRepository.save(book);
 
             BookVO bookVO = new BookVO();
             BeanUtils.copyProperties(save, bookVO);

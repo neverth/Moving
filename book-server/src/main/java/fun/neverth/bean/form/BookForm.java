@@ -12,9 +12,6 @@ import lombok.ToString;
  * @date 2020/6/16 1:31
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 public class BookForm {
 
     private Long id;

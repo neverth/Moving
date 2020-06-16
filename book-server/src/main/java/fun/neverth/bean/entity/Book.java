@@ -1,9 +1,6 @@
-package fun.neverth.bean.po;
+package fun.neverth.bean.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -14,12 +11,9 @@ import javax.persistence.*;
  * @date 2020/6/15 19:55
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 @Entity(name = "book")
-@Table(name = "t_book")
-public class BookDO {
+@Table(name = "book")
+public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

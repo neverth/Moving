@@ -1,6 +1,6 @@
 package fun.neverth.repository;
 
-import fun.neverth.bean.po.BookDO;
+import fun.neverth.bean.entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface BookRepository extends JpaRepository<BookDO, Long> {
+public interface BookRepository extends JpaRepository<Book, Long> {
 
 }

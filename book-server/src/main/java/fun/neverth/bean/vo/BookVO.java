@@ -17,9 +17,6 @@ import javax.persistence.Id;
  */
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 public class BookVO {
 
     private Long id;
