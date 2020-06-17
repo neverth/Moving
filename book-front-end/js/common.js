@@ -102,6 +102,23 @@ function submit(_flag) {
             console.log(error);
         });
     }
+    else if (_flag === 3) {
+        submitData.role = 1;
+        axios.post(DOMAIN + '/user/login', submitData, {
+            withCredentials: true
+        }).then(response => {
+            if (response.data.code === 200) {
+                alert("成功")
+                window.location.reload();
+            }else{
+                alert("登陆失败")
+                window.location.reload();
+            }
+
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
 }
 
 

@@ -69,7 +69,7 @@ public class BookController {
     }
 
     @PostMapping("/update")
-    public Result<BookVO> updateBook(BookForm bookForm) {
+    public Result<BookVO> updateBook(@RequestBody BookForm bookForm) {
         BookVO bookVO;
         try {
             bookVO = bookService.updateBook(bookForm);
@@ -86,7 +86,7 @@ public class BookController {
         return Result.error();
     }
 
-    @PostMapping("/delete")
+    @GetMapping("/delete")
     public Result<String> deleteBook(@RequestParam("id") String id) {
         try {
             bookService.deleteBook(Long.parseLong(id));

@@ -30,9 +30,8 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="list-group-item" role="button" @click="loginOut()">注销</li>
-                            <li class="list-group-item" role="button">修改密码</li>
-                            <li class="list-group-item">
+                            <li class="list-group-item" v-if="user.role == 0" role="button">修改密码</li>
+                            <li class="list-group-item" v-if="user.role == 0">
                                 <input id="changePw" class="form-control" type="password" placeholder="请输入新密码：">
                                 <button type="button" class="btn btn-primary" onclick="submit(2)" style="padding: 1px;
                                         font-size: 12px;
@@ -40,6 +39,10 @@
                                     确定
                                 </button>
                             </li>
+                            <li class="list-group-item" v-if="user.role == 1">
+                                <a href="./admin.html" style="padding: 0">系统管理</a>
+                            </li>
+                            <li class="list-group-item" role="button" @click="loginOut()">注销</li>
                         </ul>
                     </li>
                 </ul>
@@ -76,6 +79,7 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-default" onclick="submit(1)">注册</button>
                     <button type="button" class="btn btn-primary" onclick="submit(0)">登陆</button>
+                    <button type="button" class="btn btn-primary" onclick="submit(3)">管理员登录</button>
                 </div>
             </div>
         </div>

@@ -57,6 +57,7 @@ public class UserController {
     ) {
         String name = userForm.getName();
         String password = userForm.getPassword();
+        int role = userForm.getRole();
 
         if (name == null || password == null){
             return Result.error("参数错误");
@@ -72,7 +73,12 @@ public class UserController {
         }else if (!userByName.get(0).getPassword().equals(password)){
             return Result.error("用户密码错误");
 
-        }else{
+        } else{
+            if (role != 0){
+                if (userByName.get(0).getRole() != role){
+                    return Result.error("没有权限");
+                }
+            }
             session.setAttribute("hadLogin", true);
             session.setAttribute("user_id", userByName.get(0).getId());
             userByName.get(0).setPassword("");
@@ -145,7 +151,7 @@ public class UserController {
         return Result.error();
     }
 
-    @PostMapping("/delete")
+    @GetMapping("/delete")
     public Result<String> deleteUser(@RequestParam("id") String id) {
         try {
             userService.deleteUser(Long.parseLong(id));

@@ -1,9 +1,9 @@
 package fun.neverth.service;
 
 import fun.neverth.bean.entity.BookBorrow;
+import fun.neverth.bean.form.BookBorrowForm;
 import fun.neverth.bean.vo.BookBorrowVO;
 import fun.neverth.repository.BookBorrowRepository;
-import fun.neverth.repository.BookRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -26,15 +26,25 @@ public class BookBorrowService {
     BookBorrowRepository bookBorrowRepository;
 
     @Resource
-    BookRepository bookRepository;
+    BookService bookService;
+
+    @Resource
+    UserService userService;
 
     public List<BookBorrowVO> getAllBookBorrow() {
         List<BookBorrow> bookBorrows = bookBorrowRepository.findAll();
         List<BookBorrowVO> borrowVOS = new ArrayList<>();
 
         for (BookBorrow bookBorrow : bookBorrows) {
+            if (bookBorrow.getHadReturn() == 1){
+                continue;
+            }
             BookBorrowVO borrowVO = new BookBorrowVO();
             BeanUtils.copyProperties(bookBorrow, borrowVO);
+
+            borrowVO.setBookVO(bookService.getBookById(bookBorrow.getBookId()));
+            borrowVO.setUserVO(userService.getUserById(bookBorrow.getUserId()));
+
             borrowVOS.add(borrowVO);
         }
 
@@ -96,5 +106,21 @@ public class BookBorrowService {
         BeanUtils.copyProperties(save, borrowVO);
 
         return borrowVO;
+    }
+
+    public BookBorrowVO updateBorrow(BookBorrowForm form) {
+        if (form != null){
+            BookBorrow bookBorrow = new BookBorrow();
+            BeanUtils.copyProperties(form, bookBorrow);
+
+            BookBorrow save = bookBorrowRepository.save(bookBorrow);
+
+            BookBorrowVO borrowVO = new BookBorrowVO();
+            BeanUtils.copyProperties(save, borrowVO);
+
+            return borrowVO;
+        }
+
+        return null;
     }
 }

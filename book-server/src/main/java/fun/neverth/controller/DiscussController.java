@@ -22,7 +22,9 @@ public class DiscussController {
     DiscussService discussService;
 
     @GetMapping("/get")
-    public Result<List<DiscussVO>> getDiscussByBookId(@RequestParam(value = "id", required = false) String id){
+    public Result<List<DiscussVO>> getDiscussByBookId(
+            @RequestParam(value = "id", required = false) String id
+    ){
         List<DiscussVO> discussVOS;
         try {
             if (id == null) {
@@ -60,5 +62,18 @@ public class DiscussController {
         }
 
         return Result.error();
+    }
+
+    @GetMapping("/delete")
+    public Result<String> deleteDiscuss(@RequestParam("id") String id) {
+        try {
+            discussService.deleteDiscuss(Long.parseLong(id));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
+
+        return Result.success();
     }
 }

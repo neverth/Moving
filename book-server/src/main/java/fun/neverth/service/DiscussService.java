@@ -38,6 +38,14 @@ public class DiscussService {
         for (Discuss discuss : discussList) {
             DiscussVO discussVO = new DiscussVO();
             BeanUtils.copyProperties(discuss, discussVO);
+
+            UserVO user = userService.getUserById(discuss.getUserId());
+            BookVO book = bookService.getBookById(discuss.getBookId());
+
+            user.setPassword(null);
+            discussVO.setBookVO(book);
+            discussVO.setUserVO(user);
+
             discussVOs.add(discussVO);
         }
 
