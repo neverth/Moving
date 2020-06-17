@@ -36,7 +36,7 @@ function dateFormat(fmt, date) {
     for (let k in opt) {
         ret = new RegExp("(" + k + ")").exec(fmt);
         if (ret) {
-            fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+            fmt = fmt.replace(ret[1], (ret[1].length === 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
         }
         ;
     }
@@ -50,8 +50,23 @@ function submit(_flag) {
         submitData[e.name] = e.value;
     })
 
-    if (_flag === 0){
+    if (_flag === 0) {
         axios.post(DOMAIN + '/user/login', submitData, {
+            withCredentials: true
+        }).then(response => {
+            if (response.data.code === 200) {
+                alert("成功")
+                window.location.reload();
+            }else{
+                alert("登陆失败")
+                window.location.reload();
+            }
+
+        }).catch(function (error) {
+            console.log(error);
+        });
+    } else if (_flag === 1) {
+        axios.post(DOMAIN + '/user/add', submitData, {
             withCredentials: true
         }).then(response => {
             if (response.data.code === 200) {
@@ -62,12 +77,24 @@ function submit(_flag) {
         }).catch(function (error) {
             console.log(error);
         });
-    }else if (_flag == 1){
-        axios.post(DOMAIN + '/user/add', submitData, {
+    } else if (_flag === 2) {
+        let value = "";
+        $("#changePw").each((index, e) => {
+            value = e.value;
+        });
+
+        if (value === "") {
+            alert("请输入密码")
+        }
+        axios.post(DOMAIN + '/user/update', {
+            id: vue_header.user.id,
+            name: vue_header.user.name,
+            password: value
+        }, {
             withCredentials: true
         }).then(response => {
             if (response.data.code === 200) {
-                alert("成功")
+                alert("密码修改成功")
                 window.location.reload();
             }
 
@@ -99,8 +126,8 @@ let vue_header = new Vue({
             console.log(error);
         });
     },
-    methods:{
-        loginOut(){
+    methods: {
+        loginOut() {
             axios.get(DOMAIN + '/user/loginOut', {
                 withCredentials: true
             }).then(response => {

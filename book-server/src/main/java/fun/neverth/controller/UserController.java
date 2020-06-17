@@ -127,7 +127,7 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public Result<UserVO> updateUser(UserForm form) {
+    public Result<UserVO> updateUser(@RequestBody UserForm form, HttpSession session) {
         UserVO userVO;
         try {
             userVO = userService.updateUser(form);
@@ -138,6 +138,7 @@ public class UserController {
         }
 
         if (userVO != null) {
+            userLoginOut(session);
             return Result.success(userVO);
         }
 
