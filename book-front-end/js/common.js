@@ -44,24 +44,41 @@ function dateFormat(fmt, date) {
     return fmt;
 }
 
-function submit() {
+function submit(_flag) {
     let submitData = {};
     $("#loginForm input").each((index, e) => {
         submitData[e.name] = e.value;
     })
-    axios.post(DOMAIN + '/user/login', submitData, {
-        withCredentials: true
-    }).then(response => {
-        if (response.data.code === 200) {
-            window.location.reload();
-        }
 
-    }).catch(function (error) {
-        console.log(error);
-    });
+    if (_flag === 0){
+        axios.post(DOMAIN + '/user/login', submitData, {
+            withCredentials: true
+        }).then(response => {
+            if (response.data.code === 200) {
+                alert("成功")
+                window.location.reload();
+            }
+
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }else if (_flag == 1){
+        axios.post(DOMAIN + '/user/add', submitData, {
+            withCredentials: true
+        }).then(response => {
+            if (response.data.code === 200) {
+                alert("成功")
+                window.location.reload();
+            }
+
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
 }
 
-let header = new Vue({
+
+let vue_header = new Vue({
     el: '#header',
     data: {
         hadLogin: false,
@@ -82,4 +99,19 @@ let header = new Vue({
             console.log(error);
         });
     },
+    methods:{
+        loginOut(){
+            axios.get(DOMAIN + '/user/loginOut', {
+                withCredentials: true
+            }).then(response => {
+                if (response.data.code === 200) {
+                    alert("成功")
+                    window.location.reload();
+                }
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }
 });

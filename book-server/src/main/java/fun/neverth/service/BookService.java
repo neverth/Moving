@@ -72,6 +72,39 @@ public class BookService {
         }
     }
 
+    public int addBookAmount(Long id) {
+        Optional<Book> optional = bookRepository.findById(id);
+
+        Book book;
+        if (optional.isPresent()) {
+            book = optional.get();
+
+            book.setAmount(book.getAmount() + 1);
+
+            return bookRepository.save(book).getAmount();
+
+        } else {
+            return -1;
+        }
+    }
+
+    public int reduceBookAmount(Long id) {
+        Optional<Book> optional = bookRepository.findById(id);
+
+        Book book;
+        if (optional.isPresent()) {
+            book = optional.get();
+
+            book.setAmount(book.getAmount() - 1);
+
+            return bookRepository.save(book).getAmount();
+
+        } else {
+
+            return -1;
+        }
+    }
+
     public BookVO updateBook(BookForm bookForm) {
         if (bookForm != null){
             Book book = new Book();

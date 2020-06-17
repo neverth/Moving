@@ -80,6 +80,15 @@ public class UserController {
         }
     }
 
+    @GetMapping("/loginOut")
+    public Result<String > userLoginOut(
+            HttpSession session
+    ) {
+        session.setAttribute("hadLogin", false);
+        session.setAttribute("user_id", -1);
+        return Result.success();
+    }
+
     @GetMapping("/hadLogin")
     public Result<UserVO> hadLogin(HttpSession session) {
 
@@ -100,7 +109,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public Result<UserVO> addUser(UserForm form) {
+    public Result<UserVO> addUser(@RequestBody UserForm form) {
         UserVO userVO;
         try {
             userVO = userService.addUser(form);
