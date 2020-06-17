@@ -1,8 +1,5 @@
 package fun.neverth;
 
-import com.sun.deploy.net.proxy.ProxyUnavailableException;
-import com.sun.scenario.animation.shared.ClipEnvelope;
-
 import java.util.*;
 
 /**
@@ -914,6 +911,19 @@ public class Part3 {
 
         isMatchMemo.put(i + "-" + j, res);
         return res;
+    }
+
+    /**
+     * 1014. 最佳观光组合
+     */
+    public int maxScoreSightseeingPair(int[] A) {
+        int ans = 0, mx = A[0];
+        for (int j = 1; j < A.length; ++j) {
+            ans = Math.max(ans, mx + A[j] - j);
+
+            mx = Math.max(mx, A[j] + j);
+        }
+        return ans;
     }
 
     public static void main(String[] args) {
