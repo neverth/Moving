@@ -93,7 +93,7 @@
                 </div>
             </div>
             <div class="list-group">
-                <div class="list-group-item " >
+                <div class="list-group-item ">
                     <span class="list-group-item-heading" style="font-size: 20px">{{hadLogin == false ? '登录发表评论': user.name}}</span>
                     <input type="text" class="form-control"/>
                     <button type="button" class="btn btn-info" @click="addDiscuss($event)">添加评论</button>
@@ -116,78 +116,81 @@
         mounted() {
             axios.get(DOMAIN + '/book/get?id=' + param.id)
                 .then(response => (this.book = response.data.data[0]))
-                .catch(function (error) { // 请求失败处理
+                .catch(function (error) {
                     console.log(error);
                 });
         },
         methods: {}
     });
 
+
     let discuss = new Vue({
         el: '#discuss',
         data: {
             discuss: {},
-            hadLogin: G_hadLogin,
-            user: G_user
+            hadLogin: false,
+            user: {}
         },
         mounted() {
+            Object.keys((PAGEINFO)).forEach((key => {
+                Object.defineProperty(PAGEINFO, key, {
+                    set: (val) => {
+                        this[key] = val
+                    }
+                })
+            }))
             axios.get(DOMAIN + '/discuss/get?id=' + param.id, {
                 withCredentials: true
 
             }).then(response => {
-                if (response.data.code === 200){
+                if (response.data.code === 200) {
                     this.discuss = response.data.data;
                 }
-            }).catch(function (error) { // 请求失败处理
+            }).catch(function (error) {
                 console.log(error);
             });
-            while(G_headerReady === false){
-                console.log(123123)
-            }
-            this.hadLogin = G_hadLogin
-            this.user = G_user
         },
         methods: {
             addDiscuss(event) {
-                if (header.hadLogin === false){
+                if (this.hadLogin === false) {
                     alert("请先登录");
                     return
                 }
                 let comment = "";
-                $("#discuss input").each((index, e)=>{
+                $("#discuss input").each((index, e) => {
                     comment = e.value;
                 })
-                if (comment === ""){
+                if (comment === "") {
                     alert("请输入评论");
                     return
                 }
                 let nowTime = dateFormat("YYYY-mm-dd HH:MM:SS", new Date())
                 axios.post(DOMAIN + '/discuss/add', {
                     bookId: param.id,
-                    userId: 1,
+                    userId: this.user.id,
                     comment: comment,
                     date: nowTime
                 }, {
                     withCredentials: true
-
                 }).then(response => {
-                    if (response.data.code === 200){
+                    if (response.data.code === 200) {
                         this.discuss.push({
                             "userVO": {
-                                "name": header.user.name,
+                                "name": this.user.name,
                             },
                             "comment": comment,
                             "date": nowTime
                         })
                     }
-
+                    $("#discuss input").each((index, e) => {
+                        e.value = "";
+                    })
                 }).catch(function (error) { // 请求失败处理
                     console.log(error);
                 });
             }
         }
     });
-
 
 </script>
 </html>

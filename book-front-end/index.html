@@ -125,8 +125,6 @@
 
 </div>
 
-
-
 </body>
 <script src="js/common.js"></script>
 <script>
@@ -138,7 +136,7 @@
         mounted() {
             axios.get(DOMAIN + '/book/get')
                 .then(response => (this.bookList = response.data.data))
-                .catch(function (error) { // 请求失败处理
+                .catch(function (error) {
                     console.log(error);
                 });
         },

@@ -1,7 +1,9 @@
 DOMAIN = "http://localhost:8080";
-G_hadLogin = false;
-G_user = {};
-G_headerReady = false;
+
+PAGEINFO = {
+    hadLogin: false,
+    user: {},
+}
 
 function parseParamFormLocation(location) {
     let param = {};
@@ -73,18 +75,11 @@ let header = new Vue({
             if (response.data.code === 200) {
                 this.hadLogin = true;
                 this.user = response.data.data;
-                G_hadLogin = this.hadLogin;
-                G_user = this.user;
+                PAGEINFO.hadLogin = this.hadLogin;
+                PAGEINFO.user = this.user;
             }
-            G_headerReady = true;
         }).catch(function (error) {
             console.log(error);
-            G_headerReady = true;
         });
-
     },
-    watch: {
-
-    }
-
 });
