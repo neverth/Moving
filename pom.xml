@@ -5,8 +5,8 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>demo</artifactId>
+    <groupId>fun.neverth</groupId>
+    <artifactId>moving</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -14,6 +14,7 @@
         <module>demo-1</module>
         <module>leetcode</module>
         <module>book-server</module>
+        <module>javaGuide</module>
     </modules>
 
 <!--    只是声明依赖，并不实现-->
