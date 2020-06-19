@@ -963,6 +963,15 @@ public class Part3 {
         return dp[ch1.length][ch2.length];
     }
 
+    public void printDp(int[] dp) {
+
+        for (int ints : dp) {
+            System.out.print(ints);
+            System.out.print('\t');
+        }
+        System.out.println("\n------------------");
+    }
+
     /**
      * 复习 300. 最长上升子序列
      */
@@ -981,6 +990,8 @@ public class Part3 {
             }
         }
 
+        printDp(dp);
+
         int res = 0;
         for (int i = 0; i < dp.length; i++) {
             res = Math.max(res, dp[i]);
@@ -991,7 +1002,7 @@ public class Part3 {
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
-        int[] a = {4, 5, 6, 7, 0, 1, 2};
+        int[] a = {1,3,5,4,7};
         int[] a1 = {9, 15, 7, 20, 3};
         String[] b = {"0000"};
 
@@ -1025,7 +1036,7 @@ public class Part3 {
         n1.right = n3;
         n3.left = n4;
         n3.right = n5;
-        System.out.println(part3.longestCommonSubsequence("bl", "yby"));
+        System.out.println(part3.lengthOfLIS(a));
 
     }
 
