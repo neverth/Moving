@@ -10,8 +10,8 @@ import java.util.Date;
  * @date 2020/6/18 13:11
  */
 public class BIOTestClient {
-    public static void main(String[] args) {
-        new Thread(() -> {
+    public static void main(String[] args) throws InterruptedException {
+        Thread a = new Thread(() -> {
             try {
                 Socket socket = new Socket("127.0.0.1", 6666);
                 while (true){
@@ -25,6 +25,9 @@ public class BIOTestClient {
             }catch (Exception e){
                 e.printStackTrace();
             }
-        }).start();
+        });
+        a.start();
+        a.join();
+
     }
 }
