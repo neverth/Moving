@@ -15,7 +15,7 @@ public class DiscussVO {
 
     private Long bookId;
 
-    private BookVO bookVO;
+    private CourseVO courseVO;
 
     private Long userId;
 

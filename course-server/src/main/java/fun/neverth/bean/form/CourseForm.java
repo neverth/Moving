@@ -6,17 +6,22 @@ import lombok.Data;
  * todo
  *
  * @author NeverTh
- * @date 2020/6/16 10:25
+ * @date 2020/6/16 1:31
  */
 @Data
-public class UserForm {
+public class CourseForm {
+
     private Long id;
 
     private String number;
 
     private String name;
 
-    private String password;
+    private Float credit;
 
-    private int role;
+    private String theoryTime;
+
+    private String practiceTime;
+
+    private String examType;
 }

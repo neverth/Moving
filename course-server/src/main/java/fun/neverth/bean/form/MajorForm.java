@@ -9,17 +9,18 @@ import lombok.Data;
  * @date 2020/6/17 11:16
  */
 @Data
-public class BookBorrowForm {
-
+public class MajorForm {
     private Long id;
-
-    private Long bookId;
 
     private Long userId;
 
-    private String date;
+    private Long courseId;
 
-    private Integer needReturn;
+    private Float record;
 
-    private Integer hadReturn;
+    private String startDate;
+
+    private String endDate;
+
+    private int flag;
 }

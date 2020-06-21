@@ -11,24 +11,26 @@ import javax.persistence.*;
  * @date 2020/6/17 11:16
  */
 @Data
-@Entity(name = "bookBorrow")
-@Table(name = "book_borrow")
-public class BookBorrow {
+@Entity(name = "major")
+@Table(name = "major")
+public class Major {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "book_id")
-    private Long bookId;
-
     @Column(name = "user_id")
     private Long userId;
 
-    private String date;
+    @Column(name = "course_id")
+    private Long courseId;
 
-    @Column(name = "need_return")
-    private Integer needReturn;
+    private Float record;
 
-    @Column(name = "had_return")
-    private Integer hadReturn;
+    @Column(name = "start_date")
+    private String startDate;
+
+    @Column(name = "end_date")
+    private String endDate;
+
+    private int flag;
 }

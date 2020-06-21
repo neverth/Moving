@@ -2,7 +2,7 @@ package fun.neverth.service;
 
 import fun.neverth.bean.entity.Discuss;
 import fun.neverth.bean.form.DiscussForm;
-import fun.neverth.bean.vo.BookVO;
+import fun.neverth.bean.vo.CourseVO;
 import fun.neverth.bean.vo.DiscussVO;
 import fun.neverth.bean.vo.UserVO;
 import fun.neverth.repository.DiscussRepository;
@@ -26,7 +26,7 @@ public class DiscussService {
     private DiscussRepository discussRepository;
 
     @Resource
-    private BookService bookService;
+    private CourseService courseService;
 
     @Resource
     private UserService userService;
@@ -40,10 +40,10 @@ public class DiscussService {
             BeanUtils.copyProperties(discuss, discussVO);
 
             UserVO user = userService.getUserById(discuss.getUserId());
-            BookVO book = bookService.getBookById(discuss.getBookId());
+            CourseVO book = courseService.getCourseById(discuss.getBookId());
 
             user.setPassword(null);
-            discussVO.setBookVO(book);
+            discussVO.setCourseVO(book);
             discussVO.setUserVO(user);
 
             discussVOs.add(discussVO);
@@ -80,9 +80,9 @@ public class DiscussService {
 
             UserVO user = userService.getUserById(discuss.getUserId());
             user.setPassword(null);
-            BookVO book = bookService.getBookById(discuss.getBookId());
+            CourseVO book = courseService.getCourseById(discuss.getBookId());
 
-            discussVO.setBookVO(book);
+            discussVO.setCourseVO(book);
             discussVO.setUserVO(user);
             discussVOs.add(discussVO);
         }

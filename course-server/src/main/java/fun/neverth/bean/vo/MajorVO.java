@@ -9,21 +9,23 @@ import lombok.Data;
  * @date 2020/6/17 11:16
  */
 @Data
-public class BookBorrowVO {
+public class MajorVO {
 
     private Long id;
-
-    private Long bookId;
-
-    private BookVO bookVO;
 
     private Long userId;
 
     private UserVO userVO;
 
-    private String date;
+    private Long courseId;
 
-    private Integer needReturn;
+    private CourseVO courseVO;
 
-    private Integer hadReturn;
+    private Float record;
+
+    private String startDate;
+
+    private String endDate;
+
+    private int flag;
 }

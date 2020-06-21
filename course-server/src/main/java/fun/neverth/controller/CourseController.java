@@ -1,8 +1,8 @@
 package fun.neverth.controller;
 
-import fun.neverth.bean.form.BookForm;
-import fun.neverth.bean.vo.BookVO;
-import fun.neverth.service.BookService;
+import fun.neverth.bean.form.CourseForm;
+import fun.neverth.bean.vo.CourseVO;
+import fun.neverth.service.CourseService;
 import fun.neverth.util.Result;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,24 +18,24 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/book")
-public class BookController {
+@RequestMapping("/course")
+public class CourseController {
 
     @Resource
-    private BookService bookService;
+    private CourseService courseService;
 
     @GetMapping("/get")
-    public Result<List<BookVO>> getBook(
+    public Result<List<CourseVO>> getCourse(
             @RequestParam(value = "id", required = false) String id
     ) {
-        List<BookVO> bookVOs;
+        List<CourseVO> courseVOS;
         try {
             if (id == null) {
-                bookVOs = bookService.getAllBooks();
+                courseVOS = courseService.getAllCourse();
 
             } else {
-                bookVOs = new ArrayList<>();
-                bookVOs.add(bookService.getBookById(Long.parseLong(id)));
+                courseVOS = new ArrayList<>();
+                courseVOS.add(courseService.getCourseById(Long.parseLong(id)));
             }
 
         } catch (Exception e) {
@@ -43,53 +43,53 @@ public class BookController {
             return Result.error();
         }
 
-        if (bookVOs != null) {
-            return Result.success(bookVOs);
+        if (courseVOS != null) {
+            return Result.success(courseVOS);
         }
 
         return Result.error();
     }
 
     @PostMapping("/add")
-    public Result<BookVO> addBook(BookForm bookForm) {
-        BookVO bookVO;
+    public Result<CourseVO> addCourse(CourseForm courseForm) {
+        CourseVO courseVO;
         try {
-            bookVO = bookService.addBook(bookForm);
+            courseVO = courseService.addCourse(courseForm);
 
         } catch (Exception e) {
             e.printStackTrace();
             return Result.error();
         }
 
-        if (bookVO != null) {
-            return Result.success(bookVO);
+        if (courseVO != null) {
+            return Result.success(courseVO);
         }
 
         return Result.error();
     }
 
     @PostMapping("/update")
-    public Result<BookVO> updateBook(@RequestBody BookForm bookForm) {
-        BookVO bookVO;
+    public Result<CourseVO> updateCourse(@RequestBody CourseForm courseForm) {
+        CourseVO courseVO;
         try {
-            bookVO = bookService.updateBook(bookForm);
+            courseVO = courseService.updateCourse(courseForm);
 
         } catch (Exception e) {
             e.printStackTrace();
             return Result.error();
         }
 
-        if (bookVO != null) {
-            return Result.success(bookVO);
+        if (courseVO != null) {
+            return Result.success(courseVO);
         }
 
         return Result.error();
     }
 
     @GetMapping("/delete")
-    public Result<String> deleteBook(@RequestParam("id") String id) {
+    public Result<String> deleteCourse(@RequestParam("id") String id) {
         try {
-            bookService.deleteBook(Long.parseLong(id));
+            courseService.deleteCourse(Long.parseLong(id));
 
         } catch (Exception e) {
             e.printStackTrace();
