@@ -17,15 +17,16 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="./index.html">图书借阅系统</a>
+                <a class="navbar-brand" href="./index.html">在线学生课程学习管理信息系统</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right nav-tabs">
-                    <li style="margin-right: 15px" role="presentation" class="dropdown" >
+                    <li style="margin-right: 15px" role="presentation" class="dropdown">
                         <a v-if="hadLogin == false" href="javascript:" data-toggle="modal" data-target="#loginModal">
                             登陆
                         </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"  v-if="hadLogin == true" href="javascript:" data-toggle="modal">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false" v-if="hadLogin == true" href="javascript:" data-toggle="modal">
                             {{user.name}}
                             <span class="caret"></span>
                         </a>
@@ -87,15 +88,14 @@
 </div>
 
 <div id="content" style="width: 80%; padding: 10px; margin: 0 auto">
-    <div id="book_detail" style="width: 48%; float: left">
-        <h3>{{book.bookName}}</h3>
+    <div id="course_detail" style="width: 48%; float: left">
+        <h3>{{course.name}}</h3>
         <ul class="list-group">
-            <li class="list-group-item">作者：{{book.author}}</li>
-            <li class="list-group-item">isbn：{{book.isbn}}</li>
-            <li class="list-group-item">出版社：{{book.press}}</li>
-            <li class="list-group-item">价格：{{book.price}}</li>
-            <li class="list-group-item">出版日期：{{book.pubDate}}</li>
-            <li class="list-group-item">可借数目：{{book.amount}}</li>
+            <li class="list-group-item">课程编号：{{course.number}}</li>
+            <li class="list-group-item">学分：{{course.credit}}</li>
+            <li class="list-group-item">理论学时：{{course.theoryTime}}</li>
+            <li class="list-group-item">实践学时：{{course.practiceTime}}</li>
+            <li class="list-group-item">考核方式：{{course.examType}}</li>
         </ul>
     </div>
     <div id="borrow" style="width: 48%; float: right">
@@ -118,25 +118,6 @@
         </ul>
     </div>
     <div style="clear: both"></div>
-    <div id="discuss">
-        <h3>评论</h3>
-        <div style="width: 50%">
-            <div class="list-group">
-                <div class="list-group-item " v-for="(dis, index) in discuss">
-                    <span class="list-group-item-heading" style="font-size: 20px">{{dis.userVO.name}}</span>
-                    <span class="list-group-item-heading" style="font-size: 12px; margin-left: 10px">{{dis.date}}</span>
-                    <p class="list-group-item-text" style="margin-top: 5px">{{dis.comment}}</p>
-                </div>
-            </div>
-            <div class="list-group">
-                <div class="list-group-item ">
-                    <span class="list-group-item-heading" style="font-size: 20px">{{hadLogin == false ? '登录发表评论': user.name}}</span>
-                    <input type="text" class="form-control"/>
-                    <button type="button" class="btn btn-info" @click="addDiscuss($event)">添加评论</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 </body>
@@ -144,79 +125,17 @@
 <script>
     let param = parseParamFormLocation(location);
 
-    let book_detail = new Vue({
-        el: '#book_detail',
+    let course_detail = new Vue({
+        el: '#course_detail',
         data: {
-            book: {},
+            course: {},
         },
         mounted() {
-            axios.get(DOMAIN + '/book/get?id=' + param.id)
-                .then(response => (this.book = response.data.data[0]))
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        methods: {}
-    });
-
-    let vue_discuss = new Vue({
-        el: '#discuss',
-        data: {
-            discuss: {},
-            hadLogin: false,
-            user: {}
-        },
-        mounted() {
-            axios.get(DOMAIN + '/discuss/get?id=' + param.id, {
-                withCredentials: true
-
-            }).then(response => {
-                if (response.data.code === 200) {
-                    this.discuss = response.data.data;
-                }
-            }).catch(function (error) {
-                console.log(error);
+            axios.get(
+                DOMAIN + '/course/get?id=' + param.id
+            ).then(response => {
+                this.course = response.data.data[0]
             });
-        },
-        methods: {
-            addDiscuss(event) {
-                if (this.hadLogin === false) {
-                    alert("请先登录");
-                    return
-                }
-                let comment = "";
-                $("#discuss input").each((index, e) => {
-                    comment = e.value;
-                })
-                if (comment === "") {
-                    alert("请输入评论");
-                    return
-                }
-                let nowTime = dateFormat("YYYY-mm-dd HH:MM:SS", new Date())
-                axios.post(DOMAIN + '/discuss/add', {
-                    bookId: param.id,
-                    userId: this.user.id,
-                    comment: comment,
-                    date: nowTime
-                }, {
-                    withCredentials: true
-                }).then(response => {
-                    if (response.data.code === 200) {
-                        this.discuss.push({
-                            "userVO": {
-                                "name": this.user.name,
-                            },
-                            "comment": comment,
-                            "date": nowTime
-                        })
-                    }
-                    $("#discuss input").each((index, e) => {
-                        e.value = "";
-                    })
-                }).catch(function (error) { // 请求失败处理
-                    console.log(error);
-                });
-            }
         }
     });
 

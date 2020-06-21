@@ -105,7 +105,11 @@
                     <th>课程编号</th>
                     <th>课程名</th>
                     <th>学分</th>
+                    <th>理论学时</th>
+                    <th>实践学时</th>
                     <th>考核方式</th>
+                    <th>当前状态</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -114,6 +118,10 @@
                     <td>{{course.number}}</td>
                     <td>{{course.name}}</td>
                     <td>{{course.credit}}</td>
+                    <td>{{course.theoryTime}}</td>
+                    <td>{{course.practiceTime}}</td>
+                    <td>{{course.examType}}</td>
+                    <td>{{course.examType}}</td>
                     <td>{{course.examType}}</td>
                 </tr>
                 </tbody>
@@ -129,20 +137,32 @@
         el: '#course_show',
         data: {
             courseList: [],
+            hadLogin: false,
+            user: {}
         },
         mounted() {
-            axios.get(
-                DOMAIN + '/course/get'
-            ).then(response => {
-                this.courseList = response.data.data
-            });
+            if (this.hadLogin){
+                axios.get(
+                    DOMAIN + '/course/get'
+                ).then(response => {
+                    this.courseList = response.data.data
+                });
+            }
         },
         methods: {
-            details(event, book) {
-                window.location.href = "./book-detail.html?id=" + book.id;
+            details(event, course) {
+                window.location.href = "./course-detail.html?id=" + course.id;
                 console.log(book)
             }
         }
     });
+
+    Object.keys((PAGEINFO)).forEach((key => {
+        Object.defineProperty(PAGEINFO, key, {
+            set: (val) => {
+                Vue.set(course_show, key, val)
+            }
+        })
+    }))
 </script>
 </html>
