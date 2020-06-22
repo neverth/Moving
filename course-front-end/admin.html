@@ -164,7 +164,7 @@
 
     </div>
 
-    <div id="tongji_show">
+    <div id="statistics_show">
         <h3>学生课程信息总汇</h3>
         <div>
             <table class="table">
@@ -173,6 +173,7 @@
                     <th>#</th>
                     <th>学生名称</th>
                     <th>已获学分</th>
+                    <th>已选课数</th>
                     <th>通过课程门数</th>
                     <th>不及格门数</th>
                     <th>各科平均成绩排序</th>
@@ -180,18 +181,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(borrow, index) in borrowList">
+                <tr v-for="(statistics, index) in statisticsList">
                     <td>{{index}}</td>
-                    <td>{{borrow.userVO.name}}</td>
-                    <td>{{borrow.bookVO.bookName}}</td>
-                    <td>{{borrow.date}}</td>
-                    <td>{{borrow.hadReturn}}</td>
-                    <td>{{borrow.needReturn}}</td>
+                    <td>{{statistics.userVO.name}}</td>
+                    <td>{{statistics.credit}}</td>
+                    <td>{{statistics.selectNum}}</td>
+                    <td>{{statistics.pass}}</td>
+                    <td>{{statistics.fail}}</td>
+                    <td>{{0}}</td>
                     <td>
-                        <div class="btn-group btn-group-xs" role="group">
-                            <button type="button" class="btn btn-default" @click="askReturn(index)">催还</button>
-                            <button type="button" class="btn btn-default" @click="returnBook(index)">归还</button>
-                        </div>
+                        无操作
                     </td>
                 </tr>
                 </tbody>
@@ -210,7 +209,7 @@
         },
         mounted() {
             axios.get(
-                DOMAIN + '/user/get'
+                'http://localhost:8080/user/get'
             ).then(response => {
                 this.userList = response.data.data
             }).catch(function (error) {
@@ -228,7 +227,7 @@
                 let bookId = this.userList[index].id;
                 if (confirm("确定要删除吗？")) {
                     axios.get(
-                        DOMAIN + '/user/delete?id=' + bookId,
+                        'http://localhost:8080/user/delete?id=' + bookId,
                     ).then(response => {
                         if (response.data.code === 200) {
                             alert("删除成功")
@@ -259,7 +258,7 @@
                 }
 
                 axios.post(
-                    DOMAIN + '/user/update', newData
+                    'http://localhost:8080/user/update', newData
                 ).then(response => {
                     if (response.data.code === 200) {
                         alert("成功")
@@ -285,7 +284,7 @@
         },
         mounted() {
             axios.get(
-                DOMAIN + '/major/get'
+                'http://localhost:8080/major/get'
             ).then(response => {
                 this.majorList = response.data.data
             });
@@ -299,7 +298,7 @@
                 })
 
                 axios.post(
-                    DOMAIN + '/major/update', newData
+                    'http://localhost:8080/major/update', newData
                 ).then(response => {
                     if (response.data.code === 200) {
                         alert("成功")
@@ -318,44 +317,18 @@
         }
     });
 
-    let vue_tongji_show = new Vue({
-        el: '#tongji_show',
+    let vue_statistics_show = new Vue({
+        el: '#statistics_show',
         data: {
-            tongjiList: [],
+            statisticsList: [],
             nowEditIndex: -1
         },
         mounted() {
             axios.get(
-                DOMAIN + '/major/get'
+                'http://localhost:8080/statistics/get'
             ).then(response => {
-                this.majorList = response.data.data
+                this.statisticsList = response.data.data
             });
-        },
-        methods: {
-            submit(){
-                let newData = this.majorList[this.nowEditMajorIndex];
-                console.log(newData)
-                $("#majorShowModal input").each((index1, e) => {
-                    newData[e.name] = e.value;
-                })
-
-                axios.post(
-                    DOMAIN + '/major/update', newData
-                ).then(response => {
-                    if (response.data.code === 200) {
-                        alert("成功")
-                    } else {
-                        alert("失败")
-                    }
-                    window.location.reload()
-
-                });
-                this.nowEditBookIndex = -1;
-            },
-            update(index) {
-                this.nowEditMajorIndex = index;
-                console.log(this.nowEditMajorIndex)
-            },
         }
     });
 

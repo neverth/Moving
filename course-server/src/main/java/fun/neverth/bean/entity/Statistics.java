@@ -8,25 +8,26 @@ import javax.persistence.*;
  * todo
  *
  * @author NeverTh
- * @date 2020/6/16 10:33
+ * @date 2020/6/22 11:59
  */
 @Data
-@Entity(name = "discuss")
-@Table(name = "discuss")
-public class Discuss {
+@Entity(name = "statistics")
+@Table(name = "statistics")
+public class Statistics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "book_id")
-    private Long bookId;
-
     @Column(name = "user_id")
     private Long userId;
 
-    private String comment;
+    private Float credit;
 
-    private String date;
+    @Column(name = "select_num")
+    private Integer selectNum;
 
+    private Integer pass;
+
+    private Integer fail;
 }
