@@ -11,14 +11,7 @@
     <link href="https://cdn.staticfile.org/bootstrap-select/1.13.12/css/bootstrap-select.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/bootstrap-select/1.13.12/js/bootstrap-select.js"></script>
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
-    <style>
-        tr:hover {
-            background-color: #f3ecec;
-            cursor: pointer;
-        }
-    </style>
 </head>
-
 <body>
 <div id="header">
     <nav class="navbar navbar-default">
@@ -26,143 +19,73 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="./index.html">在线学生课程学习管理信息系统</a>
             </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right nav-tabs">
-                    <li style="margin-right: 15px" role="presentation" class="dropdown">
-                        <a v-if="hadLogin == false" href="javascript:" data-toggle="modal" data-target="#loginModal">
-                            登陆
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false" v-if="hadLogin == true" href="javascript:" data-toggle="modal">
-                            {{user.name}}
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="list-group-item" v-if="user.role == 0" role="button">修改密码</li>
-                            <li class="list-group-item" v-if="user.role == 0">
-                                <input id="changePw" class="form-control" type="password" placeholder="请输入新密码：">
-                                <button type="button" class="btn btn-primary" onclick="submit(2)" style="padding: 1px;
-                                        font-size: 12px;
-                                        margin-top: 5px;">
-                                    确定
-                                </button>
-                            </li>
-                            <li class="list-group-item" v-if="user.role == 1">
-                                <a href="./admin.html" style="padding: 0">系统管理</a>
-                            </li>
-                            <li class="list-group-item" role="button" @click="loginOut()">注销</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document" style="margin-top: 10%">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel">登陆</h4>
-                </div>
-                <div class="modal-body">
-                    <form id="loginForm">
-                        <div style="width: 50%; float: left">
-                            欢迎登陆
-                        </div>
-                        <div style="width: 50%; float: right">
-                            <div class="form-group">
-                                <label class="control-label">账号</label>
-                                <input type="text" class="form-control" name="name"/>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">密码</label>
-                                <input type="password" class="form-control" name="password"/>
-                            </div>
-                        </div>
-                        <div style="clear: both"></div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-default" onclick="submit(1)">注册</button>
-                    <button type="button" class="btn btn-primary" onclick="submit(0)">登陆</button>
-                    <button type="button" class="btn btn-primary" onclick="submit(3)">管理员登录</button>
-                </div>
+</div>
+<div id="content" style="width: 80%; padding: 10px; margin: 0 auto">
+    <div>
+        <div style="width: 50%;" id="loginForm">
+            <div class="form-group">
+                <label class="control-label">账号</label>
+                <input type="text" class="form-control" name="name"/>
+            </div>
+            <div class="form-group">
+                <label class="control-label">密码</label>
+                <input type="password" class="form-control" name="password"/>
+            </div>
+            <div>
+                <button type="button" class="btn" onclick="submit(2)">注册</button>
+                <button type="button" class="btn btn-primary" onclick="submit(0)">登陆</button>
+                <button type="button" class="btn btn-primary" onclick="submit(1)">管理员登录</button>
             </div>
         </div>
     </div>
 </div>
-
-<div id="content" style="width: 80%; padding: 10px; margin: 0 auto">
-    <div id="course_show">
-        <h3>课程列表</h3>
-        <div>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>课程编号</th>
-                    <th>课程名</th>
-                    <th>学分</th>
-                    <th>理论学时</th>
-                    <th>实践学时</th>
-                    <th>考核方式</th>
-                    <th>当前状态</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(course, index) in courseList" @click="details($event, course)">
-                    <td>{{index}}</td>
-                    <td>{{course.number}}</td>
-                    <td>{{course.name}}</td>
-                    <td>{{course.credit}}</td>
-                    <td>{{course.theoryTime}}</td>
-                    <td>{{course.practiceTime}}</td>
-                    <td>{{course.examType}}</td>
-                    <td>{{course.examType}}</td>
-                    <td>{{course.examType}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
 </body>
-<script src="js/common.js"></script>
 <script>
-    let course_show = new Vue({
-        el: '#course_show',
-        data: {
-            courseList: [],
-            hadLogin: false,
-            user: {}
-        },
-        mounted() {
-            if (this.hadLogin){
-                axios.get(
-                    DOMAIN + '/course/get'
-                ).then(response => {
-                    this.courseList = response.data.data
-                });
-            }
-        },
-        methods: {
-            details(event, course) {
-                window.location.href = "./course-detail.html?id=" + course.id;
-                console.log(book)
-            }
-        }
-    });
-
-    Object.keys((PAGEINFO)).forEach((key => {
-        Object.defineProperty(PAGEINFO, key, {
-            set: (val) => {
-                Vue.set(course_show, key, val)
-            }
+    function submit(_flag) {
+        let submitData = {};
+        $("#loginForm input").each((index, e) => {
+            submitData[e.name] = e.value;
         })
-    }))
+
+        if (_flag === 0) {
+            axios.post(
+                'http://localhost:8080/user/login', submitData
+            ).then(response => {
+                if (response.data.code === 200) {
+                    alert("成功")
+                    window.location.href = "./course.html?userId=" + response.data.data.id;
+                }else{
+                    alert("登陆失败")
+                    window.location.reload();
+                }
+            });
+
+        }if (_flag === 1) {
+            submitData.role = 1;
+            axios.post(
+                'http://localhost:8080/user/login', submitData
+            ).then(response => {
+                if (response.data.code === 200) {
+                    alert("成功")
+                    window.location.href = "./admin.html?userId=" + response.data.data.id;
+                }else{
+                    alert("登陆失败")
+                    window.location.reload();
+                }
+            });
+
+        } else if (_flag === 2) {
+            axios.post(
+                'http://localhost:8080/user/add', submitData
+            ).then(response => {
+                if (response.data.code === 200) {
+                    alert("注册成功")
+                    window.location.reload();
+                }
+            });
+        }
+    }
 </script>
 </html>

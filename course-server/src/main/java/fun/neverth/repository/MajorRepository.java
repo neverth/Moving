@@ -18,4 +18,7 @@ public interface MajorRepository extends JpaRepository<Major, Long> {
 
     @Query(value = "from major where userId = ?1 and courseId = ?2")
     List<Major> getMajorListByUserIdCourseId(Long userId, Long courseId);
+
+    @Query(value = "from major where userId = ?1 and flag = 1")
+    List<Major> getMajorListByUserId(Long userId);
 }

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>在线学生课程学习管理信息系统</title>
+    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.6.10/vue.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/echarts/4.7.0/echarts.js"></script>
+    <link href="https://cdn.staticfile.org/bootstrap-select/1.13.12/css/bootstrap-select.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/bootstrap-select/1.13.12/js/bootstrap-select.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+</head>
+<body>
+<div id="header">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="./index.html">在线学生课程学习管理信息系统</a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div id="content" style="width: 80%; padding: 10px; margin: 0 auto">
+    <div id="course_show">
+        <h3>课程列表</h3>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>课程编号</th>
+                    <th>课程名</th>
+                    <th>学分</th>
+                    <th>理论学时</th>
+                    <th>实践学时</th>
+                    <th>考核方式</th>
+                    <th>当前状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(course, index) in courseList">
+                    <td>{{index}}</td>
+                    <td>{{course.number}}</td>
+                    <td>{{course.name}}</td>
+                    <td>{{course.credit}}</td>
+                    <td>{{course.theoryTime}}</td>
+                    <td>{{course.practiceTime}}</td>
+                    <td>{{course.examType}}</td>
+                    <td>{{course.majorVO == null ? '未选择' : '已选择'}}</td>
+                    <td>
+                        <div class="btn-group btn-group-xs" role="group" v-if="course.majorVO == null">
+                            <button type="button" class="btn btn-default" @click="select(course)">选课</button>
+                        </div>
+                        <div class="btn-group btn-group-xs" role="group" v-if="course.majorVO != null">
+                            <button type="button" class="btn btn-default" @click="cancel(course)">退课</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>选课列表</h3>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>课程编号</th>
+                    <th>课程名</th>
+                    <th>成绩</th>
+                    <th>开始日期</th>
+                    <th>结束日期</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(course, index) in courseList" v-if="course.majorVO != null">
+                    <td>{{index}}</td>
+                    <td>{{course.number}}</td>
+                    <td>{{course.name}}</td>
+                    <td>{{course.majorVO.record == null ? '暂无成绩': course.majorVO.record}}</td>
+                    <td>{{course.majorVO.startDate}}</td>
+                    <td>{{course.majorVO.endDate == null ? '暂未结束': course.majorVO.endDate}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+    function parseParamFormLocation(location) {
+        let param = {};
+        if (location.href.indexOf("?") !== -1) {
+            let preTemp;
+            location.href.split("?")[1].split("&").forEach((e) => {
+                e.split("=").forEach((e1, index) => {
+                    if (index % 2 === 0) {
+                        preTemp = e1;
+                    } else {
+                        param[preTemp] = e1
+                    }
+                })
+            })
+        }
+        return param
+    }
+
+    let pageParam = parseParamFormLocation(window.location);
+
+    let course_show = new Vue({
+        el: '#course_show',
+        data: {
+            courseList: [],
+        },
+        mounted() {
+            axios.get(
+                'http://localhost:8080/course/getWithState?userId=' + pageParam.userId
+            ).then(response => {
+                this.courseList = response.data.data
+            });
+        },
+        methods: {
+            select(course){
+                axios.get(
+                    'http://localhost:8080/major/selectMajor?userId='
+                    + pageParam.userId + '&courseId=' + course.id
+                ).then(response => {
+                    if (response.data.code === 200){
+                        alert("选课成功")
+                        window.location.reload();
+                    }
+                });
+            },
+            cancel(course){
+                axios.get(
+                    'http://localhost:8080/major/cancelMajor?userId='
+                    + pageParam.userId + '&courseId=' + course.id
+                ).then(response => {
+                    if (response.data.code === 200){
+                        alert("退课成功")
+                        window.location.reload();
+                    }
+                });
+            }
+        }
+    });
+</script>
+</html>

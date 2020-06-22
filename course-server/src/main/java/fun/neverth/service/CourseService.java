@@ -3,6 +3,7 @@ package fun.neverth.service;
 import fun.neverth.bean.entity.Course;
 import fun.neverth.bean.form.CourseForm;
 import fun.neverth.bean.vo.CourseVO;
+import fun.neverth.bean.vo.MajorVO;
 import fun.neverth.repository.CourseRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class CourseService {
 
     @Resource
     private CourseRepository courseRepository;
+
+    @Resource
+    private MajorService majorService;
 
     public List<CourseVO> getAllCourse() {
         List<Course> courseList = courseRepository.findAll();
@@ -69,6 +73,22 @@ public class CourseService {
         }
 
         return null;
+    }
+
+    public List<CourseVO> getAllCourseWithMajorStateByUserId(Long useId){
+        List<CourseVO> allCourse = getAllCourse();
+        List<MajorVO> majorByUserId = majorService.getMajorByUserId(useId);
+
+        for (CourseVO course : allCourse) {
+
+            for (MajorVO majorVO: majorByUserId) {
+                if (course.getId().equals(majorVO.getCourseId())){
+                    course.setMajorVO(majorVO);
+                }
+            }
+
+        }
+        return allCourse;
     }
 
     public CourseVO addCourse(CourseForm form){

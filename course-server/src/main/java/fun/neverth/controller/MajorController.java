@@ -2,8 +2,8 @@ package fun.neverth.controller;
 
 import fun.neverth.bean.form.MajorForm;
 import fun.neverth.bean.vo.MajorVO;
-import fun.neverth.service.MajorService;
 import fun.neverth.service.CourseService;
+import fun.neverth.service.MajorService;
 import fun.neverth.util.Result;
 import org.springframework.web.bind.annotation.*;
 

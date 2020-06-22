@@ -64,6 +64,21 @@ public class MajorService {
         return majorVOArrayList;
     }
 
+    public List<MajorVO> getMajorByUserId(Long userId) {
+        List<Major> majors =
+                majorRepository.getMajorListByUserId(userId);
+        List<MajorVO> majorVOArrayList = new ArrayList<>();
+
+        for (Major major : majors) {
+
+            MajorVO majorVO = new MajorVO();
+            BeanUtils.copyProperties(major, majorVO);
+            majorVOArrayList.add(majorVO);
+        }
+
+        return majorVOArrayList;
+    }
+
     public MajorVO cancelCourse(Long userId, Long courseId) {
         List<Major> majors =
                 majorRepository.getMajorListByUserIdCourseId(userId, courseId);
@@ -73,16 +88,13 @@ public class MajorService {
         }
 
         Major major1 = majors.get(0);
-        major1.setFlag(0);
-
-        Major save = majorRepository.save(major1);
+        majorRepository.deleteById(major1.getId());
 
         MajorVO majorVO = new MajorVO();
 
-        BeanUtils.copyProperties(save, majorVO);
+        BeanUtils.copyProperties(major1, majorVO);
 
         return majorVO;
-
     }
 
     public MajorVO selectCourse(Long userId, Long courseId){

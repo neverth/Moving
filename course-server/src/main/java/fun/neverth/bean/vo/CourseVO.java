@@ -24,4 +24,8 @@ public class CourseVO {
     private String practiceTime;
 
     private String examType;
+
+    private MajorVO majorVO;
+
+    private UserVO userVO;
 }

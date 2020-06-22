@@ -50,6 +50,27 @@ public class CourseController {
         return Result.error();
     }
 
+    @GetMapping("/getWithState")
+    public Result<List<CourseVO>> getWithState(
+            @RequestParam(value = "userId") String id
+    ) {
+        List<CourseVO> courseVOS;
+        try {
+            courseVOS =
+                    courseService.getAllCourseWithMajorStateByUserId(Long.parseLong(id));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
+
+        if (courseVOS != null) {
+            return Result.success(courseVOS);
+        }
+
+        return Result.error();
+    }
+
     @PostMapping("/add")
     public Result<CourseVO> addCourse(CourseForm courseForm) {
         CourseVO courseVO;
