@@ -70,6 +70,46 @@ public class Part4 {
         }
         return Arrays.copyOf(res, index + 1);
     }
+    /**
+     * LeetCode US
+     * 408. Valid Word Abbreviation
+     */
+    public boolean valid(String word, String abbr) {
+        int m = word.length(), n = abbr.length();
+
+        //双指针，i 是指源字符串， j 是指缩写字符串
+        int i = 0, j = 0;
+
+        while (i < m && j < n) {
+            // 如果缩写字符串的 j 位置是数字
+            if (abbr.charAt(j) >= '0' && abbr.charAt(j) <= '9') {
+
+                // 如果缩写字符串的 j 位置为0则直接返回false
+                if (abbr.charAt(j) == '0') {
+                    return false;
+                }
+
+                // 计算数字的大小
+                int value = 0;
+                while (j < n && abbr.charAt(j) >= '0' && abbr.charAt(j) <= '9') {
+                    value = value * 10 + abbr.charAt(j++) - '0';
+
+                }
+
+                // 跳过源字符串中的 value 个字符
+                i += value;
+
+            } else {
+                // 不相等，直接返回false
+                if (word.charAt(i++) != abbr.charAt(j++)) {
+                    return false;
+
+                }
+            }
+        }
+
+        return i == m && j == n;
+    }
 
     public static void main(String[] args) {
         Part4 part4 = new Part4();
