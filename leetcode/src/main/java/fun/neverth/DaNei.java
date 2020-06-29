@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * todo
@@ -14,6 +15,10 @@ import static org.junit.Assert.*;
  */
 public class DaNei {
 
+    /**
+     * 1. 合并时间区间（建议时间复杂度 O(n) ）
+     * 本解法时间复杂度 O(n)
+     */
     public int[][] merge(int[][] intervals) {
         // 由于已经给定⼀个按开始时间从⼩到⼤排序的时间区间集合
         // 因此不需要对 intervals 进行排序。
@@ -45,6 +50,10 @@ public class DaNei {
         return Arrays.copyOf(res, index + 1);
     }
 
+    /**
+     * 2. 缩写校验（建议时间复杂度 O(n) ）
+     * 本解法时间复杂度 O(n)
+     */
     public boolean valid(String word, String abbr) {
         int m = word.length(), n = abbr.length();
 
@@ -82,26 +91,81 @@ public class DaNei {
         return i == m && j == n;
     }
 
+    /**
+     * 3. 最⼩惩罚
+     */
+    public int minPath(int n, int[][] edges, int start, int end) {
+
+        if (start == end) {
+            return 0;
+        }
+
+        int res = -1;
+
+        for (int[] edge : edges) {
+
+            if (edge[0] == start) {
+
+                int temp = dfs(edges, edge[1], end, edge[2]);
+
+                if (temp == -1){
+                    continue;
+                }
+
+                res = Math.max(res, temp);
+            }
+        }
+
+        return res;
+    }
+
+    public static int dfs(int[][] edges, int start, int end, int cost) {
+
+        for (int[] edge : edges) {
+
+            // 如果匹配到新的路径
+            if (edge[0] == start) {
+
+                cost |= edge[2];
+
+                if (edge[1] == end) {
+                    return cost;
+
+                } else {
+                    return dfs(edges, edge[1], end, cost);
+
+                }
+            }
+        }
+        return -1;
+    }
+
     @Test
     public void mergeTest() {
 
         int[][] input1 = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
         int[][] output1 = {{1, 6}, {8, 10}, {15, 18}};
-        assertEquals(output1, new DaNei().merge(input1));
+        assertEquals(output1, merge(input1));
 
         int[][] input2 = {{1, 4}, {4, 5}};
         int[][] output2 = {{1, 5}};
-        assertEquals(output2, new DaNei().merge(input2));
+        assertEquals(output2, merge(input2));
 
     }
 
     @Test
     public void validTest() {
 
-        assertTrue(new DaNei().valid("internationalization", "i12iz4n"));
+        assertTrue(valid("internationalization", "i12iz4n"));
 
-        assertFalse(new DaNei().valid("apple", "a2e"));
+        assertFalse(valid("apple", "a2e"));
 
+    }
+
+    @Test
+    public void test() {
+        int[][] edges = {{1, 2, 1}, {2, 3, 3}, {1, 3, 100}};
+        assertEquals(3, minPath(3, edges, 1, 3));
     }
 
 }
