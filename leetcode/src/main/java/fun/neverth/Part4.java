@@ -1,6 +1,8 @@
 package fun.neverth;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * todo
@@ -109,6 +111,28 @@ public class Part4 {
         }
 
         return i == m && j == n;
+    }
+
+    /**
+     * 1. 两数之和
+     */
+    public int[] twoSum(int[] nums, int target) {
+        int len = nums.length;
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for(int i = 0; i < len; i++){
+
+            int b = target - nums[i];
+
+            if(map.containsKey(b)){
+                return new int[]{i, map.get(b)};
+            }
+
+            map.put(nums[i], i);
+        }
+
+        return new int[]{-1, -1};
     }
 
     public static void main(String[] args) {
