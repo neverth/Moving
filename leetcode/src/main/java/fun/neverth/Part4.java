@@ -206,6 +206,44 @@ public class Part4 {
         return max;
     }
 
+    /**
+     * 复习 111. 二叉树的最小深度
+     * bfs
+     */
+    public int minDepth(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+
+        Queue<TreeNode> q = new LinkedList<>();
+
+        q.offer(root);
+
+        int depth = 1;
+
+        while(!q.isEmpty()){
+            int sz = q.size();
+
+            for(int i = 0; i < sz; i++){
+                TreeNode node = q.poll();
+
+                if(node.left == null && node.right == null){
+                    return depth;
+                }
+
+                if(node.left != null){
+                    q.offer(node.left);
+                }
+
+                if(node.right != null){
+                    q.offer(node.right);
+                }
+            }
+            depth ++;
+        }
+        return depth;
+    }
+
     public static void main(String[] args) {
         Part4 part4 = new Part4();
 
