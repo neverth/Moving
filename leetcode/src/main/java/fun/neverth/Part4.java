@@ -1,8 +1,6 @@
 package fun.neverth;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * todo
@@ -135,6 +133,79 @@ public class Part4 {
         return new int[]{-1, -1};
     }
 
+    public int test(int a, int b, int c){
+
+        int[] res = new int[]{
+                a * b * c,
+                a * b + c,
+                a * (b + c),
+                a + b * c,
+                (a + b) * c,
+                a + b + c,
+                a + (b + c)
+        };
+
+        int max = -1;
+        for (int t : res) {
+            max = Math.max(max, t);
+        }
+
+        return max;
+    }
+
+
+    public static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode(int x) {
+            val = x;
+        }
+    }
+
+    /**
+     * 662. 二叉树最大宽度
+     */
+    public int widthOfBinaryTree(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+
+        Queue<TreeNode> q = new LinkedList<>();
+        Deque<Integer> d = new LinkedList<>();
+
+        q.offer(root);
+        d.offer(1);
+
+        int max = 1;
+        while(!q.isEmpty()){
+
+            int sz = q.size();
+
+            for(int i = 0; i < sz; i++){
+
+                TreeNode node = q.poll();
+
+                int index = d.poll();
+                if(node.left != null){
+                    q.offer(node.left);
+                    d.offer(index * 2);
+                }
+
+                if(node.right != null){
+                    q.offer(node.right);
+                    d.offer(index * 2 + 1);
+                }
+            }
+            if (d.size() >= 2){
+                max = Math.max(max, d.getLast() - d.getFirst() + 1);
+            }
+        }
+
+        return max;
+    }
+
     public static void main(String[] args) {
         Part4 part4 = new Part4();
 
@@ -151,11 +222,11 @@ public class Part4 {
         };
 
 
-        Common.TreeNode n1 = new Common.TreeNode(3);
-        Common.TreeNode n2 = new Common.TreeNode(9);
-        Common.TreeNode n3 = new Common.TreeNode(20);
-        Common.TreeNode n4 = new Common.TreeNode(15);
-        Common.TreeNode n5 = new Common.TreeNode(7);
+        TreeNode n1 = new TreeNode(3);
+        TreeNode n2 = new TreeNode(9);
+        TreeNode n3 = new TreeNode(20);
+        TreeNode n4 = new TreeNode(15);
+        TreeNode n5 = new TreeNode(7);
 
         Part2.ListNode l1 = new Part2.ListNode(1);
         Part2.ListNode l2 = new Part2.ListNode(2);
@@ -168,11 +239,13 @@ public class Part4 {
         l3.next = null;
         l4.next = null;
 
-        n1.left = n2;
-        n1.right = n3;
-        n3.left = n4;
-        n3.right = n5;
-        System.out.println(part4.findNumberOfLIS(a));
+//        n1.left = n2;
+//        n1.right = n3;
+//        n3.left = n4;
+//        n3.right = n5;
+        System.out.println(part4.widthOfBinaryTree(n1));
+
+        part4.test(2, 10, 3);
 
     }
 }
