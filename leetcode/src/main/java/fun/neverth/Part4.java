@@ -453,6 +453,33 @@ public class Part4 {
         }
     }
 
+    /**
+     * 复习 3. 无重复字符的最长子串
+     */
+    public int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> windows = new HashMap<>();
+
+        int left = 0;
+        int right = 0;
+        int max = 0;
+
+        while(right < s.length()){
+
+            char c1 = s.charAt(right++);
+            windows.put(c1, windows.getOrDefault(c1, 0) + 1);
+
+            while(windows.get(c1) > 1){
+
+                char c2 = s.charAt(left++);
+
+                windows.put(c2, windows.get(c2) - 1);
+
+            }
+            max = Math.max(max, right- left);
+        }
+        return max;
+    }
+
     public static void main(String[] args) {
         Part4 part4 = new Part4();
 
