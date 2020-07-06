@@ -368,6 +368,46 @@ public class Part4 {
         return res;
     }
 
+    /**
+     * 121. 买卖股票的最佳时机
+     */
+    public int maxProfit(int[] prices) {
+        if(prices.length <= 1){
+            return 0;
+        }
+
+        int min = prices[0];
+        int max = 0;
+
+        for(int i = 1; i < prices.length; i++){
+
+            max = Math.max(max, prices[i] - min);
+            min = Math.min(min, prices[i]);
+        }
+        return max;
+    }
+
+    /**
+     * 121. 买卖股票的最佳时机
+     * 贪心算法
+     */
+    public int maxProfit1(int[] prices) {
+        if(prices.length <= 1){
+            return 0;
+        }
+
+        int res = 0;
+        for(int i = 0, j = 0; j < prices.length; j++){
+            if(prices[j] - prices[i] < 0){
+                i = j;
+
+            }else{
+                res = Math.max(res, prices[j] - prices[i]);
+            }
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         Part4 part4 = new Part4();
 
