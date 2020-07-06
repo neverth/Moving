@@ -24,14 +24,14 @@ public class Part4 {
 
         int max = 1;
 
-        for (int i = 0; i < len; i++){
-            for (int j = 0; j < i; j++){
-                if (nums[j] < nums[i]){
-                    if (dp[j] + 1 > dp[i]){
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    if (dp[j] + 1 > dp[i]) {
                         dp[i] = dp[j] + 1;
                         combination[i] = combination[j];
 
-                    }else if (dp[j] + 1 == dp[i]){
+                    } else if (dp[j] + 1 == dp[i]) {
                         combination[i] += combination[j];
                     }
                 }
@@ -40,8 +40,8 @@ public class Part4 {
         }
 
         int res = 0;
-        for (int i = 0; i < nums.length; i++){
-            if (dp[i] == max){
+        for (int i = 0; i < nums.length; i++) {
+            if (dp[i] == max) {
                 res += combination[i];
             }
         }
@@ -58,7 +58,7 @@ public class Part4 {
         int[][] res = new int[intervals.length][2];
         int index = -1;
 
-        for (int[] interval: intervals) {
+        for (int[] interval : intervals) {
             // 如果结果数组是空的，或者当前区间的起始位置 > 结果数组中最后区间的终止位置，
             // 则不合并，直接将当前区间加入结果数组。
             if (index == -1 || interval[0] > res[index][1]) {
@@ -70,6 +70,7 @@ public class Part4 {
         }
         return Arrays.copyOf(res, index + 1);
     }
+
     /**
      * LeetCode US
      * 408. Valid Word Abbreviation
@@ -119,11 +120,11 @@ public class Part4 {
 
         Map<Integer, Integer> map = new HashMap<>();
 
-        for(int i = 0; i < len; i++){
+        for (int i = 0; i < len; i++) {
 
             int b = target - nums[i];
 
-            if(map.containsKey(b)){
+            if (map.containsKey(b)) {
                 return new int[]{i, map.get(b)};
             }
 
@@ -133,7 +134,7 @@ public class Part4 {
         return new int[]{-1, -1};
     }
 
-    public int test(int a, int b, int c){
+    public int test(int a, int b, int c) {
 
         int[] res = new int[]{
                 a * b * c,
@@ -168,7 +169,7 @@ public class Part4 {
      * 662. 二叉树最大宽度
      */
     public int widthOfBinaryTree(TreeNode root) {
-        if(root == null){
+        if (root == null) {
             return 0;
         }
 
@@ -179,26 +180,26 @@ public class Part4 {
         d.offer(1);
 
         int max = 1;
-        while(!q.isEmpty()){
+        while (!q.isEmpty()) {
 
             int sz = q.size();
 
-            for(int i = 0; i < sz; i++){
+            for (int i = 0; i < sz; i++) {
 
                 TreeNode node = q.poll();
 
                 int index = d.poll();
-                if(node.left != null){
+                if (node.left != null) {
                     q.offer(node.left);
                     d.offer(index * 2);
                 }
 
-                if(node.right != null){
+                if (node.right != null) {
                     q.offer(node.right);
                     d.offer(index * 2 + 1);
                 }
             }
-            if (d.size() >= 2){
+            if (d.size() >= 2) {
                 max = Math.max(max, d.getLast() - d.getFirst() + 1);
             }
         }
@@ -211,7 +212,7 @@ public class Part4 {
      * bfs
      */
     public int minDepth(TreeNode root) {
-        if(root == null){
+        if (root == null) {
             return 0;
         }
 
@@ -221,33 +222,72 @@ public class Part4 {
 
         int depth = 1;
 
-        while(!q.isEmpty()){
+        while (!q.isEmpty()) {
             int sz = q.size();
 
-            for(int i = 0; i < sz; i++){
+            for (int i = 0; i < sz; i++) {
                 TreeNode node = q.poll();
 
-                if(node.left == null && node.right == null){
+                if (node.left == null && node.right == null) {
                     return depth;
                 }
 
-                if(node.left != null){
+                if (node.left != null) {
                     q.offer(node.left);
                 }
 
-                if(node.right != null){
+                if (node.right != null) {
                     q.offer(node.right);
                 }
             }
-            depth ++;
+            depth++;
         }
         return depth;
+    }
+
+    static public class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
+        }
+    }
+
+    /**
+     * 206. 反转链表
+     */
+    public ListNode reverseList(ListNode head) {
+        ListNode pre = null;
+        ListNode cur = head;
+
+        while (cur != null) {
+
+            ListNode tmp = cur.next;
+
+            cur.next = pre;
+
+            pre = cur;
+
+            cur = tmp;
+        }
+        return pre;
+    }
+
+    public ListNode reverseList1(ListNode head) {
+        if(head==null || head.next==null) {
+            return head;
+        }
+        ListNode cur = reverseList1(head.next);
+        head.next.next = head;
+        head.next = null;
+        return cur;
     }
 
     public static void main(String[] args) {
         Part4 part4 = new Part4();
 
-        int[] a = {1,3,5,4,7};
+        int[] a = {1, 3, 5, 4, 7};
         int[] a1 = {9, 15, 7, 20, 3};
         String[] b = {"0000"};
 
@@ -266,24 +306,24 @@ public class Part4 {
         TreeNode n4 = new TreeNode(15);
         TreeNode n5 = new TreeNode(7);
 
-        Part2.ListNode l1 = new Part2.ListNode(1);
-        Part2.ListNode l2 = new Part2.ListNode(2);
-        Part2.ListNode l3 = new Part2.ListNode(3);
-        Part2.ListNode l4 = new Part2.ListNode(4);
-        Part2.ListNode l5 = new Part2.ListNode(3);
+        ListNode l1 = new ListNode(1);
+        ListNode l2 = new ListNode(2);
+        ListNode l3 = new ListNode(3);
+        ListNode l4 = new ListNode(4);
+        ListNode l5 = new ListNode(5);
 
-        l1.next = null;
-        l2.next = null;
-        l3.next = null;
-        l4.next = null;
+        l1.next = l2;
+        l2.next = l3;
+        l3.next = l4;
+        l4.next = l5;
+        l5.next = null;
 
 //        n1.left = n2;
 //        n1.right = n3;
 //        n3.left = n4;
 //        n3.right = n5;
-        System.out.println(part4.widthOfBinaryTree(n1));
+        System.out.println(part4.reverseList1(l1));
 
-        part4.test(2, 10, 3);
 
     }
 }
