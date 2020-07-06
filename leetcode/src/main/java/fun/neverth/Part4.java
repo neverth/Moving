@@ -408,6 +408,51 @@ public class Part4 {
         return res;
     }
 
+    /**
+     * 155. 最小栈
+     */
+    static class MinStack {
+        private Node head;
+
+        public void push(int x) {
+            if(head == null){
+                head = new Node(x, x);
+
+            } else{
+                head = new Node(x, Math.min(x, head.min), head);
+
+            }
+        }
+
+        public void pop() {
+            head = head.next;
+        }
+
+        public int top() {
+            return head.val;
+        }
+
+        public int getMin() {
+            return head.min;
+        }
+
+        private class Node {
+            int val;
+            int min;
+            Node next;
+
+            private Node(int val, int min) {
+                this(val, min, null);
+            }
+
+            private Node(int val, int min, Node next) {
+                this.val = val;
+                this.min = min;
+                this.next = next;
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Part4 part4 = new Part4();
 
@@ -446,6 +491,15 @@ public class Part4 {
 //        n1.right = n3;
 //        n3.left = n4;
 //        n3.right = n5;
+        MinStack minStack = new MinStack();
+        minStack.push(-2);
+        minStack.push(0);
+        minStack.push(-3);
+        minStack.getMin();
+        minStack.pop();
+        minStack.top();
+        minStack.getMin();
+
         System.out.println(part4.threeSum(a));
 
 
