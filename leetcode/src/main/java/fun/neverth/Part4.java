@@ -317,10 +317,61 @@ public class Part4 {
         return newHead;
     }
 
+    /**
+     * 15. 三数之和
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        if(nums.length < 3){
+            return res;
+        }
+
+        Arrays.sort(nums);
+
+        for(int i = 0; i < nums.length - 2; i++){
+
+            if(nums[0] > 0){
+                return res;
+            }
+
+            if(i > 0 && (nums[i] == nums[i - 1])){
+                continue;
+            }
+
+            int target = -nums[i];
+
+            int left = i + 1, right = nums.length - 1;
+
+            while(left < right){
+
+                if((nums[left] + nums[right]) == target){
+                    res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+
+                    while(left < right && nums[left] == nums[left + 1]){
+                        left++;
+                    }
+                    while(left < right && nums[right] == nums[right - 1]){
+                        right--;
+                    }
+                    left++;
+                    right--;
+                }else if((nums[left] + nums[right] > target)){
+                    right--;
+
+                }else{
+                    left++;
+
+                }
+            }
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         Part4 part4 = new Part4();
 
-        int[] a = {1, 3, 5, 4, 7};
+        int[] a = {-1,0,1,2,-1,-4};
         int[] a1 = {9, 15, 7, 20, 3};
         String[] b = {"0000"};
 
@@ -355,7 +406,7 @@ public class Part4 {
 //        n1.right = n3;
 //        n3.left = n4;
 //        n3.right = n5;
-        System.out.println(part4.reverseList1(l1));
+        System.out.println(part4.threeSum(a));
 
 
     }
