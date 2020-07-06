@@ -495,6 +495,30 @@ public class Part4 {
         return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
     }
 
+    private int maxPathSum_max = Integer.MIN_VALUE;
+
+    /**
+     * 124. 二叉树中的最大路径和
+     */
+    public int maxPathSum(TreeNode root) {
+        dfs(root);
+        return maxPathSum_max;
+    }
+
+    public int dfs(TreeNode node){
+
+        if(node == null){
+            return 0;
+        }
+
+        int left = Math.max(0, dfs(node.left));
+        int right = Math.max(0, dfs(node.right));
+
+        maxPathSum_max = Math.max(maxPathSum_max, node.val + left + right);
+
+        return Math.max(left, right) + node.val;
+    }
+
     public static void main(String[] args) {
         Part4 part4 = new Part4();
 
