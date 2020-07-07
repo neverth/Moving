@@ -275,7 +275,7 @@ public class Part4 {
     }
 
     public ListNode reverseList1(ListNode head) {
-        if(head==null || head.next==null) {
+        if (head == null || head.next == null) {
             return head;
         }
         ListNode cur = reverseList1(head.next);
@@ -284,9 +284,11 @@ public class Part4 {
         return cur;
     }
 
-    public ListNode reverse(ListNode a, ListNode b){
+    public ListNode reverse(ListNode a, ListNode b) {
         ListNode pre, cur, next;
-        pre = null; cur = a; next = a;
+        pre = null;
+        cur = a;
+        next = a;
         while (cur != b) {
             next = cur.next;
             cur.next = pre;
@@ -301,13 +303,13 @@ public class Part4 {
      * 复习 25. K 个一组翻转链表
      */
     public ListNode reverseKGroup(ListNode head, int k) {
-        if (head == null){
+        if (head == null) {
             return null;
         }
         ListNode a, b;
         a = b = head;
         for (int i = 0; i < k; i++) {
-            if (b == null){
+            if (b == null) {
                 return head;
             }
             b = b.next;
@@ -323,19 +325,19 @@ public class Part4 {
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
 
-        if(nums.length < 3){
+        if (nums.length < 3) {
             return res;
         }
 
         Arrays.sort(nums);
 
-        for(int i = 0; i < nums.length - 2; i++){
+        for (int i = 0; i < nums.length - 2; i++) {
 
-            if(nums[0] > 0){
+            if (nums[0] > 0) {
                 return res;
             }
 
-            if(i > 0 && (nums[i] == nums[i - 1])){
+            if (i > 0 && (nums[i] == nums[i - 1])) {
                 continue;
             }
 
@@ -343,23 +345,23 @@ public class Part4 {
 
             int left = i + 1, right = nums.length - 1;
 
-            while(left < right){
+            while (left < right) {
 
-                if((nums[left] + nums[right]) == target){
+                if ((nums[left] + nums[right]) == target) {
                     res.add(Arrays.asList(nums[i], nums[left], nums[right]));
 
-                    while(left < right && nums[left] == nums[left + 1]){
+                    while (left < right && nums[left] == nums[left + 1]) {
                         left++;
                     }
-                    while(left < right && nums[right] == nums[right - 1]){
+                    while (left < right && nums[right] == nums[right - 1]) {
                         right--;
                     }
                     left++;
                     right--;
-                }else if((nums[left] + nums[right] > target)){
+                } else if ((nums[left] + nums[right] > target)) {
                     right--;
 
-                }else{
+                } else {
                     left++;
 
                 }
@@ -372,14 +374,14 @@ public class Part4 {
      * 121. 买卖股票的最佳时机
      */
     public int maxProfit(int[] prices) {
-        if(prices.length <= 1){
+        if (prices.length <= 1) {
             return 0;
         }
 
         int min = prices[0];
         int max = 0;
 
-        for(int i = 1; i < prices.length; i++){
+        for (int i = 1; i < prices.length; i++) {
 
             max = Math.max(max, prices[i] - min);
             min = Math.min(min, prices[i]);
@@ -392,16 +394,16 @@ public class Part4 {
      * 贪心算法
      */
     public int maxProfit1(int[] prices) {
-        if(prices.length <= 1){
+        if (prices.length <= 1) {
             return 0;
         }
 
         int res = 0;
-        for(int i = 0, j = 0; j < prices.length; j++){
-            if(prices[j] - prices[i] < 0){
+        for (int i = 0, j = 0; j < prices.length; j++) {
+            if (prices[j] - prices[i] < 0) {
                 i = j;
 
-            }else{
+            } else {
                 res = Math.max(res, prices[j] - prices[i]);
             }
         }
@@ -415,10 +417,10 @@ public class Part4 {
         private Node head;
 
         public void push(int x) {
-            if(head == null){
+            if (head == null) {
                 head = new Node(x, x);
 
-            } else{
+            } else {
                 head = new Node(x, Math.min(x, head.min), head);
 
             }
@@ -463,19 +465,19 @@ public class Part4 {
         int right = 0;
         int max = 0;
 
-        while(right < s.length()){
+        while (right < s.length()) {
 
             char c1 = s.charAt(right++);
             windows.put(c1, windows.getOrDefault(c1, 0) + 1);
 
-            while(windows.get(c1) > 1){
+            while (windows.get(c1) > 1) {
 
                 char c2 = s.charAt(left++);
 
                 windows.put(c2, windows.get(c2) - 1);
 
             }
-            max = Math.max(max, right- left);
+            max = Math.max(max, right - left);
         }
         return max;
     }
@@ -484,11 +486,11 @@ public class Part4 {
      * 112. 路径总和
      */
     public boolean hasPathSum(TreeNode root, int sum) {
-        if(root == null){
+        if (root == null) {
             return false;
         }
 
-        if(root.left == null && root.right == null){
+        if (root.left == null && root.right == null) {
             return sum - root.val == 0;
         }
 
@@ -505,9 +507,9 @@ public class Part4 {
         return maxPathSum_max;
     }
 
-    public int dfs(TreeNode node){
+    public int dfs(TreeNode node) {
 
-        if(node == null){
+        if (node == null) {
             return 0;
         }
 
@@ -519,10 +521,54 @@ public class Part4 {
         return Math.max(left, right) + node.val;
     }
 
+    public void quickSort(int[] array) {
+        int len;
+        if (array == null || (len = array.length) == 0 || len == 1) {
+            return;
+        }
+        sort(array, 0, len - 1);
+    }
+
+    public void sort(int[] array, int left, int right) {
+        if (left > right) {
+            return;
+        }
+        // base中存放基准数
+        int base = array[left];
+        int i = left, j = right;
+        while (i != j) {
+            // 顺序很重要，先从右边开始往左找，直到找到比base值小的数
+            while (array[j] >= base && i < j) {
+                j--;
+            }
+
+            // 再从左往右边找，直到找到比base值大的数
+            while (array[i] <= base && i < j) {
+                i++;
+            }
+
+            // 上面的循环结束表示找到了位置或者(i>=j)了，交换两个数在数组中的位置
+            if (i < j) {
+                int tmp = array[i];
+                array[i] = array[j];
+                array[j] = tmp;
+            }
+        }
+
+        // 将基准数放到中间的位置（基准数归位）
+        array[left] = array[i];
+        array[i] = base;
+
+        // 递归，继续向基准的左右两边执行和上面同样的操作
+        // i的索引处为上面已确定好的基准值的位置，无需再处理
+        sort(array, left, i - 1);
+        sort(array, i + 1, right);
+    }
+
     public static void main(String[] args) {
         Part4 part4 = new Part4();
 
-        int[] a = {-1,0,1,2,-1,-4};
+        int[] a = {-1, 0, 1, 2, -1, -4};
         int[] a1 = {9, 15, 7, 20, 3};
         String[] b = {"0000"};
 
@@ -557,16 +603,8 @@ public class Part4 {
 //        n1.right = n3;
 //        n3.left = n4;
 //        n3.right = n5;
-        MinStack minStack = new MinStack();
-        minStack.push(-2);
-        minStack.push(0);
-        minStack.push(-3);
-        minStack.getMin();
-        minStack.pop();
-        minStack.top();
-        minStack.getMin();
-
-        System.out.println(part4.threeSum(a));
+        part4.quickSort(a1);
+        System.out.println();
 
 
     }
