@@ -94,13 +94,14 @@
 12. https和http相关。
 13. 判断链表有环。
 14. 线程池参数。
-15. reentrantlock 和 synchronize区别
+15. reentrantlock 和 synchronize区别, synchronize底层怎么实现。
 16. ThreadLocal了解多少，底层实现。
 17. 索引底层，最左匹配，怎么查看是否用到索引，索引优化。
 18. 隔离级别。
 19. 线程池执行流程，就是各个参数的判断流程 execute()。
-20. ...记不起来了
-
+20. 什么情况下会锁会膨胀，自旋锁的过程。
+21. 分布式hash
+22. 单例模式以及他的种类
 
 #### 滴滴 二面 30min 7.27
 1. reentrantlock 底层怎么实现的。
