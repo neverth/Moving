@@ -1,6 +1,7 @@
 package fun.neverth;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -73,9 +74,30 @@ public class Part5 {
             }
         }
     }
-
+    /**
+     * 牛客网 序列交换 网易 https://www.nowcoder.com/profile/730427842/codeBookDetail?submissionId=84132355
+     */
     public void printAbc(){
+        Scanner scanner = new Scanner(System.in);
+        int n = Integer.parseInt(scanner.nextLine());
+        int[] array = Arrays.stream(scanner.nextLine().split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
 
+        int count = 0;
+        for (int el : array) {
+            if (el % 2 == 0) {
+                count++;
+            }
+        }
+
+        if (count != 0 && count != n) {
+            Arrays.sort(array);
+        }
+
+        for (int el : array) {
+            System.out.print(el + " ");
+        }
     }
 
     public static void main(String[] args) {
