@@ -8,35 +8,37 @@ import java.util.Scanner;
 
 public class Part5 {
     private static HashMap<Integer, Boolean> dic = new HashMap<>();
-    public static boolean funa(int n){
+
+    public static boolean funa(int n) {
         ArrayList<Integer> integers = new ArrayList<>();
-        while(n != 0){
+        while (n != 0) {
             integers.add(n % 10);
             n = n / 10;
         }
-        if (integers.size() == 1){
+        if (integers.size() == 1) {
             return integers.get(0) == 7;
         }
 
         int size = integers.size();
         int i = size - 1;
-        while(size > 0){
+        while (size > 0) {
 
             integers.add(Math.abs(integers.remove(i) - integers.get(i - 1)));
-            i --;
-            if (i == 0){
+            i--;
+            if (i == 0) {
                 integers.remove(0);
                 size = integers.size();
                 i = size - 1;
 
-                if (size == 1){
+                if (size == 1) {
                     return integers.get(0) == 7;
                 }
             }
         }
         return false;
     }
-    public static class ThreadPrinter implements Runnable{
+
+    public static class ThreadPrinter implements Runnable {
 
         private String name;
         private Object prev;
@@ -51,9 +53,9 @@ public class Part5 {
         @Override
         public void run() {
             int count = 10;
-            while(count > 0){
-                synchronized (prev){
-                    synchronized (self){
+            while (count > 0) {
+                synchronized (prev) {
+                    synchronized (self) {
                         System.out.print(name);
                         count--;
                         self.notifyAll();
@@ -74,10 +76,11 @@ public class Part5 {
             }
         }
     }
+
     /**
      * 牛客网 序列交换 网易 https://www.nowcoder.com/profile/730427842/codeBookDetail?submissionId=84132355
      */
-    public void printAbc(){
+    public void printAbc() {
         Scanner scanner = new Scanner(System.in);
         int n = Integer.parseInt(scanner.nextLine());
         int[] array = Arrays.stream(scanner.nextLine().split(" "))
@@ -100,39 +103,34 @@ public class Part5 {
         }
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int n = Integer.parseInt(scanner.nextLine());
+    public void insertSort(int[] arr) {
 
-        int[] res = new int[n];
-        int lineIndex = 0;
+        int len = arr.length;
 
-        while(lineIndex != n){
-            String line = scanner.nextLine();
-            String[] s = line.split(" ");
+        for (int i = 1; i < len; i++) {
+            int temp = arr[i];
 
-            int cut = 0;
-            for (int i = Integer.parseInt(s[0]) ; i <= Integer.parseInt(s[1]); i++) {
-
-                if (dic.get(i) != null){
-                    if(dic.get(i)){
-                        cut ++;
-                    }
-                }
-                else{
-                    if (funa(i)){
-                        cut ++;
-                        dic.put(i, true);
-                    }else{
-                        dic.put(i, false);
-                    }
-                }
+            int j = i;
+            while (j > 0 && temp < arr[j - 1]) {
+                arr[j] = arr[j - 1];
+                j--;
             }
-            res[lineIndex] = cut;
-            lineIndex ++;
+
+            if (j != i) {
+                arr[j] = temp;
+            }
+
         }
-        for (int re : res) {
-            System.out.println(re);
-        }
+
+    }
+
+    public static void main(String[] args) {
+        ArrayList<String> l1 = new ArrayList<String>();
+        ArrayList<Integer> l2 = new ArrayList<Integer>();
+        l1.add("1");
+        l2.add(1);
+        System.out.println(l1.get(0).getClass());
+        System.out.println(l2.get(0).getClass());
+        System.out.println(l1.getClass() == l2.getClass());
     }
 }
