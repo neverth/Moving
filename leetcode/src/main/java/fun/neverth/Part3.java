@@ -291,34 +291,40 @@ public class Part3 {
         if (preorder.length == 0 || inorder.length == 0) {
             return null;
         }
-
+        // 根节点就是前序节点的第一个
         TreeNode root = new TreeNode(preorder[0]);
-
+        // 用栈维护右节点还没有赋值的节点
+        // 左子树可以立即赋值，通过判断中序遍历的第一个结点是否等于根节点即可
         Stack<TreeNode> stack = new Stack<>();
-
+        // 根节点入栈
         stack.push(root);
-
+        // 中序遍历下标
         int inorderIndex = 0;
-
+        // 从前序遍历下一个相邻节点开始判断，判断其是在根节点的左 or 右子树
         for (int i = 1; i < preorder.length; i++) {
-
-            int preorderVal = preorder[i];
-
+            // peek一下栈顶(右节点还没有赋值的节点)，并不会出栈
             TreeNode node = stack.peek();
-
+            // 前序遍历和中序遍历对应下标不等，代表节点存在左节点
             if (node.val != inorder[inorderIndex]) {
-
-                node.left = new TreeNode(preorderVal);
+                // 前序遍历下一个相邻节点是前节点的左节点，赋值
+                node.left = new TreeNode(preorder[i]);
+                // node.left的右节点还没有赋值，入栈
                 stack.push(node.left);
-
-            } else {
-
-                while (!stack.isEmpty() && stack.peek().val == inorder[inorderIndex]) {
+            }
+            // 前序遍历和中序遍历对应下标相等，即节点不存在左节点，
+            else {
+                // 前序遍历下一个相邻节点是已经入栈节点的右节点，但是不知道具体是哪一个节点
+                while (!stack.isEmpty()
+                        && stack.peek().val == inorder[inorderIndex]
+                ) {
+                    // 所以在这里进行过滤，从前序遍历已经遍历的节点逆序(对应出栈)开始和
+                    // 中序遍历比较，相等就代表该节点不存在右子节点直接跳过
                     node = stack.pop();
                     inorderIndex++;
                 }
-
-                node.right = new TreeNode(preorderVal);
+                // 直到不相等，代表前序遍历下一个相邻节点就是这个节点的右节点
+                node.right = new TreeNode(preorder[i]);
+                // 其不存在右节点，入栈
                 stack.push(node.right);
             }
         }
@@ -888,12 +894,12 @@ public class Part3 {
     }
 
     public boolean isMatch1Dp(HashMap<String, Boolean> isMatchMemo,
-                              String s, String p, int i, int j){
-        if (isMatchMemo.containsKey(i + "-" + j)){
+                              String s, String p, int i, int j) {
+        if (isMatchMemo.containsKey(i + "-" + j)) {
             return isMatchMemo.get(i + "-" + j);
         }
 
-        if (j == p.length()){
+        if (j == p.length()) {
             return i == s.length();
         }
 
@@ -901,11 +907,11 @@ public class Part3 {
 
         boolean res;
 
-        if (j <= p.length() - 2 && p.charAt(j + 1) == '*'){
+        if (j <= p.length() - 2 && p.charAt(j + 1) == '*') {
             res = isMatch1Dp(isMatchMemo, s, p, i, j + 2)
                     || (first && isMatch1Dp(isMatchMemo, s, p, i + 1, j));
 
-        }else{
+        } else {
             res = first && isMatch1Dp(isMatchMemo, s, p, i + 1, j + 1);
         }
 
@@ -948,12 +954,12 @@ public class Part3 {
 
         int[][] dp = new int[ch1.length + 1][ch2.length + 1];
 
-        for(int i = 1; i <= ch1.length; i++){
-            for(int j = 1; j <= ch2.length; j++){
+        for (int i = 1; i <= ch1.length; i++) {
+            for (int j = 1; j <= ch2.length; j++) {
 
-                if(ch1[i - 1] == ch2[j - 1]){
+                if (ch1[i - 1] == ch2[j - 1]) {
                     dp[i][j] = dp[i - 1][j - 1] + 1;
-                }else{
+                } else {
                     dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
                 }
 
@@ -1002,8 +1008,8 @@ public class Part3 {
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
-        int[] a = {1,3,5,4,7};
-        int[] a1 = {9, 15, 7, 20, 3};
+        int[] a = {3,9,8,5,4,10,20,15,7};
+        int[] a1 = {4,5,8,10,9,3,15,20,7};
         String[] b = {"0000"};
 
         int[][] c = new int[][]{
@@ -1036,7 +1042,7 @@ public class Part3 {
         n1.right = n3;
         n3.left = n4;
         n3.right = n5;
-        System.out.println(part3.lengthOfLIS(a));
+        System.out.println(part3.buildTree1(a, a1));
 
     }
 

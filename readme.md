@@ -2,7 +2,9 @@
 学习总结
 
 ## leetCode刷题总结
-淦淦淦！他瞄的太难受了，敲过几遍的题目面试的还是还是还是敲不出来。
+**淦**！！！他瞄的太难受了，🤬🤬🤬自己，敲过几遍的题目面试的还是还是还是敲不出来。
+
+为了代码简洁，省略了一些异常处理。
 
 ### JZ 03. 数组中重复的数字
 
@@ -220,7 +222,7 @@ public int[] reversePrint(ListNode head) {
 
 ### JZ 07. 重建二叉树
 
-输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
+输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。从下往上的构建过程。
 
 例如，给出
 
@@ -324,35 +326,50 @@ public TreeNode recursive(
 
 #### 解法二（迭代）
 
+使用栈保存**右节点还没有赋值**的节点，通过前序遍历两个相邻节点的关系来判断，其存在两种关系
+
+* 后一个节点是前一个节点的左节点，直接赋值。因为前序遍历和后续遍历相对应不等
+* 前节点不存在左节点，后节点是**已经入栈节点的右节点**。将已经入栈的节点出栈与中序遍历节点比较，如果相等对应了中序遍历节点没有右节点的过程，跳过，不相等则代表前序遍历后节点就是这个出栈节点的右节点。
+
+就这样循环遍历前序遍历两两相邻节点，根据中序遍历匹配两种不同的情况就可以重建二叉树。从上往下的构建过程。
+
 ```java
-public TreeNode buildTree(int[] preorder, int[] inorder) {
-	TreeNode root = new TreeNode(preorder[0]);
-
+// 时间复杂度O(n)
+public TreeNode buildTree1(int[] preorder, int[] inorder) {
+    // 根节点就是前序节点的第一个
+    TreeNode root = new TreeNode(preorder[0]);
+    // 用栈维护右节点还没有赋值的节点
+    // 左子树可以立即赋值，通过判断中序遍历的第一个结点是否等于根节点即可
     Stack<TreeNode> stack = new Stack<>();
-
+    // 根节点入栈
     stack.push(root);
-
+    // 中序遍历下标
     int inorderIndex = 0;
-
+    // 从前序遍历下一个相邻节点开始判断，判断其是在根节点的左 or 右子树
     for (int i = 1; i < preorder.length; i++) {
-
-        int preorderVal = preorder[i];
-
+        // peek一下栈顶(右节点还没有赋值的节点)，并不会出栈
         TreeNode node = stack.peek();
-
+        // 前序遍历和中序遍历对应下标不等，代表节点存在左节点
         if (node.val != inorder[inorderIndex]) {
-
-            node.left = new TreeNode(preorderVal);
+            // 前序遍历下一个相邻节点是前节点的左节点，赋值
+            node.left = new TreeNode(preorder[i]);
+            // node.left的右节点还没有赋值，入栈
             stack.push(node.left);
-
-        } else {
-
-            while (!stack.isEmpty() && stack.peek().val == inorder[inorderIndex]) {
+        }
+        // 前序遍历和中序遍历对应下标相等，即节点不存在左节点，
+        else {
+            // 前序遍历下一个相邻节点是已经入栈节点的右节点，但是不知道具体是哪一个节点
+            while (!stack.isEmpty()
+                   && stack.peek().val == inorder[inorderIndex]
+                  ) {
+                // 所以在这里进行过滤，从前序遍历已经遍历的节点逆序(对应出栈)开始和
+                // 中序遍历比较，相等就代表该节点不存在右子节点直接跳过
                 node = stack.pop();
                 inorderIndex++;
             }
-
-            node.right = new TreeNode(preorderVal);
+            // 直到不相等，代表前序遍历下一个相邻节点就是这个节点的右节点
+            node.right = new TreeNode(preorder[i]);
+            // 其不存在右节点，入栈
             stack.push(node.right);
         }
     }
@@ -360,5 +377,31 @@ public TreeNode buildTree(int[] preorder, int[] inorder) {
 }
 ```
 
+### JZ 09. 用两个栈实现队列
 
+用两个栈实现一个队列。队列的声明如下，请实现它的两个函数 `appendTail` 和 `deleteHead` ，分别完成在队列尾部插入整数和在队列头部删除整数的功能。(若队列中没有元素，`deleteHead` 操作返回 -1 )
 
+示例 1：
+
+```
+输入：
+["CQueue","appendTail","deleteHead","deleteHead"]
+[[],[3],[],[]]
+输出：[null,null,3,-1]
+```
+
+示例 2：
+
+```
+输入：
+["CQueue","deleteHead","appendTail","appendTail","deleteHead","deleteHead"]
+[[],[],[5],[2],[],[]]
+输出：[null,-1,null,null,5,2]
+```
+
+**提示：**
+
+- `1 <= values <= 10000`
+- `最多会对 appendTail、deleteHead 进行 10000 次调用`
+
+#### 解法一
