@@ -1,9 +1,8 @@
 package fun.neverth;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Scanner;
+import lombok.Data;
+
+import java.util.*;
 
 
 public class Part5 {
@@ -124,13 +123,79 @@ public class Part5 {
 
     }
 
+    @Data
+    static class TreeNode {
+        TreeNode left;
+        TreeNode right;
+        int val;
+
+        public TreeNode(int val) {
+            this.val = val;
+        }
+    }
+
+    // 时间复杂度O(nlogn)
+// hash从中序遍历中找到对应值的下标，下标左右为对应的左右子树
+    HashMap<Integer, Integer> map = new HashMap<>();
+
+    // 先序遍历，方便在递归中进行访问
+    int[] preorder;
+
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        this.preorder = preorder;
+        for (int i = 0; i < preorder.length; i++) {
+            // 添加值和对应的下标
+            map.put(inorder[i], i);
+        }
+        return recursive(0, 0, inorder.length - 1);
+    }
+
+    public TreeNode recursive(
+            int pre_root_idx, // 根节点对应的下标
+            int in_left_idx,  // 中序遍历对应范围的左下标
+            int in_right_idx  // 中序遍历对应范围的右下标
+    ) {
+        // 中序遍历范围小于0代表已完成
+        if (in_right_idx - in_left_idx < 0) {
+            return null;
+        }
+        // 根据根节点下标创建根节点
+        TreeNode root = new TreeNode(preorder[pre_root_idx]);
+        // 根据根节点的值从HashMap中找到对应在中序遍历中的下标
+        int idx = map.get(preorder[pre_root_idx]);
+        // 根节点的左子树就是根的左子树与中序遍历缩小范围的递归过程
+        root.left = recursive(pre_root_idx + 1, in_left_idx, idx - 1);
+        // 根节点的右子树就是根的右子树与中序遍历缩小范围的递归过程
+        root.right = recursive(
+                pre_root_idx + 1 + (idx - in_left_idx),
+                idx + 1, in_right_idx
+        );
+
+        return root;
+    }
+
+
+    static public boolean findNumberIn2DArray(int[][] matrix, int target) {
+        if (matrix.length == 0) {
+            return false;
+        }
+
+        int i = 0, j = matrix[0].length - 1;
+
+        while (i < matrix.length && j >= 0) {
+            if (matrix[i][j] > target) {
+                j--;
+            } else if (matrix[i][j] < target) {
+                i++;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
-        ArrayList<String> l1 = new ArrayList<String>();
-        ArrayList<Integer> l2 = new ArrayList<Integer>();
-        l1.add("1");
-        l2.add(1);
-        System.out.println(l1.get(0).getClass());
-        System.out.println(l2.get(0).getClass());
-        System.out.println(l1.getClass() == l2.getClass());
+        int[][] arr = {{1, 1}};
+        Part5.findNumberIn2DArray(arr, 2);
     }
 }

@@ -257,17 +257,17 @@ public class Part3 {
      * 面试题07. 重建二叉树 && 105. 从前序与中序遍历序列构造二叉树-递归写法
      */
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-
         if (preorder.length == 0 || inorder.length == 0) {
             return null;
         }
-
+        // 前序遍历的第一个位置就是根节点
         TreeNode root = new TreeNode(preorder[0]);
-
+        // TODO: 这里为了简洁，可以通过HASH
         for (int i = 0; i < preorder.length; i++) {
-
+            // 在中序遍历中找到与根节点对应的位置
             if (preorder[0] == inorder[i]) {
                 root.left = buildTree(
+                        // copyOfRange对应的范围 {a, b)
                         Arrays.copyOfRange(preorder, 1, i + 1),
                         Arrays.copyOfRange(inorder, 0, i)
                 );
