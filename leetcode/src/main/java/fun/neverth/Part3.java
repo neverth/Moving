@@ -479,19 +479,18 @@ public class Part3 {
     public int minArray(int[] numbers) {
         int left = 0, right = numbers.length - 1;
 
-        while (left <= right) {
+        while(left < right) {
             int mid = left + (right - left) / 2;
-
+            // 中间元素大于左边，代表最小值范围在中间元素的右边
             if (numbers[mid] > numbers[right]) {
                 left = mid + 1;
-
+                // 中间元素小于左边，代表最小值范围就在包括中间元素之内的左边
             } else if (numbers[mid] < numbers[right]) {
                 right = mid;
-
+                // 相等的话，缩小右边的范围，避免死循环
             } else {
                 right--;
             }
-
         }
         return numbers[left];
     }
@@ -1008,8 +1007,8 @@ public class Part3 {
     public static void main(String[] args) {
         Part3 part3 = new Part3();
 
-        int[] a = {3,9,8,5,4,10,20,15,7};
-        int[] a1 = {4,5,8,10,9,3,15,20,7};
+        int[] a = {1, 3, 5};
+        int[] a1 = {4, 5, 8, 10, 9, 3, 15, 20, 7};
         String[] b = {"0000"};
 
         int[][] c = new int[][]{
@@ -1042,7 +1041,7 @@ public class Part3 {
         n1.right = n3;
         n3.left = n4;
         n3.right = n5;
-        System.out.println(part3.buildTree1(a, a1));
+        System.out.println(part3.minArray1(a));
 
     }
 
