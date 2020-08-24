@@ -861,7 +861,7 @@ public int movingCount(int m, int n, int k) {
 
 给你一根长度为 `n` 的绳子，请把绳子剪成整数长度的 `m` 段（m、n都是整数，n>1并且m>1），每段绳子的长度记`k[0],k[1]...k[m-1]` 。请问 `k[0]*k[1]*...*k[m-1]` 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
 
-**示例 1：**
+示例 1：
 
 ```
 输入: 2
@@ -869,7 +869,7 @@ public int movingCount(int m, int n, int k) {
 解释: 2 = 1 + 1, 1 × 1 = 1
 ```
 
-**示例 2:**
+示例 2:
 
 ```
 输入: 10
@@ -1019,3 +1019,344 @@ public int hammingWeight(int n) {
 
 - -100.0 < *x* < 100.0
 - *n* 是 32 位有符号整数，其数值范围是 [−231, 231 − 1] 。
+
+### [JZ 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)
+
+输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数第1个节点。例如，一个链表有6个节点，从头节点开始，它们的值依次是1、2、3、4、5、6。这个链表的倒数第3个节点是值为4的节点。
+
+**示例：**
+
+```
+给定一个链表: 1->2->3->4->5, 和 k = 2.
+
+返回链表 4->5.
+```
+
+#### 解法一（双指针）
+
+使用快慢指针，第一个指针先走 k 步，然后两个一起走，等快指针到结尾的时候慢指针指向倒数第k个结点。
+
+```java
+public ListNode getKthFromEnd(ListNode head, int k) {
+    // 双指针
+    ListNode slow = head, fast = head;
+    // 快指针先后倒数的k个
+    for (int i = 0; i < k; i++) {
+        fast = fast.next;
+    }
+    // 快指针到达尾部之后，慢指针指的就是倒数第K个
+    while (fast != null) {
+        slow = slow.next;
+        fast = fast.next;
+    }
+    return slow;
+}
+```
+
+### [JZ 24. 反转链表](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/)
+
+定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点。
+
+示例:
+
+```
+输入: 1->2->3->4->5->NULL
+输出: 5->4->3->2->1->NULL
+```
+
+限制：
+
+```
+0 <= 节点个数 <= 5000
+```
+
+#### 解法一（双指针）
+
+定义两个指针一个在前一个在后，再定义一个临时指针用于保存后指针的下一个节点，接下来后指针指向前指针反转，再利用临时指针找到下一个节点，循环。
+
+```java
+
+public ListNode reverseList(ListNode head) {
+    // 定义两个指针一个在前一个在后
+    ListNode p1 = null, p2 = head;
+    while(p2 != null){
+        // 临时指针，保存后指针的下一个节点
+        // 不保存的话交换之后就找不到下一个节点了
+        ListNode tmp = p2.next;
+        // 反转
+        p2.next = p1;
+        // 前进
+        p1 = p2;
+        // 前进
+        p2 = tmp;
+    }
+    return p1;
+}
+```
+
+#### 解法二（递归）
+
+递归其实就是栈，利用入栈顺序，出栈逆序即可交换，入栈保存一个相邻的节点，出栈的时候利用那个相邻的节点和入参节点即可完成反转。
+
+```java
+ListNode newHead;
+
+public ListNode reverseList2(ListNode head) {
+    // 链表为空直接返回
+    if (head == null) {
+        return head;
+    }
+    // 内部反转
+    re(head);
+    // 反转之后的尾的指针不会反转
+    // 会构成环，手动帮他置为空
+    head.next = null;
+    return newHead;
+}
+
+public void re(ListNode head) {
+    if (head.next == null) {
+        // 代表到达链表尾，设置为新的头
+        newHead = head;
+        return;
+    }
+    // 入栈是顺序的，出栈就是反序
+    // 要交换，肯定要两个值，已经有一个head，
+    // 下一个值head.next最方便
+    ListNode tmp = head.next;
+    // 入栈
+    reverseList(head.next);
+    // 出栈，将指针交换
+    tmp.next = head;
+}
+```
+
+### [JZ 25. 合并两个排序的链表](https://leetcode-cn.com/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/)
+
+输入两个递增排序的链表，合并这两个链表并使新链表中的节点仍然是递增排序的。
+
+示例1：
+
+```
+输入：1->2->4, 1->3->4
+输出：1->1->2->3->4->4
+```
+
+限制：
+
+```
+0 <= 链表长度 <= 1000
+```
+
+#### 解法一（双指针）
+
+因此容易想到使用双指针遍历两链表，根据值大小关系确定节点添加顺序，两节点指针交替前进，直至遍历完毕
+
+```java
+public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    // 创建一个链表
+    ListNode head = new ListNode();
+    ListNode p = head;
+    while(l1 != null && l2 != null){
+        // 根据大小，选择相应的插入到新链表
+        if(l1.val < l2.val){
+            p.next = l1;
+            l1 = l1.next;
+        }else{
+            p.next = l2;
+            l2 = l2.next;
+        }
+        // 前进！
+        p = p.next;
+    }
+    // 添加未比较完成的
+    p.next = (l1 == null ? l2 : l1);
+    // 头结点为空，用哦过与辅助
+    return head.next;
+}
+```
+
+#### 解法二（递归）
+
+递归就是栈，利用栈。出栈的时候开始构建链表，从尾向前。
+
+```java
+public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    // 他完了不代表其他人完了
+    if (l1 == null) {
+        return l2;
+    }
+    // 他完了不代表其他人完了
+    if (l2 == null) {
+        return l1;
+    }
+    // 出栈的时候开始构建链表，从尾向前
+    if (l1.val < l2.val) {
+        l1.next = mergeTwoLists(l1.next, l2);
+        return l1;
+    } else {
+        l2.next = mergeTwoLists(l1, l2.next);
+        return l2;
+    }
+}
+```
+
+### [JZ 26. 树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/)
+
+输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)
+
+B是A的子结构， 即 A中有出现和B相同的结构和节点值。
+
+例如:
+给定的树 A:
+
+```
+   3
+  / \
+  4  5
+ / \
+1   2
+```
+
+给定的树 B：
+
+```
+  4 
+ /
+1
+```
+
+返回 true，因为 B 与 A 的一个子树拥有相同的结构和节点值。
+
+示例 1：
+
+```
+输入：A = [1,2,3], B = [3,1]
+输出：false
+```
+
+示例 2：
+
+```
+输入：A = [3,4,5,1,2], B = [4,1]
+输出：true
+```
+
+限制：
+
+```
+0 <= 节点个数 <= 10000
+```
+
+#### 解法一（递归）
+
+先序遍历树A中的每个节点Na作为相对根节点，判断树A中以Na为根节点的子树是否包含B树，每次判断的时候使用dfs算法将会遍历到树底，递归比较其左右子树是否对应相等。
+
+```java
+public boolean isSubStructure(TreeNode A, TreeNode B) {
+    // 过滤特殊格式
+    if(A == null || B == null){
+        return false;
+    }
+    // 首先在相对根节点判断一次，然后分别递归遍历其左右再继续判断
+    return dfs(A, B) || isSubStructure(A.left, B) || isSubStructure(A.right, B);
+}
+boolean dfs(TreeNode A, TreeNode B) {
+    // 子结构已经匹配完成，返回true
+    if(B == null) return true;
+    // 子结构没有完成，但是树已经遍历完成了
+    if(A == null) return false;
+    // 判断其值是否相等，在递归判断其子对应左右是否能匹配上
+    return A.val == B.val && dfs(A.left, B.left) && dfs(A.right, B.right);
+}
+```
+
+### [JZ 27. 二叉树的镜像](https://leetcode-cn.com/problems/er-cha-shu-de-jing-xiang-lcof/)
+
+请完成一个函数，输入一个二叉树，该函数输出它的镜像。
+
+```
+     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+```
+
+镜像输出：
+
+```
+     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1
+```
+
+示例 1：
+
+```
+输入：root = [4,2,7,1,3,6,9]
+输出：[4,7,2,9,6,3,1]
+```
+
+限制：
+
+```
+0 <= 节点个数 <= 1000
+```
+
+#### 解法一（递归）
+
+ 利用树的后序遍历并将每次的访问左节点和右节点的值保存下来，方便后序遍历之后对根访问的时候左右交换。
+
+```java
+public TreeNode mirrorTree(TreeNode root) {
+    if(root == null){
+        return null;
+    }
+    // 递归遍历完左边并保存每次递归左边的值
+    TreeNode tmpRight =  mirrorTree(root.left);
+    // 递归遍历完右边并保存每次递归右边的值
+    TreeNode tmpLeft = mirrorTree(root.right); 
+    // 后序遍历，从下往上构建
+    // 在树的最底层都是相对局部交换，最后树也可以看成局部，左边右边，一次交换。
+    root.right = tmpRight;
+    root.left = tmpLeft;
+    return root;
+}
+```
+
+#### 解法二（BFS）
+
+无论是BFS还是DFS都会访问到每一个节点，访问每个节点的时候交换他的左右子节点，直到所有的节点都访问完为止，代码如下
+
+```java
+public TreeNode mirrorTree1(TreeNode root) {
+    if (root == null) {
+        return null;
+    }
+    // 栈
+    Stack<TreeNode> stack = new Stack<>();
+    // 入栈
+    stack.add(root);
+    // 其实就是树的深度优先遍历，dfs
+    // 在这里是沿着右子树走走到底。
+    while (!stack.isEmpty()) {
+        TreeNode node = stack.pop();
+        // 将其左右子树都加入栈
+        if (node.left != null) {
+            stack.add(node.left);
+        }
+        if (node.right != null) {
+            stack.add(node.right);
+        }
+        // 交换遍历到的每一个节点
+        TreeNode tmp = node.left;
+        node.left = node.right;
+        node.right = tmp;
+    }
+    return root;
+}
+```
+

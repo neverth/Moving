@@ -1,6 +1,5 @@
 package fun.neverth;
 
-import javax.swing.tree.TreeNode;
 import java.util.*;
 
 /**
@@ -628,18 +627,24 @@ public class Part1 {
         }
     }
 
+    /**
+     * 剑指 Offer 22. 链表中倒数第k个节点
+     *
+     * @author neverth
+     * @date 2020/8/24 21:27
+     */
     public ListNode getKthFromEnd(ListNode head, int k) {
+        // 双指针
         ListNode slow = head, fast = head;
-
+        // 快指针先后倒数的k个
         for (int i = 0; i < k; i++) {
             fast = fast.next;
         }
-
+        // 快指针到达尾部之后，慢指针指的就是倒数第K个
         while (fast != null) {
             slow = slow.next;
             fast = fast.next;
         }
-
         return slow;
     }
 
