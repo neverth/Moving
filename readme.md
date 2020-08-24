@@ -8,7 +8,10 @@
 
 ### 二分查找套路
 
+通过找到一个中值，每次结果都会在范围的左边或者是右边，一次就将范围缩小为一半，然后再将范围缩小为一半的一半，直到找到结果。
+
 ```java
+// 时间复杂度O(logn)
 int binarySearch(int[] nums, int target) {
     int left = 0, right = ...;
 
@@ -26,7 +29,47 @@ int binarySearch(int[] nums, int target) {
 }
 ```
 
-### 回溯算法（DFS）套路
+### 回溯算法、深度优先算法（DFS）套路
+
+可以理解为暴力走所有路径。DFS 通过递归，先朝一个方向搜到底，再回溯至上个节点，沿另一个方向搜索，以此类推。
+
+```java
+result = []
+void dfsTaoLu() {
+    dfs(路径， 选择列表);
+}
+void dfs(路径, 选择列表):
+    if 满足结束条件:
+        result.add(路径)
+        return
+
+    for 选择 in 选择列表:
+        做选择
+        dfs(路径, 选择列表)
+        撤销选择
+```
+
+### 广度优先算法（BFS）套路
+
+原理是遍历队列里面的每个节点并再将遍历节点周围的结点入队，这样一圈一圈的处理就是广度优先遍历。
+
+BFS 相对 DFS 的最主要的区别是：BFS 找到的路径一定是最短的，但代价就是空间复杂度比 DFS 大很多，因为要使用队列。
+
+```java
+int BFS(Node start, Node target) {
+    // 创建一个队列用于保存一个节点周围的所有节点
+    Queue<Node> q; 
+	// 将起点加入队列
+    q.offer(start); 
+    while (!q.isEmpyt()) {
+        Node cur = q.poll();
+        // 将节点周围的节点入队
+        q.offer(x);
+    }
+}
+```
+
+### 动态规划套路
 
 ```java
 
@@ -661,3 +704,318 @@ public int minArray(int[] numbers) {
 
 #### 解法一 （DFS）
 
+DFS模板，遍历每个路径的起点，如果格子上的字符跟对应字符相等，就可以进行三个方向的尝试，直至暴力尝试完所有的路径或者中途找到路径退出。
+
+```java
+// 方便访问
+char[] word;
+char[][] board;
+
+public boolean exist(char[][] board, String word) {
+    this.word = word.toCharArray();
+    this.board = board;
+    // 可以从矩阵的任意一个点开始，所以可以在这里进行遍历
+    for (int i = 0; i < board.length; i++) {
+        for (int j = 0; j < board[0].length; j++) {
+            if (dfs(i, j, 0)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+public boolean dfs(
+    int i,      // 下标
+    int j,      // 下标
+    int len     // 已经匹配的长度
+) {
+    // 超过边界或者对应位置字符不匹配
+    if (i < 0 || j < 0
+        || i > board.length - 1
+        || j > board[0].length - 1
+        || word[len] != board[i][j]) {
+        return false;
+    }
+    // 代表已经找到对应的路径
+    if (len == word.length - 1) {
+        return true;
+    }
+    // 防止走回头路，回头路跟将要匹配的字符相等就会出错
+    char tmp = board[i][j];
+    board[i][j] = '/';
+    // 分别对应四种情况
+    boolean res = dfs(i + 1, j, len + 1) || dfs(i - 1, j, len + 1)
+        	   || dfs(i, j + 1, len + 1) || dfs(i, j - 1, len + 1);
+    board[i][j] = tmp;
+    return res;
+}
+```
+
+### JZ 13. [机器人的运动范围](https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/)
+
+地上有一个m行n列的方格，从坐标 `[0,0]` 到坐标 `[m-1,n-1]` 。一个机器人从坐标 `[0, 0] `的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？
+
+示例 1：
+
+```
+输入：m = 2, n = 3, k = 1
+输出：3
+```
+
+示例 2：
+
+```
+输入：m = 3, n = 1, k = 0
+输出：1
+```
+
+提示：
+
+- `1 <= n,m <= 100`
+- `0 <= k <= 20`
+
+#### 解法一（DFS）
+
+DFS模板，从0, 0开始，如果该位置有效，就可以尝试四个方向，直至暴力尝试完所有有效的格子。
+
+```java
+// 时间复杂度O(MN)
+// 方便访问
+int limit, m, n;
+boolean[][] visited;
+public int movingCount(int m, int n, int k) {
+    this.limit = k;
+    this.m = m;
+    this.n = n;
+    // 用于记录已经访问的格子
+    this.visited = new boolean[m][n];
+    return dfs(0, 0);
+}
+public int dfs(int i, int j){
+    // 计算行坐标和列坐标的数位之和
+    int k = 0, i1 = i, j1 = j;
+    while(i1 != 0){
+        k += (i1 % 10);
+        i1 /= 10;
+    }
+    while(j1 != 0){
+        k += (j1 % 10);
+        j1 /= 10;
+    }
+    // 下标出界或者是已经访问
+    if(k > limit || i < 0 || j < 0 || i >= m || j >= n || visited[i][j]){
+        return 0;
+    }
+    visited[i][j] = true;
+    // 对应四种情况，其实通过向右和向下移动，访问所有可达解。
+    return dfs(i + 1, j) + dfs(i - 1, j) + dfs(i, j + 1) + dfs(i, j - 1) + 1;
+}
+```
+
+#### 解法二（BFS）
+
+使用BFS广度优先算法套模板即可完成。原理是遍历队列里面的每个节点并再将遍历节点周围的结点入队，这样一圈一圈的处理就是广度优先遍历。
+
+```java
+// 时间复杂度O(MN)
+public int movingCount(int m, int n, int k) {
+    // 用于记录已经访问的格子
+    boolean[][] visited = new boolean[m][n];
+    int res = 0;
+    // 创建一个队列用于保存一个节点周围的所有节点
+    // 原理是遍历队列里面的每个节点并再将遍历节点周围的结点入队
+    // 这样一圈一圈的处理就是广度优先遍历
+    Queue<int[]> queue = new LinkedList<>();
+    // 初始化加入第一个结点
+    queue.add(new int[]{0, 0});
+    while (queue.size() > 0) {
+        // 开始处理第一个节点
+        int[] x = queue.poll();
+        // 计算行坐标和列坐标的数位之和
+        int i = x[0], j = x[1];
+        int k1 = 0, i1 = i, j1 = j;
+        while (i1 != 0) {
+            k1 += (i1 % 10);
+            i1 /= 10;
+        }
+        while (j1 != 0) {
+            k1 += (j1 % 10);
+            j1 /= 10;
+        }
+        // 不满足条件，跳过这个结点
+        if (i >= m || j >= n || i < 0 || j < 0 || k < k1 || visited[i][j]) continue;
+        visited[i][j] = true;
+        res++;
+        // 将节点周围的一圈的结点加入队列
+        queue.add(new int[]{i + 1, j});
+        queue.add(new int[]{i - 1, j});
+        queue.add(new int[]{i, j + 1});
+        queue.add(new int[]{i, j - 1});
+    }
+    return res;
+}
+```
+
+### [JZ 14. 剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/)
+
+给你一根长度为 `n` 的绳子，请把绳子剪成整数长度的 `m` 段（m、n都是整数，n>1并且m>1），每段绳子的长度记`k[0],k[1]...k[m-1]` 。请问 `k[0]*k[1]*...*k[m-1]` 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
+
+**示例 1：**
+
+```
+输入: 2
+输出: 1
+解释: 2 = 1 + 1, 1 × 1 = 1
+```
+
+**示例 2:**
+
+```
+输入: 10
+输出: 36
+解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36
+```
+
+**提示：**
+
+- `2 <= n <= 58`
+
+#### 解法一（动态规划）
+
+1. 创建一个dp数组，下标为n的元素的值代表对应长度绳子分解之后的最大乘积
+2. 已知第2项和第3项值
+3. 状态转移方程也容易推出。这里需要注意的是因为dp[x]有可能小于x，比如dp[3] = 2 < 3，所以就有下面代码中的判断操作。
+
+自底向上即可推出全部值。
+
+```java
+// 时间复杂度O(n * n)
+public int cuttingRope(int n) {
+    // dp数组，下标为n的元素的值代表对应长度绳子分解之后的最大乘积
+    int[] dp = new int[n + 1];
+    dp[2] = 1;
+    if(n > 2)
+        dp[3] = 2;
+    for(int i = 4; i <= n; i++){
+        // 开始剪绳子，尝试每一个长度
+        for(int j = 2; j < i; j++){
+            // 他的最乘积就是他
+            // 被剪之后的最大乘积和减掉的长度相乘
+            // 和被剪之后的长度和减掉的长度相乘中的最大值
+            // 因为dp[x]有可能小于x，比如dp[3] = 2 < 3
+            dp[i] = Math.max(dp[i], Math.max(dp[i - j] * j, (i - j) * j));
+        }
+    }
+    return dp[n];
+}
+```
+
+#### 解法二（贪心算法）
+
+找规律之后我们可以发现**为使乘积最大，只有长度为 2 和 3 的绳子不应再切分，且 3 比 2 更优**，现将n转为3的倍数，然后在进行循环处理。
+
+所谓贪心算法是指，在对问题求解时，总是做出在当前看来是最好的选择
+
+```java
+// 时间复杂度O(n)
+// 为使乘积最大，只有长度为 2 和 3 的绳子不应再切分，且 3 比 2 更优
+public int cuttingRope(int n) {
+    int res = 1;
+    // 将n转为3的倍数，方便后面处理
+    // 比3的倍数大1，
+    // 此时要将n转为3的倍数并让乘积最大
+    // 最好的办法是减掉4,4的最大乘积为4
+    if(n % 3 == 1){
+        res = 4;
+        n -= 4;
+    }
+    // // 比3的倍数大2，直接减2并乘2
+    else if(n % 3 == 2){
+        res = 2;
+        n -= 2;
+    }
+    // 此时是3的倍数
+    while(n > 0){
+        res *= 3;
+        n -= 3;
+    }
+    return res;
+}
+```
+
+### [JZ 15. 二进制中1的个数](https://leetcode-cn.com/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/)
+
+请实现一个函数，输入一个整数，输出该数二进制表示中 1 的个数。例如，把 9 表示成二进制是 1001，有 2 位是 1。因此，如果输入 9，则该函数输出 2。
+
+示例 1：
+
+```
+输入：00000000000000000000000000001011
+输出：3
+解释：输入的二进制串 00000000000000000000000000001011 中，共有三位为 '1'。
+```
+
+示例 2：
+
+```
+输入：00000000000000000000000010000000
+输出：1
+解释：输入的二进制串 00000000000000000000000010000000 中，共有一位为 '1'。
+```
+
+示例 3：
+
+```
+输入：11111111111111111111111111111101
+输出：31
+解释：输入的二进制串 11111111111111111111111111111101 中，共有 31 位为 '1'。
+```
+
+#### 解法一（位运算）
+
+跟 1 进行与运算，并记录结果。
+
+```java
+public int hammingWeight(int n) {
+    int res = 0;
+    while(n != 0){
+        // 进行与运算
+        res += n & 1;
+        // 无符号右移一位
+        n >>>= 1;
+    }
+    return res;
+}
+```
+
+### [JZ 16. 数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/)
+
+实现函数double Power(double base, int exponent)，求base的exponent次方。不得使用库函数，同时不需要考虑大数问题。
+
+示例 1:
+
+```
+输入: 2.00000, 10
+输出: 1024.00000
+```
+
+示例 2:
+
+```
+输入: 2.10000, 3
+输出: 9.26100
+```
+
+示例 3:
+
+```
+输入: 2.00000, -2
+输出: 0.25000
+解释: 2-2 = 1/22 = 1/4 = 0.25
+```
+
+说明:
+
+- -100.0 < *x* < 100.0
+- *n* 是 32 位有符号整数，其数值范围是 [−231, 231 − 1] 。
