@@ -479,7 +479,7 @@ public class Part3 {
     public int minArray(int[] numbers) {
         int left = 0, right = numbers.length - 1;
 
-        while(left < right) {
+        while (left < right) {
             int mid = left + (right - left) / 2;
             // 中间元素大于左边，代表最小值范围在中间元素的右边
             if (numbers[mid] > numbers[right]) {
@@ -533,124 +533,176 @@ public class Part3 {
     /**
      * 面试题12. 矩阵中的路径 && 79. 单词搜索
      */
-    public boolean exist(char[][] board, String word) {
+    // 方便访问
+    char[] word;
+    char[][] board;
 
+    public boolean exist(char[][] board, String word) {
+        this.word = word.toCharArray();
+        this.board = board;
+        // 可以从矩阵的任意一个点开始，所以可以在这里进行遍历
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                if (board[i][j] == word.charAt(0)) {
-
-                    if (backtrack(board, word, i, j, 0)) {
-                        return true;
-                    }
-
+                if (dfs(i, j, 0)) {
+                    return true;
                 }
             }
         }
-
         return false;
     }
 
-    public boolean backtrack(char[][] board, String word, int i, int j, int k) {
-
-        if (
-                i >= board.length
-                        || i < 0
-                        || j >= board[0].length
-                        || j < 0
-                        || board[i][j] != word.charAt(k)
-        ) {
-
+    public boolean dfs(
+            int i,      // 下标
+            int j,      // 下标
+            int len     // 已经匹配的长度
+    ) {
+        // 超过边界或者对应位置字符不匹配
+        if (i < 0 || j < 0
+                || i > board.length - 1
+                || j > board[0].length - 1
+                || word[len] != board[i][j]) {
             return false;
         }
-
-        if (k == word.length() - 1) {
+        // 代表已经找到对应的路径
+        if (len == word.length - 1) {
             return true;
         }
-
-        char temp = board[i][j];
-
-        board[i][j] = '0';
-
-        boolean res = backtrack(board, word, i + 1, j, k + 1)
-                || backtrack(board, word, i - 1, j, k + 1)
-                || backtrack(board, word, i, j + 1, k + 1)
-                || backtrack(board, word, i, j - 1, k + 1);
-
-        board[i][j] = temp;
-
+        // 防止走回头路，回头路跟将要匹配的字符相等就会出错
+        char tmp = board[i][j];
+        board[i][j] = '/';
+        // 分别对应四种情况
+        boolean res = dfs(i + 1, j, len + 1) || dfs(i - 1, j, len + 1)
+                || dfs(i, j + 1, len + 1) || dfs(i, j - 1, len + 1);
+        board[i][j] = tmp;
         return res;
     }
 
     /**
      * 面试题13. 机器人的运动范围
      */
+    // 方便访问
+    int limit, m, n;
+    boolean[][] visited;
+
     public int movingCount(int m, int n, int k) {
-        return backtrack(m, n, k, 0, 0, new boolean[m][n]);
+        this.limit = k;
+        this.m = m;
+        this.n = n;
+        // 用于记录已经访问的格子
+        this.visited = new boolean[m][n];
+        return dfs(0, 0);
     }
 
-    public int backtrack(int m, int n, int k, int i, int j, boolean[][] visited) {
-
-        if (i >= m || i < 0 || j >= n || j < 0 || visited[i][j]) {
+    public int dfs(int i, int j) {
+        // 计算行坐标和列坐标的数位之和
+        int k = 0, i1 = i, j1 = j;
+        while (i1 != 0) {
+            k += (i1 % 10);
+            i1 /= 10;
+        }
+        while (j1 != 0) {
+            k += (j1 % 10);
+            j1 /= 10;
+        }
+        // 下标出界或者是已经访问
+        if (k > limit || i < 0 || j < 0 || i >= m || j >= n || visited[i][j]) {
             return 0;
         }
-
-        int sum = 0, num1 = i, num2 = j;
-
-        while (num1 > 0) {
-            sum += num1 % 10;
-            num1 /= 10;
-        }
-
-        while (num2 > 0) {
-            sum += num2 % 10;
-            num2 /= 10;
-        }
-
-        if (sum > k) {
-            return 0;
-        }
-
         visited[i][j] = true;
+        // 对应四种情况，其实通过向右和向下移动，访问所有可达解。
+        return dfs(i + 1, j) + dfs(i - 1, j) + dfs(i, j + 1) + dfs(i, j - 1) + 1;
+    }
 
-        return backtrack(m, n, k, i + 1, j, visited) +
-                backtrack(m, n, k, i - 1, j, visited) +
-                backtrack(m, n, k, i, j + 1, visited) +
-                backtrack(m, n, k, i, j - 1, visited) + 1;
-
+    public int movingCount1(int m, int n, int k) {
+        // 用于记录已经访问的格子
+        boolean[][] visited = new boolean[m][n];
+        int res = 0;
+        // 创建一个队列用于保存一个节点周围的所有节点
+        // 原理是遍历队列里面的每个节点并再将遍历节点周围的结点入队
+        // 这样一圈一圈的处理就是广度优先遍历
+        Queue<int[]> queue = new LinkedList<>();
+        // 初始化加入第一个结点
+        queue.add(new int[]{0, 0});
+        while (queue.size() > 0) {
+            // 开始处理第一个节点
+            int[] x = queue.poll();
+            // 计算行坐标和列坐标的数位之和
+            int i = x[0], j = x[1];
+            int k1 = 0, i1 = i, j1 = j;
+            while (i1 != 0) {
+                k1 += (i1 % 10);
+                i1 /= 10;
+            }
+            while (j1 != 0) {
+                k1 += (j1 % 10);
+                j1 /= 10;
+            }
+            // 不满足条件，跳过这个结点
+            if (i >= m || j >= n || i < 0 || j < 0 || k < k1 || visited[i][j]) {
+                continue;
+            }
+            visited[i][j] = true;
+            res++;
+            // 将节点周围的一圈的结点加入队列
+            // 其实通过向右和向下移动，访问所有可达解。
+            queue.add(new int[]{i + 1, j});
+            queue.add(new int[]{i - 1, j});
+            queue.add(new int[]{i, j + 1});
+            queue.add(new int[]{i, j - 1});
+        }
+        return res;
     }
 
     /**
      * 面试题14- I. 剪绳子 && 343. 整数拆分
      */
     public int cuttingRope(int n) {
-        if (n < 2) {
-            return 0;
-        } else if (n == 2) {
-            return 1;
-        } else if (n == 3) {
-            return 2;
-        }
-
+        // dp数组，下标为n的元素的值代表对应长度绳子分解之后的最大乘积
         int[] dp = new int[n + 1];
-
         dp[2] = 1;
-        dp[3] = 2;
-
-        /*
-         * 关键一步 dp[i]由四种状态组成
-         * 1.拆j数字分成小块整数拆分求最大 i - j不拆开 就是dp[j] * (i - j)
-         * 2.拆i - j这个数字整数拆分求最大j不拆开就是dp[i - j] * j
-         * 3.两个都整数拆分分别求最大就是 dp[i - j] * dp[j]
-         * 4. i和i - j都不整数拆分 就是i * (i - j)
-         * 然后四个求出最大值
-         */
+        if (n > 2) {
+            dp[3] = 2;
+        }
         for (int i = 4; i <= n; i++) {
-            for (int j = 1; j < i; j++) {
-                dp[i] = Math.max(dp[i], Math.max(j * dp[i - j], j * (i - j)));
+            // 开始剪绳子，尝试每一个长度
+            for (int j = 2; j < i; j++) {
+                // 他的最乘积就是他
+                // 被剪之后的最大乘积和减掉的长度相乘
+                // 和被剪之后的长度和减掉的长度相乘中的最大值
+                // 因为dp[x]有可能小于x，比如dp[3] = 2 < 3
+                dp[i] = Math.max(dp[i], Math.max(dp[i - j] * j, (i - j) * j));
             }
         }
-
         return dp[n];
+    }
+
+    /**
+     * 面试题14- I. 剪绳子 && 343. 整数拆分
+     * 贪心算法
+     * 时间复杂度O(n)
+     * 为使乘积最大，只有长度为 2 和 3 的绳子不应再切分，且 3 比 2 更优
+     */
+    public int cuttingRope2(int n) {
+        int res = 1;
+        // 将n转为3的倍数，方便后面处理
+        // 比3的倍数大1，
+        // 此时要将n转为3的倍数并让乘积最大
+        // 最好的办法是减掉4,4的最大乘积为4
+        if(n % 3 == 1){
+            res = 4;
+            n -= 4;
+        }
+        // // 比3的倍数大2，直接减2并乘2
+        else if(n % 3 == 2){
+            res = 2;
+            n -= 2;
+        }
+        // 此时是3的倍数
+        while(n > 0){
+            res *= 3;
+            n -= 3;
+        }
+        return res;
     }
 
     /**
@@ -1011,12 +1063,10 @@ public class Part3 {
         int[] a1 = {4, 5, 8, 10, 9, 3, 15, 20, 7};
         String[] b = {"0000"};
 
-        int[][] c = new int[][]{
-                {1, 4, 7, 11, 15},
-                {2, 5, 8, 12, 19},
-                {3, 6, 9, 16, 22},
-                {10, 13, 14, 17, 24},
-                {18, 21, 23, 26, 30},
+        char[][] c = new char[][]{
+                {'A', 'A'},
+//                {'S','F','C','S'},
+//                {'A','D','E','E'}
         };
 
 
@@ -1041,7 +1091,7 @@ public class Part3 {
         n1.right = n3;
         n3.left = n4;
         n3.right = n5;
-        System.out.println(part3.minArray1(a));
+        System.out.println(part3.movingCount1(1, 2, 1));
 
     }
 

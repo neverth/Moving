@@ -196,6 +196,7 @@ public class Part5 {
 
     public static void main(String[] args) {
         int[][] arr = {{1, 1}};
-        Part5.findNumberIn2DArray(arr, 2);
+        Part5 part5 = new Part5();
+        System.out.println();
     }
 }
