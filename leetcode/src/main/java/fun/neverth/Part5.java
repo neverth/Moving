@@ -194,9 +194,91 @@ public class Part5 {
         return false;
     }
 
+    /**
+     * 剑指 Offer 21. 调整数组顺序使奇数位于偶数前面
+     *
+     * @author neverth.li
+     * @date 2020/8/24 17:41
+     */
+    public int[] exchange(int[] nums) {
+        // 双指针
+        int i = 0, j = nums.length - 1;
+        while (i < j) {
+            // 找到一个偶数
+            while (i < j && nums[i] % 2 == 1) {
+                i++;
+            }
+            // 找到一个奇数
+            while (i < j && nums[j] % 2 == 0) {
+                j--;
+            }
+            // 交换
+            int tmp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = tmp;
+        }
+        return nums;
+    }
+
+    /**
+     * 剑指 Offer 20. 表示数值的字符串
+     *
+     * @author neverth.li
+     * @date 2020/8/24 17:45
+     */
+    public boolean isNumber(String s) {
+        if (s == null || s.length() == 0) {
+            return false;
+        }
+        // 标记是否遇到数位、小数点、E，因为正负号最好判断，只有两种情况，所以也不需要额外定义变量
+        boolean hasNum = false, hasDot = false, hasE = false;
+        // leetcode给的case中存在空格，去掉
+        char[] str = s.trim().toCharArray();
+        // 遍历字符串，跟已经遍历的情况比较
+        for (int i = 0; i < str.length; i++) {
+            // 因为正负号最好判断，只有两种情况，所以也不需要额外定义变量
+            if (str[i] == '-' || str[i] == '+') {
+                // 1. 正负号只可能出现在第一个位置 2. 出现在 e 的后面一个位置
+                if (i != 0 && str[i - 1] != 'e' && str[i - 1] != 'E') {
+                    return false;
+                }
+            }
+            // 判断数字
+            else if (str[i] >= '0' && str[i] <= '9') {
+                hasNum = true;
+            }
+            // 判断小数点
+            else if (str[i] == '.') {
+                // 两种情况 1. 小数点只能有一个 2. e的后面不能有小数点
+                if (hasDot || hasE) {
+                    return false;
+                }
+                // 标记已经遇到一个小数点
+                hasDot = true;
+            }
+            // 判断e
+            else if (str[i] == 'e' || str[i] == 'E') {
+                // 三种情况 1. e只能有一个 2. e前面必须有整数 3. e的后面也必须是一个整数
+                if (!hasNum || hasE) {
+                    return false;
+                }
+                // 标记已经遇到一个e
+                hasE = true;
+                // 重置isNum，因为e之后也必须接上整数
+                hasNum = false;
+            }
+            // 其它情况均为不合法字符
+            else {
+                return false;
+            }
+        }
+        // 结尾必须为数字
+        return hasNum;
+    }
+
     public static void main(String[] args) {
-        int[][] arr = {{1, 1}};
+        int[] arr = {1, 2, 3, 4};
         Part5 part5 = new Part5();
-        System.out.println();
+        System.out.println(part5.isNumber("1"));
     }
 }
