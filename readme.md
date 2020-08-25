@@ -1020,6 +1020,111 @@ public int hammingWeight(int n) {
 - -100.0 < *x* < 100.0
 - *n* 是 32 位有符号整数，其数值范围是 [−231, 231 − 1] 。
 
+
+### [JZ 20. 表示数值的字符串](https://leetcode-cn.com/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof/)
+
+请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串"+100"、"5e2"、"-123"、"3.1416"、"-1E-16"、"0123"都表示数值，但"12e"、"1a3.14"、"1.2.3"、"+-5"及"12e+5.4"都不是。
+
+#### 解法一
+
+判断四种符号的各个情况，从前往后开始开始判断。
+
+```java
+public boolean isNumber(String s) {
+    if (s == null || s.length() == 0) {
+        return false;
+    }
+    // 标记是否遇到数位、小数点、E，因为正负号最好判断，只有两种情况
+    // 所以也不需要额外定义变量
+    boolean hasNum = false, hasDot = false, hasE = false;
+    // leetcode给的case中存在空格，去掉
+    char[] str = s.trim().toCharArray();
+    // 遍历字符串，跟已经遍历的情况比较
+    for (int i = 0; i < str.length; i++) {
+        // 因为正负号最好判断，只有两种情况，所以也不需要额外定义变量
+        if (str[i] == '-' || str[i] == '+') {
+            // 1. 正负号只可能出现在第一个位置 2. 出现在 e 的后面一个位置
+            if (i != 0 && str[i - 1] != 'e' && str[i - 1] != 'E') {
+                return false;
+            }
+        }
+        // 判断数字
+        else if (str[i] >= '0' && str[i] <= '9') {
+            hasNum = true;
+        }
+        // 判断小数点
+        else if (str[i] == '.') {
+            // 两种情况 1. 小数点只能有一个 2. e的后面不能有小数点
+            if (hasDot || hasE) {
+                return false;
+            }
+            // 标记已经遇到一个小数点
+            hasDot = true;
+        }
+        // 判断e
+        else if (str[i] == 'e' || str[i] == 'E') {
+            // 三种情况 1. e只能有一个 2. e前面必须有整数 3. e的后面也必须是一个整数
+            if (!hasNum || hasE) {
+                return false;
+            }
+            // 标记已经遇到一个e
+            hasE = true;
+            // 重置isNum，因为e之后也必须接上整数
+            hasNum = false;
+        }
+        // 其它情况均为不合法字符
+        else {
+            return false;
+        }
+    }
+    // 结尾必须为数字
+    return hasNum;
+}
+```
+
+### [JZ 21. 调整数组顺序使奇数位于偶数前面](https://leetcode-cn.com/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/)
+
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。
+
+**示例：**
+
+```
+输入：nums = [1,2,3,4]
+输出：[1,3,2,4] 
+注：[3,1,2,4] 也是正确的答案之一。
+```
+
+**提示：**
+
+1. `1 <= nums.length <= 50000`
+2. `1 <= nums[i] <= 10000`
+
+#### 解法一（双指针）
+
+在头和尾分别设置一个指针，头指针指向奇数则后移，尾指针指向偶数则前移，交换。
+
+```java
+public int[] exchange(int[] nums) {
+    // 双指针
+    int i = 0, j = nums.length - 1;
+    while (i < j) {
+        // 找到一个偶数
+        while (i < j && nums[i] % 2 == 1) {
+            i++;
+        }
+        // 找到一个奇数
+        while (i < j && nums[j] % 2 == 0) {
+            j--;
+        }
+        // 交换
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+    return nums;
+}
+```
+
 ### [JZ 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)
 
 输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数第1个节点。例如，一个链表有6个节点，从头节点开始，它们的值依次是1、2、3、4、5、6。这个链表的倒数第3个节点是值为4的节点。
