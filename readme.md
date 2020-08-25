@@ -1,4 +1,4 @@
-# Moving
+#   Moving
 学习总结
 
 ## leetCode刷题总结
@@ -1025,7 +1025,7 @@ public int hammingWeight(int n) {
 
 请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串"+100"、"5e2"、"-123"、"3.1416"、"-1E-16"、"0123"都表示数值，但"12e"、"1a3.14"、"1.2.3"、"+-5"及"12e+5.4"都不是。
 
-#### 解法一
+#### 解法一（常规）
 
 判断四种符号的各个情况，从前往后开始开始判断。
 
@@ -1079,6 +1079,45 @@ public boolean isNumber(String s) {
     }
     // 结尾必须为数字
     return hasNum;
+}
+```
+
+#### 解法二（状态机）
+
+自动机驱动的编程，可以被看做一种暴力枚举方法的延伸。
+
+* 先定义状态集合，一个常用的技巧是，用`当前处理到字符串的哪个部分`当作状态的表述。
+* 下找出初始状态和接受状态
+* 最后定义转移规则
+
+```java
+public boolean isNumber(String s) {
+    Map[] states = {
+        // 定义状态集合和转移规则
+        new HashMap<>() {{ put(' ', 0); put('s', 1); put('d', 2); put('.', 4); }}, // 0.
+        new HashMap<>() {{ put('d', 2); put('.', 4); }},                           // 1.
+        new HashMap<>() {{ put('d', 2); put('.', 3); put('e', 5); put(' ', 8); }}, // 2.
+        new HashMap<>() {{ put('d', 3); put('e', 5); put(' ', 8); }},              // 3.
+        new HashMap<>() {{ put('d', 3); }},                                        // 4.
+        new HashMap<>() {{ put('s', 6); put('d', 7); }},                           // 5.
+        new HashMap<>() {{ put('d', 7); }},                                        // 6.
+        new HashMap<>() {{ put('d', 7); put(' ', 8); }},                           // 7.
+        new HashMap<>() {{ put(' ', 8); }}                                         // 8.
+    };
+    // 初始状态
+    int p = 0;
+    char t;
+    for(char c : s.toCharArray()) {
+        if(c >= '0' && c <= '9') t = 'd';
+        else if(c == '+' || c == '-') t = 's';
+        else if(c == 'e' || c == 'E') t = 'e';
+        else if(c == '.' || c == ' ') t = c;
+        else t = '?';
+        if(!states[p].containsKey(t)) return false;
+        p = (int)states[p].get(t);
+    }
+    // 接受状态
+    return p == 2 || p == 3 || p == 7 || p == 8;
 }
 ```
 
@@ -1432,12 +1471,12 @@ public TreeNode mirrorTree(TreeNode root) {
 }
 ```
 
-#### 解法二（BFS）
+#### 解法二（DFS）
 
 无论是BFS还是DFS都会访问到每一个节点，访问每个节点的时候交换他的左右子节点，直到所有的节点都访问完为止，代码如下
 
 ```java
-public TreeNode mirrorTree1(TreeNode root) {
+public TreeNode mirrorTree(TreeNode root) {
     if (root == null) {
         return null;
     }
@@ -1464,4 +1503,135 @@ public TreeNode mirrorTree1(TreeNode root) {
     return root;
 }
 ```
+
+### [JZ 28. 对称的二叉树](https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/)
+
+请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。
+
+例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
+
+```
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+```
+
+但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:
+
+```
+    1
+   / \
+  2   2
+   \   \ 
+   3    3
+```
+
+示例 1：
+
+```
+输入：root = [1,2,2,3,4,4,3]
+输出：true
+```
+
+示例 2：
+
+```
+输入：root = [1,2,2,null,3,null,3]
+输出：false
+```
+
+限制：
+
+```
+0 <= 节点个数 <= 1000
+```
+
+#### 解法一（递归）
+
+前序遍历，之间判断左右是否相同，需要注意的是二叉树一个节点有两个节点，两个节点要分别进行比较
+
+```java
+public boolean isSymmetric(TreeNode root) {
+        return root == null || recur(root.left, root.right);
+}
+public boolean recur(TreeNode left, TreeNode right){
+    // 都为空，代表遍历完成
+    if(left == null && right == null){
+        return true;
+    }
+    // 判断左右是否相等
+    if(left == null || right == null || left.val != right.val){
+        return false;
+    }
+    // 二叉树一个节点有两个节点，两个节点要分别进行比较
+    return recur(left.left, right.right) && recur(left.right, right.left);
+}
+```
+
+#### 解法二（BFS）
+
+广度优先算法，一层一层的进行比较。注意都为空，代表的是这一个子树遍历完成，并不是整个树。
+
+```java
+public boolean isSymmetric1(TreeNode root) {
+    if(root == null){
+        return true;
+    }
+    // bfs广度优先算法
+    Queue<TreeNode> queue = new LinkedList<>();
+    // 入队
+    queue.offer(root.left);
+    queue.offer(root.right);
+    while(!queue.isEmpty()){
+        TreeNode left = queue.poll();
+        TreeNode right = queue.poll();
+        // 都为空，代表这一个子树遍历完成
+        if(left == null && right == null){
+            continue;
+        }
+        // 任何一个为空代表不匹配
+        else if (left == null || right == null){
+            return false;
+        }
+        // 值要相等
+        if (left.val != right.val){
+            return false;
+        }
+        // 将下一层的节点入队
+        // 二叉树一个节点有两个节点，两个节点要分别进行比较
+        queue.offer(left.left);
+        queue.offer(right.right);
+        queue.offer(left.right);
+        queue.offer(right.left);
+    }
+    return true;
+}
+```
+
+### [JZ 29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/)
+
+输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。
+
+示例 1：
+
+```
+输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+输出：[1,2,3,6,9,8,7,4,5]
+```
+
+示例 2：
+
+```
+输入：matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+输出：[1,2,3,4,8,12,11,10,9,5,6,7]
+```
+
+限制：
+
+- `0 <= matrix.length <= 100`
+- `0 <= matrix[i].length <= 100`
+
+#### 解法一
 

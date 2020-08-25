@@ -194,9 +194,101 @@ public class Part5 {
         return false;
     }
 
+    /**
+     * 剑指 Offer 28. 对称的二叉树
+     */
+    public boolean isSymmetric(TreeNode root) {
+        return root == null || recur(root.left, root.right);
+    }
+    public boolean recur(TreeNode left, TreeNode right){
+        // 都为空，代表遍历完成
+        if(left == null && right == null){
+            return true;
+        }
+        // 判断左右是否相等
+        if(left == null || right == null || left.val != right.val){
+            return false;
+        }
+        // 二叉树一个节点有两个节点，两个节点要分别进行比较
+        return recur(left.left, right.right) && recur(left.right, right.left);
+    }
+
+    public boolean isSymmetric1(TreeNode root) {
+        if(root == null){
+            return true;
+        }
+        // bfs广度优先算法
+        Queue<TreeNode> queue = new LinkedList<>();
+        // 入队
+        queue.offer(root.left);
+        queue.offer(root.right);
+        while(!queue.isEmpty()){
+            TreeNode left = queue.poll();
+            TreeNode right = queue.poll();
+            // 都为空，代表这一个子树遍历完成
+            if(left == null && right == null){
+                continue;
+            }
+            // 任何一个为空代表不匹配
+            else if (left == null || right == null){
+                return false;
+            }
+            // 值要相等
+            if (left.val != right.val){
+                return false;
+            }
+            // 将下一层的节点入队
+            // 二叉树一个节点有两个节点，两个节点要分别进行比较
+            queue.offer(left.left);
+            queue.offer(right.right);
+            queue.offer(left.right);
+            queue.offer(right.left);
+        }
+        return true;
+    }
+
+    public int[] spiralOrder(int[][] matrix) {
+        if(matrix == null){
+            return null;
+        }
+        int m = matrix.length, n = matrix[0].length;
+
+        int[] res = new int[m * n];
+        int len = 0;
+
+        int i = 0, j = 0;
+        int il = 0, jl = 0;
+        for(; j < n; j++){
+            res[len++] = matrix[i][j];
+        }
+        il++;
+        i++;
+        j--;
+
+        for(; i < m; i++){
+            res[len++] = matrix[i][j];
+        }
+        jl++;
+        j--;
+        i--;
+
+        for(; j >= il / 2; j--){
+            res[len++] = matrix[i][j];
+        }
+        il++;
+        i--;
+        j++;
+
+        for(; i <= m - jl / 2; i++){
+            res[len++] = matrix[i][j];
+        }
+        return res;
+    }
+
+
     public static void main(String[] args) {
-        int[][] arr = {{1, 1}};
+        int[][] arr = {{1,2,3},{4,5,6},{7,8,9}};
         Part5 part5 = new Part5();
-        System.out.println();
+        System.out.println(part5.spiralOrder(arr));
     }
 }
