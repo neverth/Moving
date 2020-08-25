@@ -258,20 +258,56 @@ public class Part4 {
      * 206. 反转链表
      */
     public ListNode reverseList(ListNode head) {
-        ListNode pre = null;
-        ListNode cur = head;
-
-        while (cur != null) {
-
-            ListNode tmp = cur.next;
-
-            cur.next = pre;
-
-            pre = cur;
-
-            cur = tmp;
+        // 定义两个指针一个在前一个在后
+        ListNode p1 = null, p2 = head;
+        while (p2 != null) {
+            // 临时指针，保存后指针的下一个节点
+            // 不保存的话交换之后就找不到下一个节点了
+            ListNode tmp = p2.next;
+            // 反转
+            p2.next = p1;
+            // 前进
+            p1 = p2;
+            // 前进
+            p2 = tmp;
         }
-        return pre;
+        return p1;
+    }
+
+    /**
+     * 递归写法
+     * <p>
+     * 206. 反转链表
+     */
+    ListNode newHead;
+
+    public ListNode reverseList2(ListNode head) {
+        // 链表为空直接返回
+        if (head == null) {
+            return head;
+        }
+        // 内部反转
+        re(head);
+        // 反转之后的尾的指针不会反转
+        // 会构成环，手动帮他置为空
+        head.next = null;
+        return newHead;
+    }
+
+    public void re(ListNode head) {
+        if (head.next == null) {
+            // 代表到达链表尾，设置为新的头
+            newHead = head;
+            return;
+        }
+        // 入栈是顺序的，出栈就是反序
+        // 要交换，肯定要两个值，已经有一个head，
+        // 下一个值head.next最方便
+        ListNode tmp = head.next;
+        // 入栈
+        reverseList(head.next);
+        // 出栈，将指针交换
+        tmp.next = head;
     }
 
     public ListNode reverseList1(ListNode head) {
@@ -297,6 +333,28 @@ public class Part4 {
         }
         return pre;
 
+    }
+
+    /**
+     * 剑指 Offer 25. 合并两个排序的链表
+     */
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        // 他完了不代表其他人完了
+        if (l1 == null) {
+            return l2;
+        }
+        // 他完了不代表其他人完了
+        if (l2 == null) {
+            return l1;
+        }
+        // 出栈的时候开始构建链表，从尾向前
+        if (l1.val < l2.val) {
+            l1.next = mergeTwoLists(l1.next, l2);
+            return l1;
+        } else {
+            l2.next = mergeTwoLists(l1, l2.next);
+            return l2;
+        }
     }
 
     /**
@@ -565,6 +623,73 @@ public class Part4 {
         sort(array, i + 1, right);
     }
 
+    /**
+     * 剑指 Offer 26. 树的子结构
+     */
+    public boolean isSubStructure(TreeNode A, TreeNode B) {
+        // 过滤特殊格式
+        if (A == null || B == null) {
+            return false;
+        }
+        // 首先在相对根节点判断一次，然后分辨递归调用器左右再继续判断
+        return dfs(A, B) || isSubStructure(A.left, B) || isSubStructure(A.right, B);
+    }
+
+    boolean dfs(TreeNode A, TreeNode B) {
+        // 子结构已经匹配完成，返回true
+        if (B == null) return true;
+        // 子结构没有完成，但是树已经遍历完成了
+        if (A == null) return false;
+        // 判断其值是否相等，在递归判断其子对应左右是否能匹配上
+        return A.val == B.val && dfs(A.left, B.left) && dfs(A.right, B.right);
+    }
+
+    /**
+     * 剑指 Offer 27. 二叉树的镜像
+     */
+    public TreeNode mirrorTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        // 递归遍历完左边并保存每次递归左边的值
+        TreeNode tmpRight = mirrorTree(root.left);
+        // 递归遍历完右边并保存每次递归右边的值
+        TreeNode tmpLeft = mirrorTree(root.right);
+        // 在树的最底层都是相对局部交换，最后树也可以看成局部，左边右边，一次交换。
+        root.right = tmpRight;
+        root.left = tmpLeft;
+        return root;
+    }
+
+    /**
+     * 剑指 Offer 27. 二叉树的镜像
+     */
+    public TreeNode mirrorTree1(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        // 栈
+        Stack<TreeNode> stack = new Stack<>();
+        // 入栈
+        stack.add(root);
+        // 其实就是树的深度优先遍历，dfs
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            // 将其左右子树都加入栈
+            if (node.left != null) {
+                stack.add(node.left);
+            }
+            if (node.right != null) {
+                stack.add(node.right);
+            }
+            // 交换遍历到的每一个节点
+            TreeNode tmp = node.left;
+            node.left = node.right;
+            node.right = tmp;
+        }
+        return root;
+    }
+
     public static void main(String[] args) {
         Part4 part4 = new Part4();
 
@@ -581,29 +706,37 @@ public class Part4 {
         };
 
 
-        TreeNode n1 = new TreeNode(3);
-        TreeNode n2 = new TreeNode(9);
-        TreeNode n3 = new TreeNode(20);
-        TreeNode n4 = new TreeNode(15);
-        TreeNode n5 = new TreeNode(7);
+        TreeNode n1 = new TreeNode(4);
+        TreeNode n2 = new TreeNode(2);
+        TreeNode n3 = new TreeNode(7);
+        TreeNode n4 = new TreeNode(1);
+        TreeNode n5 = new TreeNode(3);
+        TreeNode n6 = new TreeNode(6);
+        TreeNode n7 = new TreeNode(9);
 
         ListNode l1 = new ListNode(1);
         ListNode l2 = new ListNode(2);
-        ListNode l3 = new ListNode(3);
-        ListNode l4 = new ListNode(4);
-        ListNode l5 = new ListNode(5);
+        ListNode l3 = new ListNode(4);
+
+        ListNode l4 = new ListNode(1);
+        ListNode l5 = new ListNode(3);
+        ListNode l6 = new ListNode(4);
 
         l1.next = l2;
         l2.next = l3;
-        l3.next = l4;
-        l4.next = l5;
-        l5.next = null;
+        l3.next = null;
 
-//        n1.left = n2;
-//        n1.right = n3;
-//        n3.left = n4;
-//        n3.right = n5;
-        part4.quickSort(a1);
+        l4.next = l5;
+        l5.next = l6;
+        l6.next = null;
+
+        n1.left = n2;
+        n1.right = n3;
+        n2.left = n4;
+        n2.right = n5;
+        n3.left = n6;
+        n3.right = n7;
+        part4.mirrorTree1(n1);
         System.out.println();
 
 
