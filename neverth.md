@@ -8,8 +8,10 @@
 前一段时间在百度实习，从事测试开发相关工作，主要是。
 
 本人性格乐观开朗，
+
 #### 投递记录
-0831 科大讯飞 https://www.nowcoder.com/discuss/484191?channel=666&source_id=subject
+1. 0831 科大讯飞 https://www.nowcoder.com/discuss/484191?channel=666&source_id=subject
+2. 0801 海康威视 https://www.nowcoder.com/discuss/492811?channel=666&source_id=subject
 
 #### 蔚来 
 1. 线程池创建，类别，原理，好处，缺点， Excutor， ThreadLocal
