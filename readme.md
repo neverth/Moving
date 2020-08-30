@@ -1648,11 +1648,11 @@ public int getNSumCount(int n, int m){
     if(n < 1 || m < n || m > 6 * n){
         return 0;
     }
-    // 最后一个筛子且 m 有效，返回一种可能
+    // 已经回溯到底且满足条件，res++
     if(n == 1){
         return 1;
     }
-    // 递归遍历减掉本次遍历的情况
+    // 回溯可能出现的6中情况
     int res = 0;
     for (int i = 1; i <= 6; i++) {
         res += getNSumCount(n - 1, m - i);
