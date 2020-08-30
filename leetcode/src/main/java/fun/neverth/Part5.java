@@ -285,11 +285,31 @@ public class Part5 {
         return res;
     }
 
+    /**
+     * N个骰子出现和为 m 的概率
+     */
+    public int getNSumCount(int n, int m){
+        // 不满足情况的条件
+        if(n < 1 || m < n || m > 6 * n){
+            return 0;
+        }
+        // 最后一个筛子且 m 有效，返回一种可能
+        if(n == 1){
+            return 1;
+        }
+        // 递归遍历减掉本次遍历的情况
+        int res = 0;
+        for (int i = 1; i <= 6; i++) {
+            res += getNSumCount(n - 1, m - i);
+        }
+        return res;
+    }
 
     public static void main(String[] args) {
         int[][] arr = {{1,2,3},{4,5,6},{7,8,9}};
         Part5 part5 = new Part5();
-//        System.out.println(part5.spiralOrder(arr));
+        part5.getNSumCount(2, 5);
+        System.out.println();
         String a = "123";
         String b = "123";
     }

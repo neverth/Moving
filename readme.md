@@ -1635,3 +1635,29 @@ public boolean isSymmetric1(TreeNode root) {
 
 #### 解法一
 
+### N 个骰子出现和为 M 的概率
+
+#### 解法一（DFS）
+
+这道题面试官提示说用动态规划，没写出来，其使用DFS可以更好解。可以不直接求概率，用DFS先求出总共可能的次数，最后在跟总的可能次数相除。
+
+```java
+// 求满足条件的个数
+public int getNSumCount(int n, int m){
+    // 不满足情况的条件
+    if(n < 1 || m < n || m > 6 * n){
+        return 0;
+    }
+    // 最后一个筛子且 m 有效，返回一种可能
+    if(n == 1){
+        return 1;
+    }
+    // 递归遍历减掉本次遍历的情况
+    int res = 0;
+    for (int i = 1; i <= 6; i++) {
+        res += getNSumCount(n - 1, m - i);
+    }
+    return res;
+}
+```
+
