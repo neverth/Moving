@@ -200,13 +200,14 @@ public class Part5 {
     public boolean isSymmetric(TreeNode root) {
         return root == null || recur(root.left, root.right);
     }
-    public boolean recur(TreeNode left, TreeNode right){
+
+    public boolean recur(TreeNode left, TreeNode right) {
         // 都为空，代表遍历完成
-        if(left == null && right == null){
+        if (left == null && right == null) {
             return true;
         }
         // 判断左右是否相等
-        if(left == null || right == null || left.val != right.val){
+        if (left == null || right == null || left.val != right.val) {
             return false;
         }
         // 二叉树一个节点有两个节点，两个节点要分别进行比较
@@ -214,7 +215,7 @@ public class Part5 {
     }
 
     public boolean isSymmetric1(TreeNode root) {
-        if(root == null){
+        if (root == null) {
             return true;
         }
         // bfs广度优先算法
@@ -222,19 +223,19 @@ public class Part5 {
         // 入队
         queue.offer(root.left);
         queue.offer(root.right);
-        while(!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             TreeNode left = queue.poll();
             TreeNode right = queue.poll();
             // 都为空，代表这一个子树遍历完成
-            if(left == null && right == null){
+            if (left == null && right == null) {
                 continue;
             }
             // 任何一个为空代表不匹配
-            else if (left == null || right == null){
+            else if (left == null || right == null) {
                 return false;
             }
             // 值要相等
-            if (left.val != right.val){
+            if (left.val != right.val) {
                 return false;
             }
             // 将下一层的节点入队
@@ -247,40 +248,44 @@ public class Part5 {
         return true;
     }
 
+    /**
+     * 剑指 Offer 29. 顺时针打印矩阵
+     */
     public int[] spiralOrder(int[][] matrix) {
-        if(matrix == null){
-            return null;
+        if (matrix.length == 0) {
+            return new int[0];
         }
-        int m = matrix.length, n = matrix[0].length;
-
-        int[] res = new int[m * n];
-        int len = 0;
-
-        int i = 0, j = 0;
-        int il = 0, jl = 0;
-        for(; j < n; j++){
-            res[len++] = matrix[i][j];
-        }
-        il++;
-        i++;
-        j--;
-
-        for(; i < m; i++){
-            res[len++] = matrix[i][j];
-        }
-        jl++;
-        j--;
-        i--;
-
-        for(; j >= il / 2; j--){
-            res[len++] = matrix[i][j];
-        }
-        il++;
-        i--;
-        j++;
-
-        for(; i <= m - jl / 2; i++){
-            res[len++] = matrix[i][j];
+        // 上下左右四条边各自的位置 和 结果数组当前结果的下标
+        int l = 0, t = 0, r = matrix[0].length - 1, b = matrix.length - 1, len = 0;
+        int[] res = new int[(r + 1) * (b + 1)];
+        // 一直循环遍历
+        while (true) {
+            // 从左往右
+            for (int i = l; i <= r; i++) {
+                res[len++] = matrix[t][i];
+            }
+            // 判断其是否超过边界，超过边界直接遍历结束
+            if (++t > b) {
+                break;
+            }
+            for (int i = t; i <= b; i++) {
+                res[len++] = matrix[i][r];
+            }
+            if (--r < l) {
+                break;
+            }
+            for (int i = r; i >= l; i--) {
+                res[len++] = matrix[b][i];
+            }
+            if (t > --b) {
+                break;
+            }
+            for (int i = b; i >= t; i--) {
+                res[len++] = matrix[i][l];
+            }
+            if (++l > r) {
+                break;
+            }
         }
         return res;
     }
@@ -288,13 +293,13 @@ public class Part5 {
     /**
      * N个骰子出现和为 m 的概率
      */
-    public int getNSumCount(int n, int m){
+    public int getNSumCount(int n, int m) {
         // 不满足情况的条件
-        if(n < 1 || m < n || m > 6 * n){
+        if (n < 1 || m < n || m > 6 * n) {
             return 0;
         }
         // 最后一个筛子且 m 有效，返回一种可能
-        if(n == 1){
+        if (n == 1) {
             return 1;
         }
         // 递归遍历减掉本次遍历的情况
@@ -305,12 +310,108 @@ public class Part5 {
         return res;
     }
 
+    /**
+     * 剑指 Offer 31. 栈的压入、弹出序列
+     */
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        // 创建一个辅助栈
+        Stack<Integer> stack = new Stack<>();
+        // 弹出序列下标
+        int j = 0;
+        // 遍历压入序列
+        for (int k : pushed) {
+            // 模拟入栈
+            stack.push(k);
+            // 如果栈顶出栈的话，判断能否跟弹出序列对应下标匹配
+            while (!stack.empty() && stack.peek() == popped[j]) {
+                stack.pop();
+                j++;
+            }
+        }
+        return stack.empty();
+    }
+
+    /**
+     * 剑指 Offer 32 - I. 从上到下打印二叉树
+     */
+    public int[] levelOrder11(TreeNode root) {
+        if (root == null) return null;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        ArrayList<Integer> ans = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            ans.add(node.val);
+            if (node.left != null) queue.offer(node.left);
+            if (node.right != null) queue.offer(node.right);
+        }
+        int[] res = new int[ans.size()];
+        for (int i = 0; i < ans.size(); i++)
+            res[i] = ans.get(i);
+        return res;
+    }
+
+    /**
+     * 剑指 Offer 32 - II. 从上到下打印二叉树 II
+     */
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        List<List<Integer>> res = new ArrayList<>();
+        if (root != null) {
+            queue.offer(root);
+        }
+        while (!queue.isEmpty()) {
+            ArrayList<Integer> ans = new ArrayList<>();
+            // 或者这一层所有节点的个数，并一次性遍历完
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                ans.add(node.val);
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+            res.add(ans);
+        }
+        return res;
+    }
+
+    /**
+     * 剑指 Offer 32 - III. 从上到下打印二叉树 III
+     */
+    public List<List<Integer>> levelOrder1(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        List<List<Integer>> res = new ArrayList<>();
+        if (root != null) {
+            queue.offer(root);
+        }
+        int depth = 0;
+        while (!queue.isEmpty()) {
+            LinkedList<Integer> ans = new LinkedList<>();
+            // 或者这一层所有节点的个数，并一次性遍历完
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (depth % 2 == 0) {
+                    ans.addLast(node.val);
+                } else {
+                    ans.addFirst(node.val);
+                }
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+            res.add(ans);
+            depth++;
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
-        int[][] arr = {{1,2,3},{4,5,6},{7,8,9}};
+        int[][] arr = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        int[] a = {1, 2, 3, 4, 5};
+        int[] b = {4, 1, 3, 2, 5};
         Part5 part5 = new Part5();
-        part5.getNSumCount(2, 5);
+        part5.validateStackSequences(a, b);
         System.out.println();
-        String a = "123";
-        String b = "123";
+
     }
 }

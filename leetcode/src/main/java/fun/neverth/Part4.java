@@ -472,44 +472,43 @@ public class Part4 {
      * 155. 最小栈
      */
     static class MinStack {
-        private Node head;
-
-        public void push(int x) {
-            if (head == null) {
-                head = new Node(x, x);
-
-            } else {
-                head = new Node(x, Math.min(x, head.min), head);
-
-            }
-        }
-
-        public void pop() {
-            head = head.next;
-        }
-
-        public int top() {
-            return head.val;
-        }
-
-        public int getMin() {
-            return head.min;
-        }
-
-        private class Node {
-            int val;
-            int min;
+        // 头结点
+        Node head;
+        // 内部静态Node类
+        static class Node{
             Node next;
+            int val;
+            // 在每个实例node上都保存当前最小值
+            int min;
 
-            private Node(int val, int min) {
-                this(val, min, null);
-            }
-
-            private Node(int val, int min, Node next) {
+            public Node(int val, int min){
                 this.val = val;
                 this.min = min;
-                this.next = next;
             }
+        }
+        public MinStack() {
+            head = new Node(0, Integer.MAX_VALUE);
+        }
+        public void push(int x) {
+            // 当前值与栈顶最小值比较，找出最小的值
+            int min = x;
+            if(head.next != null){
+                min = Math.min(min, head.next.min);
+            }
+            Node node = new Node(x, min);
+            // 头插法，head.next即为栈顶
+            node.next = head.next;
+            head.next = node;
+        }
+        public void pop() {
+            head.next = head.next.next;
+        }
+        public int top() {
+            return head.next.val;
+        }
+        public int min() {
+            // 直接返回栈顶最小值
+            return head.next.min;
         }
     }
 
