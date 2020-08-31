@@ -10,9 +10,17 @@
 本人性格乐观开朗，
 
 #### 投递记录
-1. 0831 科大讯飞 https://www.nowcoder.com/discuss/484191?channel=666&source_id=subject
-2. 0801 海康威视 https://www.nowcoder.com/discuss/492811?channel=666&source_id=subject
+1. 0831 科大讯飞 https://www.nowcoder.com/discuss/484191
+2. 0831 海康威视 https://www.nowcoder.com/discuss/492811
+3. 0831 滴滴     https://www.nowcoder.com/discuss/466071
+4. 0831 贝壳     https://www.nowcoder.com/discuss/465475   测评截止时间0915
+5. 0831 欢聚时代 https://www.nowcoder.com/discuss/490748
+6. 0831 快手     https://www.nowcoder.com/discuss/493696
+7. 0831 小红书   https://www.nowcoder.com/discuss/482047
 
+#### 公司
+1. 美团 https://www.nowcoder.com/discuss/491079 1016号截止
+	
 #### 蔚来 
 1. 线程池创建，类别，原理，好处，缺点， Excutor， ThreadLocal
 2. 线程安全，阻塞同步，非阻塞同步。
