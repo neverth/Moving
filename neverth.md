@@ -10,13 +10,27 @@
 本人性格乐观开朗，
 
 #### 投递记录
-1. 0831 科大讯飞 https://www.nowcoder.com/discuss/484191
-2. 0831 海康威视 https://www.nowcoder.com/discuss/492811
-3. 0831 滴滴     https://www.nowcoder.com/discuss/466071
-4. 0831 贝壳     https://www.nowcoder.com/discuss/465475   测评截止时间0915
-5. 0831 欢聚时代 https://www.nowcoder.com/discuss/490748
-6. 0831 快手     https://www.nowcoder.com/discuss/493696
-7. 0831 小红书   https://www.nowcoder.com/discuss/482047
+1. 0831    科大讯飞   https://www.nowcoder.com/discuss/484191
+2. 0831    海康威视   https://www.nowcoder.com/discuss/492811
+3. 0831    滴滴       https://www.nowcoder.com/discuss/466071
+4. 0831    贝壳       https://www.nowcoder.com/discuss/465475   测评截止时间0915
+5. 0831    欢聚时代   https://www.nowcoder.com/discuss/490748
+6. 0831    快手       https://www.nowcoder.com/discuss/493696
+7. 0831    小红书     https://www.nowcoder.com/discuss/482047
+8. 0903    大华       https://www.nowcoder.com/discuss/482437
+9. 0903    oppo      https://www.nowcoder.com/discuss/484502
+10. 0903   度小满     https://www.nowcoder.com/discuss/488771
+11. 0903   搜狗       https://www.nowcoder.com/discuss/492461
+12. 0903   360       https://www.nowcoder.com/discuss/473000
+13. 0903   三七互娱   https://www.nowcoder.com/discuss/496186
+14. 0903   顺丰       https://www.nowcoder.com/discuss/481241
+15. 0903   京东       https://www.nowcoder.com/discuss/492586   9月17日笔试
+16. 0903   4399      https://www.nowcoder.com/discuss/464230
+17. 0903   虎牙      https://www.nowcoder.com/discuss/496510
+18. 0903   有赞       https://www.nowcoder.com/discuss/493590
+19. 0903   b站    
+20. 0903   vivo      https://www.nowcoder.com/discuss/492122
+21. 0903   爱奇艺    https://www.nowcoder.com/discuss/468917
 
 #### 公司
 1. 美团 https://www.nowcoder.com/discuss/491079 1016号截止
