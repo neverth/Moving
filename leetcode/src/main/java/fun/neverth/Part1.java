@@ -41,37 +41,30 @@ public class Part1 {
         return dp[length1 - 1][length2 - 1];
     }
 
+    /**
+     * 300. 最长上升子序列
+     */
     public int lengthOfLIS(int[] nums) {
-        int len = nums.length;
-
-        int[] dp = new int[len];
-        int[] combination = new int[len];
-
+        // 前i的数组中最长的子序列长度
+        int[] dp = new int[nums.length];
+        // 初始状态长度都为1
         Arrays.fill(dp, 1);
-        Arrays.fill(combination, 1);
-
-        int max = 1;
-
-        for (int i = 0; i < len; i++) {
+        // 开始遍历更新dp[i]的最大值
+        for (int i = 0; i < nums.length; i++) {
+            // 由于是子序列，并不要求连续
+            // 所以此处要继续循环
             for (int j = 0; j < i; j++) {
-                if (nums[j] < nums[i]) {
-                    if (dp[j] + 1 > dp[i]) {
-                        dp[i] = dp[j] + 1;
-                        combination[i] = combination[j];
-
-                    } else if (dp[j] + 1 == dp[i]) {
-                        combination[i] += combination[j];
-                    }
+                // 小于，代表i可以接到到j后面
+                if (nums[i] > nums[j]) {
+                    // 更新dp[i]的最大值
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
                 }
             }
-            max = Math.max(max, dp[i]);
         }
-
+        // 找到最大的长度
         int res = 0;
-        for (int value : combination) {
-            if (value == max) {
-                res += value;
-            }
+        for (int i = 0; i < dp.length; i++) {
+            res = Math.max(res, dp[i]);
         }
         return res;
     }
@@ -572,11 +565,10 @@ public class Part1 {
 
     String plusOne(String s, int j) {
         char[] ch = s.toCharArray();
-        if (ch[j] == '9'){
+        if (ch[j] == '9') {
             ch[j] = '0';
 
-        }
-        else{
+        } else {
             ch[j] += 1;
 
         }
@@ -585,33 +577,38 @@ public class Part1 {
 
     String minusOne(String s, int j) {
         char[] ch = s.toCharArray();
-        if (ch[j] == '0'){
+        if (ch[j] == '0') {
             ch[j] = '9';
 
-        }
-        else{
+        } else {
             ch[j] -= 1;
 
         }
         return new String(ch);
     }
 
+    /**
+     * 1. 两数之和
+     * 双指针解法
+     */
     public int[] twoSum(int[] nums, int target) {
-        Arrays.sort(nums);
-        int left = 0, len = nums.length, right = len - 1;
-
+        // nums必须已经升序
+        // 首尾指针
+        int left = 0, right = nums.length - 1;
+        // 没有相交
         while (left < right) {
+            // 求出双指针对应值
             int sum = nums[left] + nums[right];
-
+            // 值相等就是结果
             if (sum == target) {
-
                 return new int[]{left, right};
-
-            } else if (sum < target) {
-
+            }
+            // 小于目标值则左指针++,让整个值增大
+            else if (sum < target) {
                 left++;
-            } else if (sum > target) {
-
+            }
+            // 大于目标值则右指针--,让整个值减小
+            else {
                 right--;
             }
         }
@@ -751,7 +748,7 @@ public class Part1 {
         Map<Character, Integer> windows = new HashMap<>();
         Map<Character, Integer> needs = new HashMap<>();
 
-        for (int i = 0; i < t.length(); i++){
+        for (int i = 0; i < t.length(); i++) {
             needs.put(t.charAt(i), needs.getOrDefault(t.charAt(i), 0) + 1);
         }
 
@@ -760,21 +757,21 @@ public class Part1 {
 
         int start = 0, len = Integer.MAX_VALUE;
 
-        while(right < s.length()){
+        while (right < s.length()) {
             char c1 = s.charAt(right);
 
-            if(needs.containsKey(c1)){
+            if (needs.containsKey(c1)) {
 
                 windows.put(c1, windows.getOrDefault(c1, 0) + 1);
 
-                if(windows.get(c1).compareTo(needs.get(c1)) == 0){
+                if (windows.get(c1).compareTo(needs.get(c1)) == 0) {
                     count++;
                 }
             }
 
             right++;
 
-            while(count == needs.size()){
+            while (count == needs.size()) {
                 if (right - left < len) {
                     start = left;
                     len = right - left;

@@ -1033,22 +1033,23 @@ public class Part3 {
      * 复习 300. 最长上升子序列
      */
     public int lengthOfLIS(int[] nums) {
+        // 前i的数组中最长的子序列长度
         int[] dp = new int[nums.length];
-
+        // 初始状态长度都为1
         Arrays.fill(dp, 1);
-
+        // 开始遍历更新dp[i]的最大值
         for (int i = 0; i < nums.length; i++) {
-
+            // 由于是子序列，并不要求连续
+            // 所以此处要继续循环
             for (int j = 0; j < i; j++) {
-
+                // 小于，代表i可以接到到j后面
                 if (nums[i] > nums[j]) {
+                    // 更新dp[i]的最大值
                     dp[i] = Math.max(dp[i], dp[j] + 1);
                 }
             }
         }
-
-        printDp(dp);
-
+        // 找到最大的长度
         int res = 0;
         for (int i = 0; i < dp.length; i++) {
             res = Math.max(res, dp[i]);

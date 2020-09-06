@@ -1,10 +1,5 @@
 package fun.neverth;
 
-import com.sun.imageio.plugins.wbmp.WBMPImageReader;
-import com.sun.java.swing.plaf.windows.resources.windows;
-import sun.security.util.ArrayUtil;
-
-import javax.swing.plaf.nimbus.AbstractRegionPainter;
 import java.util.*;
 
 /**
@@ -651,6 +646,9 @@ public class Part2 {
 
     /**
      * 42. 接雨水
+     *
+     * 对于数组中的每个元素，我们找出下雨后水能达到的最高位置，
+     * 等于两边最大高度的较小值减去当前高度的值。
      */
     public int trap(int[] height) {
 
@@ -678,6 +676,11 @@ public class Part2 {
         return res;
     }
 
+    /**
+     * 42. 接雨水
+     *
+     * 双指针
+     */
     public int trap1(int[] height) {
 
         int len = height.length;

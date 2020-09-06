@@ -114,24 +114,23 @@ public class Part4 {
 
     /**
      * 1. 两数之和
+     * HASH 解法
      */
     public int[] twoSum(int[] nums, int target) {
-        int len = nums.length;
-
+        // 用hash保存各个值
         Map<Integer, Integer> map = new HashMap<>();
-
-        for (int i = 0; i < len; i++) {
-
-            int b = target - nums[i];
-
-            if (map.containsKey(b)) {
-                return new int[]{i, map.get(b)};
-            }
-
+        // 一直插入
+        for (int i = 0; i < nums.length; i++) {
             map.put(nums[i], i);
         }
-
-        return new int[]{-1, -1};
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+            // 从map中找到符合的值并返回下标
+            if (map.containsKey(complement) && map.get(complement) != i) {
+                return new int[]{i, map.get(complement)};
+            }
+        }
+        return null;
     }
 
     public int test(int a, int b, int c) {
@@ -379,49 +378,57 @@ public class Part4 {
 
     /**
      * 15. 三数之和
+     * 双指针
      */
     public List<List<Integer>> threeSum(int[] nums) {
+        // 结果列表
         List<List<Integer>> res = new ArrayList<>();
-
+        // 特殊情况
         if (nums.length < 3) {
             return res;
         }
-
+        // 排序
         Arrays.sort(nums);
-
+        // 先固定 a
         for (int i = 0; i < nums.length - 2; i++) {
-
+            // a 必须要小于 0，否者三树不可能为0
             if (nums[0] > 0) {
                 return res;
             }
-
+            // 因为不能包含重复的三元组，所有跳过
             if (i > 0 && (nums[i] == nums[i - 1])) {
                 continue;
             }
-
+            // 匹配为 0 的目标值
             int target = -nums[i];
-
+            // 下面就是两数之和 排序双指针解法
+            // 首尾指针
             int left = i + 1, right = nums.length - 1;
-
+            // 首尾没有相交
             while (left < right) {
-
+                // 首尾匹配目标值
                 if ((nums[left] + nums[right]) == target) {
+                    // 添加结果
                     res.add(Arrays.asList(nums[i], nums[left], nums[right]));
-
+                    // 过滤重复值
                     while (left < right && nums[left] == nums[left + 1]) {
                         left++;
                     }
+                    // 过滤重复值
                     while (left < right && nums[right] == nums[right - 1]) {
                         right--;
                     }
+                    // 缩小范围，匹配下一个结果
                     left++;
                     right--;
-                } else if ((nums[left] + nums[right] > target)) {
+                }
+                // 大于，尾减
+                else if ((nums[left] + nums[right] > target)) {
                     right--;
-
-                } else {
+                }
+                // 小于，首加
+                else {
                     left++;
-
                 }
             }
         }
@@ -474,25 +481,28 @@ public class Part4 {
     static class MinStack {
         // 头结点
         Node head;
+
         // 内部静态Node类
-        static class Node{
+        static class Node {
             Node next;
             int val;
             // 在每个实例node上都保存当前最小值
             int min;
 
-            public Node(int val, int min){
+            public Node(int val, int min) {
                 this.val = val;
                 this.min = min;
             }
         }
+
         public MinStack() {
             head = new Node(0, Integer.MAX_VALUE);
         }
+
         public void push(int x) {
             // 当前值与栈顶最小值比较，找出最小的值
             int min = x;
-            if(head.next != null){
+            if (head.next != null) {
                 min = Math.min(min, head.next.min);
             }
             Node node = new Node(x, min);
@@ -500,12 +510,15 @@ public class Part4 {
             node.next = head.next;
             head.next = node;
         }
+
         public void pop() {
             head.next = head.next.next;
         }
+
         public int top() {
             return head.next.val;
         }
+
         public int min() {
             // 直接返回栈顶最小值
             return head.next.min;
@@ -687,6 +700,67 @@ public class Part4 {
             node.right = tmp;
         }
         return root;
+    }
+
+    /**
+     * 141. 环形链表
+     *
+     * 快慢指针
+     */
+    public boolean hasCycle(ListNode head) {
+        // 特殊值，不满足
+        if (head == null || head.next == null) {
+            return false;
+        }
+        // 快慢指针
+        ListNode slow = head, fast = head;
+        while(fast != null && fast.next != null){
+            // 走一步
+            slow = slow.next;
+            // 走两步
+            fast = fast.next.next;
+            // 首尾相交，代表成环
+            if(slow == fast){
+                return true;
+            }
+        }
+        // 代表到达链表尾部，且没有成环
+        return false;
+    }
+
+    /**
+     * 142. 环形链表 II
+     *
+     * 双指针
+     */
+    public ListNode detectCycle(ListNode head) {
+        // 快慢指针
+        ListNode slow = head, fast = head;
+        // 标志是否成环
+        int flag = 0;
+        while(fast != null && fast.next != null){
+            // 走一步
+            slow = slow.next;
+            // 走两步
+            fast = fast.next.next;
+            // 首尾相交，代表成环
+            if(slow == fast){
+                flag = 1;
+                break;
+            }
+        }
+        // 没有成环
+        if(flag == 0){
+            return null;
+        }
+        // 成环，找到入口
+        // 因为成环之后是一个圆，
+        slow = head;
+        while(slow != fast){
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return slow;
     }
 
     public static void main(String[] args) {

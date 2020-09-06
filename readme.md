@@ -258,7 +258,7 @@ public boolean find(int[][] matrix, int target) {
 
 #### 解法一（递归法）
 
-递归到链表末端，回溯时依次将节点值加入列表。 
+递归到链表末端，回溯时依次将节点值加入结果列表中。 
 
 ```java
 // 时间复杂度O(n)
@@ -328,7 +328,7 @@ public int[] reversePrint(ListNode head) {
 
 #### 解法一（递归）
 
-先序遍历的第一个节点就是根节点，在中序遍历中通过根节点区分左右子树树，根节点的左右节点代表着范围更小的对应先序遍历和中序遍历的递归过程。
+先序遍历的第一个节点就是根节点，在中序遍历中通过根节点区分左右子树，根节点的左右节点代表着范围更小的对应先序遍历和中序遍历的递归过程。
 
 ```java
 public TreeNode buildTree(int[] preorder, int[] inorder) {
@@ -358,7 +358,7 @@ public TreeNode buildTree(int[] preorder, int[] inorder) {
 }
 ```
 
-先序遍历的第一个节点就是根节点，直接创建根节点，然后在中序遍历中通过根节点区分左右子树树，根的左右节点就分别等于缩小范围的跟的左节点与左子树和跟的右节点与右子树的递归调用，从下往上的构建过程。
+先序遍历的第一个节点就是根节点，直接创建根节点，然后在中序遍历中通过根节点区分左右子树树，根的左右节点就分别等于缩小范围的根的左节点与左子树和根的右节点与右子树的递归调用，从下往上的构建过程。
 
 ```java
 // 时间复杂度O(n)
@@ -407,7 +407,7 @@ public TreeNode recursive(
 
 使用栈保存**右节点还没有赋值**的节点，通过前序遍历两个相邻节点的关系来判断，其存在两种关系
 
-* 后一个节点是前一个节点的左节点，直接赋值。因为前序遍历和后续遍历相对应不等
+* 后一个节点是前一个节点的左节点，直接赋值左节点。因为前序遍历和后续遍历对应不相等
 * 前节点不存在左节点，后节点是**已经入栈节点的右节点**，但是不知道是哪一个节点的右节点。所以将已经入栈的节点出栈与中序遍历节点比较，如果相等对应了中序遍历节点没有右节点的过程，跳过，不相等则代表前序遍历后节点就是这个出栈节点的右节点。
 
 就这样循环遍历前序遍历两两相邻节点，根据中序遍历匹配两种不同的情况就可以重建二叉树。从上往下的构建过程。
@@ -1095,7 +1095,7 @@ public boolean isNumber(String s) {
 自动机驱动的编程，可以被看做一种暴力枚举方法的延伸。
 
 * 先定义状态集合，一个常用的技巧是，用`当前处理到字符串的哪个部分`当作状态的表述。
-* 下找出初始状态和接受状态
+* 再找出初始状态和接受状态
 * 最后定义转移规则
 
 ```java
@@ -1323,7 +1323,7 @@ public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
     }
     // 添加未比较完成的
     p.next = (l1 == null ? l2 : l1);
-    // 头结点为空，用哦过与辅助
+    // 头结点为空，用来辅助运算
     return head.next;
 }
 ```
@@ -1941,11 +1941,348 @@ public List<List<Integer>> levelOrder1(TreeNode root) {
 
 ```
 
+### [63. 股票的最大利润](https://leetcode-cn.com/problems/gu-piao-de-zui-da-li-run-lcof/)
 
+假设把某股票的价格按照时间先后顺序存储在数组中，请问买卖该股票一次可能获得的最大利润是多少？
+
+示例 1:
+
+```
+输入: [7,1,5,3,6,4]
+输出: 5
+解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格。
+```
+
+示例 2:
+
+```
+输入: [7,6,4,3,1]
+输出: 0
+解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+```
+
+#### 解法一（动态规划）
+
+总是在股票价格最小的时候买入，之后找到一个卖出时的最大利润。
+
+```java
+public int maxProfit(int[] prices) {
+    // 股票价格最小值             最大利润
+    int min = Integer.MAX_VALUE, res = 0;
+    for(int v : prices){
+        // 更新股票价格最小值
+        min = Math.min(v, min);
+        // 找到当前价格与最小值卖出的最大利润
+        res = Math.max(res, v - min);
+    }
+    return res;
+}
+```
 
 
 
 ## leetCode刷题总结
+
+### [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
+
+给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
+
+你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。
+
+示例:
+
+```
+给定 nums = [2, 7, 11, 15], target = 9
+
+因为 nums[0] + nums[1] = 2 + 7 = 9
+所以返回 [0, 1]
+```
+
+#### 解法一（暴力法）
+
+```java
+// 跳过
+```
+
+#### 解法二（HASH）
+
+用hash保存值和下标，再用目标值去map中找就ok
+
+```java
+public int[] twoSum(int[] nums, int target) {
+    // 用hash保存各个值
+    Map<Integer, Integer> map = new HashMap<>();
+    // 一直插入
+    for (int i = 0; i < nums.length; i++) {
+        map.put(nums[i], i);
+    }
+    for (int i = 0; i < nums.length; i++) {
+        int complement = target - nums[i];
+        // 从map中找到符合的值并返回下标
+        if (map.containsKey(complement) && map.get(complement) != i) {
+            return new int[] { i, map.get(complement) };
+        }
+    }
+    return null;
+}
+```
+
+#### 解法三（双指针）
+
+如果数组已经排序的话就可以使用双之前一个在前，一个在尾解决这个问题
+
+```java
+public int[] twoSum(int[] nums, int target) {
+    // nums必须已经升序
+    // 首尾指针
+    int left = 0, right = nums.length - 1;
+    // 没有相交
+    while (left < right) {
+        // 求出双指针对应值
+        int sum = nums[left] + nums[right];
+        // 值相等就是结果
+        if (sum == target) {
+            return new int[]{left, right};
+        }
+        // 小于目标值则左指针++,让整个值增大
+        else if (sum < target) {
+            left++;
+        }
+        // 大于目标值则右指针--,让整个值减小
+        else {
+            right--;
+        }
+    }
+    return new int[]{-1, -1};
+}
+```
+
+### [15. 三数之和](https://leetcode-cn.com/problems/3sum/)
+
+给你一个包含 *n* 个整数的数组 `nums`，判断 `nums` 中是否存在三个元素*a，b，c ，*使得 *a + b + c =* 0 ？请你找出所有满足条件且不重复的三元组。 注意：答案中不可以包含重复的三元组。
+
+示例：
+
+```
+给定数组 nums = [-1, 0, 1, 2, -1, -4]，
+
+满足要求的三元组集合为：
+[
+  [-1, 0, 1],
+  [-1, -1, 2]
+]
+```
+
+#### 解法一（双指针）
+
+其本质就是两数求和，数组排序之后固定a，再对b和c进行两个数求和的双指针解法。注意需要跳过重复的三元组。
+
+```java
+public List<List<Integer>> threeSum(int[] nums) {
+    // 结果列表
+    List<List<Integer>> res = new ArrayList<>();
+    // 特殊情况
+    if (nums.length < 3) {
+        return res;
+    }
+    // 排序
+    Arrays.sort(nums);
+    // 先固定 a
+    for (int i = 0; i < nums.length - 2; i++) {
+        // a 必须要小于 0，否者三树不可能为0
+        if (nums[0] > 0) {
+            return res;
+        }
+        // 因为不能包含重复的三元组，所有跳过
+        if (i > 0 && (nums[i] == nums[i - 1])) {
+            continue;
+        }
+        // 匹配为 0 的目标值
+        int target = -nums[i];
+        // 下面就是两数之和 排序双指针解法
+        // 首尾指针
+        int left = i + 1, right = nums.length - 1;
+        // 首尾没有相交
+        while (left < right) {
+            // 首尾匹配目标值
+            if ((nums[left] + nums[right]) == target) {
+                // 添加结果
+                res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                // 过滤重复值
+                while (left < right && nums[left] == nums[left + 1]) {
+                    left++;
+                }
+                // 过滤重复值
+                while (left < right && nums[right] == nums[right - 1]) {
+                    right--;
+                }
+                // 缩小范围，匹配下一个结果
+                left++;
+                right--;
+            }
+            // 大于，尾减
+            else if ((nums[left] + nums[right] > target)) {
+                right--;
+            }
+            // 小于，首加
+            else {
+                left++;
+            }
+        }
+    }
+    return res;
+}
+```
+
+### [42. 接雨水](https://leetcode-cn.com/problems/trapping-rain-water/)
+
+详情请点击链接跳转。
+
+#### 解法一（DP）
+
+```java
+
+```
+
+### [141. 环形链表](https://leetcode-cn.com/problems/linked-list-cycle/)
+
+给定一个链表，判断链表中是否有环。
+
+为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
+
+**示例 1：**
+
+```
+输入：head = [3,2,0,-4], pos = 1
+输出：true
+解释：链表中有一个环，其尾部连接到第二个节点。
+```
+
+**示例 2：**
+
+```
+输入：head = [1,2], pos = 0
+输出：true
+解释：链表中有一个环，其尾部连接到第一个节点。
+```
+
+#### 解法一（快慢指针）
+
+用一个快慢指针就可以完成，快慢指针相交就代表成环了
+
+```java
+public boolean hasCycle(ListNode head) {
+    // 特殊值，不满足
+    if (head == null || head.next == null) {
+        return false;
+    }
+    // 快慢指针
+    ListNode slow = head, fast = head;
+    while(fast != null && fast.next != null){
+        // 走一步
+        slow = slow.next;
+        // 走两步
+        fast = fast.next.next;
+        // 首尾相交，代表成环
+        if(slow == fast){
+            return true;
+        }
+    }
+    // 代表到达链表尾部，且没有成环
+    return false;
+}
+```
+
+### [142. 环形链表 II](https://leetcode-cn.com/problems/linked-list-cycle-ii/)
+
+给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 `null`。
+
+为了表示给定链表中的环，我们使用整数 `pos` 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 `pos` 是 `-1`，则在该链表中没有环。说明：不允许修改给定的链表。
+
+示例 1：
+
+```
+输入：head = [3,2,0,-4], pos = 1
+输出：tail connects to node index 1
+解释：链表中有一个环，其尾部连接到第二个节点。
+```
+
+示例 2：
+
+```
+输入：head = [1,2], pos = 0
+输出：tail connects to node index 0
+解释：链表中有一个环，其尾部连接到第一个节点。
+```
+
+#### 解法一（）
+
+```java
+
+```
+
+
+
+
+
+### [300. 最长上升子序列](https://leetcode-cn.com/problems/longest-increasing-subsequence/)
+
+给定一个无序的整数数组，找到其中最长上升子序列的长度。
+
+示例:
+
+```
+输入: [10,9,2,5,3,7,101,18]
+输出: 4 
+解释: 最长的上升子序列是 [2,3,7,101]，它的长度是 4。
+```
+
+说明:
+
+- 可能会有多种最长上升子序列的组合，你只需要输出对应的长度即可。
+- 你算法的时间复杂度应该为 O(*n2*) 。
+
+进阶: 你能将算法的时间复杂度降低到 O(*n* log *n*) 吗?
+
+#### 解法一（动态规划）
+
+1. dp：下标为 i 的元素的值代表对应下标之前数组中最长的子序列长度
+2. 初始值：所有项的初始值都为 1
+3. 转移方程：用 i 遍历数组得到dp对应的最大值，但是由于子序列并不要求连续，因此用 j 遍历 i 的左边，j 小于 i 代表 i 可以接到 j 的后面，此时可以退出状态转移方程`dp[i] = Math.max(dp[i], dp[j] + 1)`找到 i 子序列中最大的上升长度。
+
+```java
+public int lengthOfLIS(int[] nums) {
+    // 前i的数组中最长的子序列长度
+    int[] dp = new int[nums.length];
+    // 初始状态长度都为1
+    Arrays.fill(dp, 1);
+    // 开始遍历更新dp[i]的最大值
+    for (int i = 0; i < nums.length; i++) {
+        // 由于是子序列，并不要求连续
+        // 所以此处要继续循环
+        for (int j = 0; j < i; j++) {
+            // 小于，代表i可以接到到j后面
+            if (nums[i] > nums[j]) {
+                // 更新dp[i]的最大值
+                dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
+        }
+    }
+    // 找到最大的长度
+    int res = 0;
+    for (int i = 0; i < dp.length; i++) {
+        res = Math.max(res, dp[i]);
+    }
+    return res;
+}
+```
+
+#### 解法二（dp+二分）
+
+```java
+// TODO
+```
 
 
 
