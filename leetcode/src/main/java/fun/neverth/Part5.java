@@ -405,6 +405,22 @@ public class Part5 {
         return res;
     }
 
+    /**
+     * 剑指 Offer 39. 数组中出现次数超过一半的数字
+     */
+    public int majorityElement(int[] nums) {
+        // 众数    投票数
+        int x = 0, votes = 0;
+        // 遍历
+        for(int num : nums){
+            // 为0是选众数
+            if(votes == 0) x = num;
+            // ++ 或 --
+            votes += num == x ? 1 : -1;
+        }
+        return x;
+    }
+
     public static void main(String[] args) {
         int[][] arr = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
         int[] a = {1, 2, 3, 4, 5};
