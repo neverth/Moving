@@ -8,6 +8,8 @@ import java.util.Scanner;
  * 2. 去除重复的数组
  * 3. 单例模式
  *
+ * 这都没有面试机会 emmm
+ *
  * @author NeverTh
  * @date 18:57 2020/8/8
  */
