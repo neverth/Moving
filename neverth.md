@@ -21,20 +21,23 @@
 9. 0903    oppo      https://www.nowcoder.com/discuss/484502
 10. 0903   度小满     https://www.nowcoder.com/discuss/488771
 11. 0903   搜狗       https://www.nowcoder.com/discuss/492461
-12. 0903   360       https://www.nowcoder.com/discuss/473000
+12. 0903   360       https://www.nowcoder.com/discuss/473000  0911 20-22笔试
 13. 0903   三七互娱   https://www.nowcoder.com/discuss/496186
 14. 0903   顺丰       https://www.nowcoder.com/discuss/481241
 15. 0903   京东       https://www.nowcoder.com/discuss/492586   9月17日笔试
 16. 0903   4399      https://www.nowcoder.com/discuss/464230
 17. 0903   虎牙      https://www.nowcoder.com/discuss/496510
-18. 0903   有赞       https://www.nowcoder.com/discuss/493590
+18. 0903   有赞       https://www.nowcoder.com/discuss/493590  0911 15-16笔试
 19. 0903   b站    
 20. 0903   vivo      https://www.nowcoder.com/discuss/492122
 21. 0903   爱奇艺    https://www.nowcoder.com/discuss/468917
-22. 0904   好未来    
+22. 0904   好未来                                              0912 13.3-15笔试
+23. 0909   广联达     https://www.nowcoder.com/discuss/496297
+24. 0909   小米       https://www.nowcoder.com/discuss/498003
+25. 0910   美团       https://www.nowcoder.com/discuss/491079
+26. 0910   网易游戏   https://www.nowcoder.com/discuss/446261
+27. 0910   哈罗出行   https://www.nowcoder.com/discuss/487796
 
-#### 公司
-1. 美团 https://www.nowcoder.com/discuss/491079 1016号截止
 	
 #### 蔚来 
 1. 线程池创建，类别，原理，好处，缺点， Excutor， ThreadLocal
@@ -207,10 +210,10 @@
 1. 为什么要有JVM讲一下
 2. JVM是怎实现的
 3. 类加载中比较重要的一个环节
-4. 加锁在底层是怎么实现的
+4. 加锁在底层是怎么实现的、
 5. Spring总体说一下
 6. redis整个架构
 7. 有啥要问的吗？
 问：有，为啥这么快。答：前面几轮问过，我就不问了。
 问：emm，有希望？答：常规话术，综合考虑。
-日，感觉面试官对我没兴趣
+淦，感觉面试官对我没兴趣

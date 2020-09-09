@@ -520,7 +520,7 @@ class CQueue {
 }
 ```
 
-### 10- I. 斐波那契数列
+### 10.1. 斐波那契数列
 
 写一个函数，输入 n ，求斐波那契（Fibonacci）数列的第 n 项。斐波那契数列的定义如下：
 
@@ -575,7 +575,7 @@ public int fib(int n) {
 }
 ```
 
-### [10- II. 青蛙跳台阶问题](https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/)
+### [10.2. 青蛙跳台阶问题](https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/)
 
 一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 n 级的台阶总共有多少种跳法。
 
@@ -2091,8 +2091,52 @@ public int[] getLeastNumbers(int[] arr, int k) {
 
 #### 解法二（快排变形）
 
-```java
+直接通过快排切分排好第 K 小的数（下标为 K-1），那么其 k - 1下标的左边就是求职。
 
+```java
+private void quickSearch(int[] nums, int l, int r, int k) {
+    if (l >= r) {
+        return;
+    }
+    // 设置最左边的元素为key
+    int key = nums[l];
+    // 中间值
+    int i = l, j = r;
+    // 循环分类，左小右大
+    while (i < j) {
+        // 从右边找到一个比 key 小的数
+        while (nums[j] >= key && i < j) {
+            j--;
+        }
+        // 从左边找到一个比 key 大的数
+        while (nums[i] <= key && i < j) {
+            i++;
+        }
+        // 把比key小的数放左边，大的放右边
+        if (i < j) {
+            int t = nums[i];
+            nums[i] = nums[j];
+            nums[j] = t;
+        }
+    }
+    // 到这代表分类完成，将key插过去
+    nums[l] = nums[i];
+    nums[i] = key;
+    // 已经找到以 k 中间值的数组，直接返回
+    if (i == k) {
+        return;
+    }
+    quickSearch(nums, l, i - 1, k);
+    quickSearch(nums, i + 1, r, k);
+}
+public int[] getLeastNumbers2(int[] arr, int k) {
+    if (k == 0 || arr.length == 0) {
+        return new int[0];
+    }
+    // 最后一个参数表示我们要找的是下标为k-1的数
+    quickSearch(arr, 0, arr.length - 1, k - 1);
+    return Arrays.copyOf(arr, k);
+}
 ```
 
 #### 解法三（库函数）
@@ -2117,7 +2161,134 @@ public int[] getLeastNumbers1(int[] arr, int k) {
 }
 ```
 
+### [53.1. 在排序数组中查找数字](https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/)
 
+统计一个数字在排序数组中出现的次数。
+
+示例 1:
+
+```
+输入: nums = [5,7,7,8,8,10], target = 8
+输出: 2
+```
+
+示例 2:
+
+```
+输入: nums = [5,7,7,8,8,10], target = 6
+输出: 0
+```
+
+#### 解法一（遍历）
+
+直接遍历就可以
+
+#### 解法二（二分查找）
+
+用二分查找分别找到左边界和右边界，在相减即可得。
+
+```java
+// 时间复杂度O(logn)
+public int search(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    // 找到target的右边界
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] <= target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    // 如果数组中不存在对应target
+    if (right >= 0 && nums[right] != target){
+        return 0;
+    }
+    int RIGHT = left;
+    // 重新初始化
+    left = 0;
+    right = nums.length - 1;
+    // 找到target的左边界
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    int LEFT = right;
+    return RIGHT - LEFT - 1;
+}
+```
+
+### [53.2. 0～n-1中缺失的数字](https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof/)
+
+一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
+
+示例 1:
+
+```
+输入: [0,1,3]
+输出: 2
+```
+
+示例 2:
+
+```
+输入: [0,1,2,3,4,5,6,7,9]
+输出: 8
+```
+
+#### 解法一（遍历）
+
+直接遍历就可以
+
+#### 解法二（二分法）
+
+```java
+public int missingNumber(int[] nums) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        // 相等就去右区间中找
+        if (nums[mid] == mid) {
+            left = mid + 1;
+        }
+        // 不相等就去左区间中找
+        else {
+            right = mid - 1;
+        }
+    }
+    eturn left;
+}
+```
+
+### [60. n个骰子的点数](https://leetcode-cn.com/problems/nge-tou-zi-de-dian-shu-lcof/)
+
+把n个骰子扔在地上，所有骰子朝上一面的点数之和为s。输入n，打印出s的所有可能的值出现的概率。
+
+你需要用一个浮点数数组返回答案，其中第 i 个元素代表这 n 个骰子所能掷出的点数集合中第 i 小的那个的概率。
+
+示例 1:
+
+```
+输入: 1
+输出: [0.16667,0.16667,0.16667,0.16667,0.16667,0.16667]
+```
+
+示例 2:
+
+```
+输入: 2
+输出: [0.02778,0.05556,0.08333,0.11111,0.13889,0.16667,0.13889,0.11111,0.08333,0.05556,0.02778]
+```
+
+#### 解法一（动态规划）
+
+```java
+
+```
 
 
 
@@ -2474,7 +2645,7 @@ public int lengthOfLIS(int[] nums) {
 
 #### 解法一（DFS）
 
-这道题面试官提示说用动态规划，没写出来，其使用DFS可以更好解。可以不直接求概率，用DFS先求出总共可能的次数，最后在跟总的可能次数相除。
+这道题面试官提示说用动态规划，没写出来，其使用DFS可以更好理解。可以不直接求概率，用DFS先求出总共可能的次数，最后在跟总的可能次数相除。
 
 ```java
 // 求满足条件的个数
