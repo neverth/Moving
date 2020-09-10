@@ -1,7 +1,6 @@
 package fun.neverth;
 
-import java.util.Arrays;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * @author neverth.li
@@ -215,9 +214,129 @@ public class Part6 {
         return left;
     }
 
+    /**
+     * 牛客 [编程题]字符串变形
+     * <p>
+     * TM什么垃圾case
+     */
+    public String trans(String string, int n) {
+        Stack<String> stack = new Stack<>();
+        Arrays.stream(string.split(" ")).forEach(stack::push);
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = string.length() - 1; i >= 0; i--) {
+            if (string.charAt(i) == ' ') {
+                sb.append(" ");
+            } else {
+                break;
+            }
+        }
+        while (!stack.isEmpty()) {
+            String pop = stack.pop();
+            for (int i = 0; i < pop.length(); i++) {
+                char c = pop.charAt(i);
+                if ('a' <= c && c <= 'z') {
+                    sb.append((char) (c - (char) 32));
+                } else {
+                    sb.append((char) (c + 32));
+                }
+            }
+            sb.append(" ");
+        }
+
+        for (int i = 0; i < string.length(); i++) {
+            if (string.charAt(i) == ' ') {
+                sb.append(" ");
+            } else {
+                break;
+            }
+        }
+
+        return sb.deleteCharAt(sb.length() - 1).toString();
+    }
+
+    /**
+     * 415. 字符串相加
+     *
+     * 双指针倒叙
+     */
+    public String addStrings(String num1, String num2) {
+        StringBuilder sb = new StringBuilder();
+        // 两个num的尾指针 和 此时相加的进位
+        int i = num1.length() - 1, j = num2.length() - 1, carry = 0;
+        // 转为char数组
+        char[] char1 = num1.toCharArray();
+        char[] char2 = num2.toCharArray();
+        // 当有一个num没有处理完时
+        while(i >= 0 || j >= 0){
+            // 两数相加
+            int n1 = i >= 0 ? char1[i] - '0' : 0;
+            int n2 = j >= 0 ? char2[j] - '0' : 0;
+            // 两数相加并加上进位
+            int tmp = n1 + n2 + carry;
+            // 保存当前相加的进位
+            carry = tmp / 10;
+            // 保存结果
+            sb.append(tmp % 10);
+            // 处理下一位
+            i--;
+            j--;
+        }
+        // 再次处理进位
+        if (carry == 1){
+            sb.append(1);
+        }
+        // 因为结果是倒叙存储，因此需要翻转
+        return sb.reverse().toString();
+    }
+
+    /**
+     * 剑指 Offer 59 - I. 滑动窗口的最大值
+     *
+     * 单调队列
+     */
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums.length == 0 || k == 0){
+            return new int[0];
+        }
+        // 单调队列要使用双向链表实现
+        Deque<Integer> deque = new LinkedList<>();
+        // 结果数组
+        int[] res = new int[nums.length - k + 1];
+        // 首先让长度为 K 的窗口充满元素
+        for (int i = 0; i < k; i++) {
+            // 构造单调栈，将队列前面比元素小的全给清除掉，保证当调调递增
+            // 你可以想象，加入数字的大小代表人的体重，把前面体重不足的都压扁了，直到遇到更大的量级才停住。
+            while (!deque.isEmpty() && deque.peekLast() < nums[i]){
+                deque.removeLast();
+            }
+            deque.offer(nums[i]);
+        }
+        // 获取第一个值
+        res[0] = deque.peek();
+        // 形成窗口之后
+        for (int i = k; i < nums.length; i++) {
+            // 因为在够着单调栈的时候，相对小的元素已经被弹出
+            // 我们想删除的队头元素 n 可能已经被「压扁」了，这时候就不用删除了
+            if (deque.peek() == nums[i - k]){
+                deque.poll();
+            }
+            // 构造单调栈，将队列前面比元素小的全给清除掉
+            // 保证当调调递增
+            while (!deque.isEmpty() && deque.peekLast() < nums[i]){
+                deque.removeLast();
+            }
+            deque.offer(nums[i]);
+            // 获取对应窗口最大值
+            res[i - k + 1] = deque.peek();
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         Part6 part6 = new Part6();
-        int[] a = {0, 1, 2, 3, 4, 5, 6, 7, 9};
-        part6.missingNumber(a);
+        int[] a = {1,3,-1,-3,5,3,6,7};
+        part6.maxSlidingWindow(a, 3);
     }
 }
