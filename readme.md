@@ -2264,6 +2264,78 @@ public int missingNumber(int[] nums) {
 }
 ```
 
+### [59.1 滑动窗口的最大值](https://leetcode-cn.com/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof/)
+
+给定一个数组 `nums` 和滑动窗口的大小 `k`，请找出所有滑动窗口里的最大值。
+
+示例:
+
+```
+输入: nums = [1,3,-1,-3,5,3,6,7], 和 k = 3
+输出: [3,3,5,5,6,7] 
+解释: 
+  滑动窗口的位置                最大值
+---------------               -----
+
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+```
+
+#### 解法一（单调队列）
+
+单调增队列实现，使用双向链表，当入队的时候将前面比入队元素小的全部给清除掉，保证当前队列元素单调递增。你可以想象，加入数字的大小代表人的体重，把前面体重不足的都压扁了，直到遇到更大的量级才停住。
+
+在本题中，因为滑动窗口需要删除队头的值，但是我们想删除的队头元素 n 可能已经被「压扁」了，这时候就不用删除了
+
+```java
+// 线性时间复杂度
+public int[] maxSlidingWindow(int[] nums, int k) {
+    if (nums.length == 0 || k == 0){
+        return new int[0];
+    }
+    // 单调队列要使用双向链表实现
+    Deque<Integer> deque = new LinkedList<>();
+    // 结果数组
+    int[] res = new int[nums.length - k + 1];
+    // 首先让长度为 K 的窗口充满元素
+    for (int i = 0; i < k; i++) {
+        // 构造单调栈，将队列前面比元素小的全给清除掉，保证当前单调递增
+        // 你可以想象，加入数字的大小代表人的体重，把前面体重不足的都压扁了，直到遇到更大的量级才停住。
+        while (!deque.isEmpty() && deque.peekLast() < nums[i]){
+            deque.removeLast();
+        }
+        deque.offer(nums[i]);
+    }
+    // 获取第一个值
+    res[0] = deque.peek();
+    // 形成窗口之后
+    for (int i = k; i < nums.length; i++) {
+        // 因为在够着单调栈的时候，相对小的元素已经被弹出
+        // 我们想删除的队头元素 n 可能已经被「压扁」了，这时候就不用删除了
+        if (deque.peek() == nums[i - k]){
+            deque.poll();
+        }
+        // 构造单调栈，将队列前面比元素小的全给清除掉
+        // 保证当调调递增
+        while (!deque.isEmpty() && deque.peekLast() < nums[i]){
+            deque.removeLast();
+        }
+        deque.offer(nums[i]);
+        // 获取对应窗口最大值
+        res[i - k + 1] = deque.peek();
+    }
+    return res;
+}
+```
+
+
+
+
+
 ### [60. n个骰子的点数](https://leetcode-cn.com/problems/nge-tou-zi-de-dian-shu-lcof/)
 
 把n个骰子扔在地上，所有骰子朝上一面的点数之和为s。输入n，打印出s的所有可能的值出现的概率。
@@ -2919,6 +2991,53 @@ public void reverseString(char[] s) {
 }
 ```
 
+### [415. 字符串相加](https://leetcode-cn.com/problems/add-strings/)
+
+给定两个字符串形式的非负整数 `num1` 和`num2` ，计算它们的和。
+
+提示：
+
+num1 和num2 的长度都小于 5100
+num1 和num2 都只包含数字 0-9
+num1 和num2 都不包含任何前导零
+你不能使用任何內建 BigInteger 库， 也不能直接将输入的字符串转换为整数形式
+
+#### 解法一（双指针）
+
+模拟手写算数，利用双尾部指针，从尾开始计算，并跟手算一样，使用额外变量保存进位。讲每位的结果插入结果数组中，最后逆序输出即可求值。
+
+```java
+public String addStrings(String num1, String num2) {
+    StringBuilder sb = new StringBuilder();
+    // 两个num的尾指针 和 此时相加的进位
+    int i = num1.length() - 1, j = num2.length() - 1, carry = 0;
+    // 转为char数组
+    char[] char1 = num1.toCharArray();
+    char[] char2 = num2.toCharArray();
+    // 当有一个num没有处理完时
+    while(i >= 0 || j >= 0){
+        // 两数相加
+        int n1 = i >= 0 ? char1[i] - '0' : 0;
+        int n2 = j >= 0 ? char2[j] - '0' : 0;
+        // 两数相加并加上进位
+        int tmp = n1 + n2 + carry;
+        // 保存当前相加的进位
+        carry = tmp / 10;
+        // 保存结果
+        sb.append(tmp % 10);
+        // 处理下一位
+        i--;
+        j--;
+    }
+    // 再次处理进位
+    if (carry == 1){
+        sb.append(1);
+    }
+    // 因为结果是倒叙存储，因此需要翻转
+    return sb.reverse().toString();
+}
+```
+
 ### [434. 字符串中的单词数](https://leetcode-cn.com/problems/number-of-segments-in-a-string/)
 
 统计字符串中的单词个数，这里的单词指的是连续的不是空格的字符。
@@ -3044,4 +3163,36 @@ public int getNSumCount(int n, int m){
     return res;
 }
 ```
+
+### 字符串变形
+
+对于一个给定的字符串，我们需要在线性(也就是O(n))的时间里对它做一些变形。首先这个字符串中包含着一些空格，就像"Hello World"一样，然后我们要做的是把着个字符串中由空格隔开的单词反序，同时反转每个字符的大小写。比如"Hello World"变形后就变成了"wORLD hELLO"。
+
+#### 解法一（常规）
+
+用空格分隔，插入栈中，再从栈中弹出并顺便转换大小写。
+
+```java
+public String trans(String string, int n) {
+    Stack<String> stack = new Stack<>();
+    Arrays.stream(string.split(" ")).forEach(stack::push);
+    StringBuilder sb = new StringBuilder();
+    while(!stack.isEmpty()){
+        String pop = stack.pop();
+        for (int i = 0; i < pop.length(); i++) {
+            char c = pop.charAt(i);
+            // 转换大小写
+            if ('a' <= c && c <= 'z'){
+                sb.append((char)(c - (char)32));
+            }else{
+                sb.append((char)(c + 32));
+            }
+        }
+        sb.append(" ");
+    }
+    return sb.deleteCharAt(sb.length() - 1).toString();
+}
+```
+
+
 
