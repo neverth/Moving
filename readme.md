@@ -2409,6 +2409,58 @@ public int[] twoSum(int[] nums, int target) {
 }
 ```
 
+### [3. 无重复字符的最长子串](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/)
+
+给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
+
+示例 1:
+
+```
+输入: "abcabcbb"
+输出: 3 
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+```
+
+#### 解法一（滑动窗口）
+
+利用滑动窗口，调整窗口，在满足无重复字符的情况下窗口最大的长度就是所求值。
+
+用hashMap保存当前窗口中存在的元素和对应出现的次数，根据字符出现的次数调整窗口，使其符合条件并更新最大值。
+
+```java
+// 时间复杂度O(n)
+public int lengthOfLongestSubstring(String s) {
+    // 用map保存当前窗口中存在的元素和对应出现的次数
+    HashMap<Character, Integer> map = new HashMap<>();
+    // 左指针，  右指针，  最大值
+    int i = 0 , j = 0, max = 0;
+    // 当窗口没有到底时
+    while(j < s.length()){
+        // 判断当前字符是否已经在窗口中存在
+        // 存在次数++，不存在初始为1
+        char c = s.charAt(j++);
+        if (map.get(c) == null){
+            map.put(c, 1);
+        }else{
+            map.put(c, map.get(c) + 1);
+        }
+        // 当字符存在次数大于一的时候，
+        // 调整窗口左边界，直到元素出现次数为1
+        while(map.get(c) > 1){
+            char c1 = s.charAt(i++);
+            map.put(c1, map.get(c1) - 1);
+        }
+        // 更新最大值
+        max = Math.max(max, j - i);
+    }
+    return max;
+}
+```
+
+
+
+
+
 ### [15. 三数之和](https://leetcode-cn.com/problems/3sum/)
 
 给你一个包含 *n* 个整数的数组 `nums`，判断 `nums` 中是否存在三个元素*a，b，c ，*使得 *a + b + c =* 0 ？请你找出所有满足条件且不重复的三元组。 注意：答案中不可以包含重复的三元组。
@@ -2486,6 +2538,125 @@ public List<List<Integer>> threeSum(int[] nums) {
 }
 ```
 
+### [20. 有效的括号](https://leetcode-cn.com/problems/valid-parentheses/)
+
+给定一个只包括 `'('`，`')'`，`'{'`，`'}'`，`'['`，`']'` 的字符串，判断字符串是否有效。
+
+有效字符串需满足：
+
+1. 左括号必须用相同类型的右括号闭合。
+2. 左括号必须以正确的顺序闭合。
+
+注意空字符串可被认为是有效字符串。
+
+#### 解法一（栈）
+
+解决括号问题常用栈，创建一个对应匹配规则的map，遇到左入栈，右出栈并判断是否对应匹配，不匹配返回false。
+
+```java
+public boolean isValid(String s) {
+    if (s.length() == 0) {
+        return true;
+    }
+    // 方便匹配
+    Map<Character, Character> map = new HashMap<>();
+    map.put('{', '}');
+    map.put('[', ']');
+    map.put('(', ')');
+    map.put('?', '?');
+    // 不包含有效左字符
+    if (!map.containsKey(s.charAt(0))) {
+        return false;
+    }
+    LinkedList<Character> stack = new LinkedList<>();
+    try {
+        for (Character c : s.toCharArray()) {
+            // 左字符直接入栈
+            if (map.containsKey(c)) {
+                stack.push(c);
+            }
+            // 右字符需要跟栈顶成对
+            else if (map.get(stack.pop()) != c) {
+                return false;
+            }
+        }
+    } catch (Exception e) {
+        // stack下标超出直接返回false
+        return false;
+    }
+    return stack.size() == 0;
+}
+```
+
+
+
+
+
+### [39. 组合总和](https://leetcode-cn.com/problems/combination-sum/)
+
+给定一个**无重复元素**的数组 `candidates` 和一个目标数 `target` ，找出 `candidates` 中所有可以使数字和为 `target` 的组合。
+
+`candidates` 中的数字可以无限制重复被选取。
+
+说明：
+
+- 所有数字（包括 `target`）都是正整数。
+- 解集不能包含重复的组合。 
+
+示例 1：
+
+```
+输入：candidates = [2,3,6,7], target = 7,
+所求解集为：
+[
+  [7],
+  [2,2,3]
+]
+```
+
+#### 解法一（DFS）
+
+使用回溯法寻找可行解，但是需要注意可以不选择使用这个数并且这个数可以重复使用。
+
+```java
+List<List<Integer>> res39 = new ArrayList<>();
+
+public List<List<Integer>> combinationSum(int[] candidates, int target) {
+    List<Integer> combine = new ArrayList<>();
+    dfs(candidates, target, combine, 0);
+    return res39;
+}
+
+private void dfs(int[] candidates, int target, List<Integer> combine, int idx) {
+    // 到这数组尾且不符合条件
+    if (idx == candidates.length) {
+        return;
+    }
+    // 符合条件并记录结果
+    if (target == 0) {
+        res39.add(new ArrayList<>(combine));
+        return;
+    }
+    // 选择不使用这个idx
+    dfs(candidates, target, combine, idx + 1);
+    // 选择使用这个idx，但是要满足题意
+    if (target - candidates[idx] >= 0) {
+        // 加上组合
+        combine.add(candidates[idx]);
+        // 递归搜索，因为可以选重复值，所以还是idx
+        dfs(candidates, target - candidates[idx], combine, idx);
+        // 取消组合
+        combine.remove(combine.size() - 1);
+    }
+}
+```
+
+
+
+
+
+
+
 ### [42. 接雨水](https://leetcode-cn.com/problems/trapping-rain-water/)
 
 详情请点击链接跳转。
@@ -2495,6 +2666,68 @@ public List<List<Integer>> threeSum(int[] nums) {
 ```java
 
 ```
+
+### [64. 最小路径和](https://leetcode-cn.com/problems/minimum-path-sum/)
+
+给定一个包含非负整数的 *m* x *n* 网格，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+
+说明：每次只能向下或者向右移动一步。
+
+示例:
+
+```
+输入:
+[
+  [1,3,1],
+  [1,5,1],
+  [4,2,1]
+]
+输出: 7
+解释: 因为路径 1→3→1→1→1 的总和最小。
+```
+
+#### 解法一（动态规划）
+
+1. dp：代表直到走到 (i,j)的最小路径和。
+2. 初始值：00、0*、\*0都只有固定路径
+3. 转移方程：除开初始值之外，其他的ij都有两种走法，从上或者从左边来，选择较小的一个构成这个ij的最小路径。
+
+遍历路径，求出dp
+
+```java
+public int minPathSum(int[][] grid) {
+    // 代表直到走到 (i,j)的最小路径和。
+    // 可以共用grid，次吃是为了方便理解
+    int[][] dp = new int[grid.length][grid[0].length];
+    // 遍历路径
+    for (int i = 0; i < grid.length; i++) {
+        for (int j = 0; j < grid[0].length; j++) {
+            // 00的时候初始dp
+            if (i == 0 && j == 0) {
+                dp[i][j] = grid[i][j];
+            }
+            // 0*的时候只有一种路径
+            else if (i == 0) {
+                dp[i][j] = dp[i][j - 1] + grid[i][j];
+            }
+            // *0的时候只有一种路径
+            else if (j == 0) {
+                dp[i][j] = dp[i - 1][j] + grid[i][j];
+            }
+            // 其他的ij才有可能有多中路径
+            // 向下或者是向右走，选择最小值
+            else {
+                dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
+            }
+        }
+    }
+    return dp[grid.length - 1][grid[0].length - 1];
+}
+```
+
+
+
+
 
 ### [141. 环形链表](https://leetcode-cn.com/problems/linked-list-cycle/)
 
@@ -2573,7 +2806,24 @@ public boolean hasCycle(ListNode head) {
 
 ```
 
+### [215. 数组中的第K个最大元素](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
 
+在未排序的数组中找到第 **k** 个最大的元素。请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
+
+**示例 1:**
+
+```
+输入: [3,2,1,5,6,4] 和 k = 2
+输出: 5
+```
+
+#### 解法一（最大堆）
+
+详情参考 剑指offer 最小的k个数
+
+#### 解法二（快排变形）
+
+详情参考 剑指offer 最小的k个数
 
 
 
@@ -2634,6 +2884,134 @@ public int lengthOfLIS(int[] nums) {
 ```java
 // TODO
 ```
+
+### [344. 反转字符串](https://leetcode-cn.com/problems/reverse-string/)
+
+编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。
+
+不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
+
+你可以假设数组中的所有字符都是 ASCII 码表中的可打印字符。
+
+示例 1：
+
+```
+输入：["h","e","l","l","o"]
+输出：["o","l","l","e","h"]
+```
+
+#### 解法一（双指针）
+
+首尾双指针两两交换就可以解决
+
+```java
+public void reverseString(char[] s) {
+    // 双指针
+    int i = 0, j = s.length - 1;
+    // 两两交换
+    while (i < j) {
+        char t = s[i];
+        s[i] = s[j];
+        s[j] = t;
+        i++;
+        j--;
+    }
+}
+```
+
+### [434. 字符串中的单词数](https://leetcode-cn.com/problems/number-of-segments-in-a-string/)
+
+统计字符串中的单词个数，这里的单词指的是连续的不是空格的字符。
+
+请注意，你可以假定字符串里不包括任何不可打印的字符。
+
+示例:
+
+```
+输入: "Hello, my name is John"
+输出: 5
+解释: 这里的单词是指连续的不是空格的字符，所以 "Hello," 算作 1 个单词。
+```
+
+####  解法一（遍历）
+
+判断是一个单词其前面要存在空格。
+
+```java
+public int countSegments(String s) {
+    char[] chars = s.toCharArray();
+    int len = 0;
+    // 匹配第一个有效的字符
+    boolean newWord = true;
+    // 遍历
+    for (char c : chars) {
+        // 空格之后可能存在单词
+        // 过滤掉连续的空格
+        if (c == ' ') {
+            newWord = true;
+        }
+        // 不是空格
+        else {
+            // 有效字符且之前是空格
+            if (newWord) {
+                len += 1;
+                newWord = false;
+            }
+        }
+    }
+    return len;
+}
+```
+
+### [543. 二叉树的直径](https://leetcode-cn.com/problems/diameter-of-binary-tree/)
+
+给定一棵二叉树，你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过也可能不穿过根结点。
+
+示例 :
+给定二叉树
+
+```
+          1
+         / \
+        2   3
+       / \     
+      4   5    
+```
+
+返回 **3**, 它的长度是路径 [4,2,1,3] 或者 [5,2,1,3]。
+
+#### 解法一（DFS）
+
+知道其最大直径，通过分析题目可知，最大直径一定是一个节点的左右子树的最大深度相加。
+
+```java
+int ans543;
+
+public int diameterOfBinaryTree(TreeNode root) {
+    if (root == null){
+        return 0;
+    }
+    dfs(root);
+    return ans543;
+}
+
+private int dfs(TreeNode root){
+    // 已经到达叶子节点
+    if (root.left == null && root.right == null){
+        return 0;
+    }
+    // 递归左节点并计算left最大深度
+    int l = root.left == null ? 0 : dfs(root.left) + 1;
+    // 递归右节点并计算right最大深度
+    int r = root.right == null ? 0 : dfs(root.right) + 1;
+    // 最大直径一定是一个节点的左右子树的最大深度相加
+    ans543 = Math.max(ans543, l + r);
+    // 返回最长的深度
+    return Math.max(l, r);
+}
+```
+
+
 
 
 
