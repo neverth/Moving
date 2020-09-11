@@ -10,10 +10,10 @@
 本人性格乐观开朗，
 
 #### 投递记录
-1. 0831    科大讯飞   https://www.nowcoder.com/discuss/484191 0912 17-19 笔试
+1. 0831    科大讯飞   https://www.nowcoder.com/discuss/484191  0912 19-21 笔试
 2. 0831    海康威视   https://www.nowcoder.com/discuss/492811
 3. 0831    滴滴       https://www.nowcoder.com/discuss/466071
-4. 0831    贝壳       https://www.nowcoder.com/discuss/465475   测评截止时间0915
+4. 0831    贝壳       https://www.nowcoder.com/discuss/465475 
 5. 0831    欢聚时代   https://www.nowcoder.com/discuss/490748
 6. 0831    快手       https://www.nowcoder.com/discuss/493696
 7. 0831    小红书     https://www.nowcoder.com/discuss/482047
@@ -21,23 +21,24 @@
 9. 0903    oppo      https://www.nowcoder.com/discuss/484502
 10. 0903   度小满     https://www.nowcoder.com/discuss/488771
 11. 0903   搜狗       https://www.nowcoder.com/discuss/492461
-12. 0903   360       https://www.nowcoder.com/discuss/473000  0911 20-22笔试
+12. 0903   360       https://www.nowcoder.com/discuss/473000   0911 20-22笔试
 13. 0903   三七互娱   https://www.nowcoder.com/discuss/496186
 14. 0903   顺丰       https://www.nowcoder.com/discuss/481241
-15. 0903   京东       https://www.nowcoder.com/discuss/492586   9月17日笔试
+15. 0903   京东       https://www.nowcoder.com/discuss/492586 
 16. 0903   4399      https://www.nowcoder.com/discuss/464230
 17. 0903   虎牙      https://www.nowcoder.com/discuss/496510
-18. 0903   有赞       https://www.nowcoder.com/discuss/493590  0911 15-16笔试
+18. 0903   有赞       https://www.nowcoder.com/discuss/493590  0911 15-16笔试，错过
 19. 0903   b站    
 20. 0903   vivo      https://www.nowcoder.com/discuss/492122
 21. 0903   爱奇艺    https://www.nowcoder.com/discuss/468917
-22. 0904   好未来                                                                                      0912 13.5-15笔试
+22. 0904   好未来                                              0912 13.5-15笔试
 23. 0909   广联达     https://www.nowcoder.com/discuss/496297
 24. 0909   小米       https://www.nowcoder.com/discuss/498003
-25. 0910   美团       https://www.nowcoder.com/discuss/491079
+25. 0910   美团       https://www.nowcoder.com/discuss/491079  0913 10-12笔试
 26. 0910   网易游戏   https://www.nowcoder.com/discuss/446261
 27. 0910   哈罗出行   https://www.nowcoder.com/discuss/487796
-28. 0910   招银网络   https://www.nowcoder.com/discuss/501312  0912 15-17笔试
+28. 0910   招银网络   https://www.nowcoder.com/discuss/501312 
+29. 0910   网易                                                0912 15-17笔试
 
 	
 #### 蔚来 
@@ -218,3 +219,14 @@
 问：有，为啥这么快。答：前面几轮问过，我就不问了。
 问：emm，有希望？答：常规话术，综合考虑。
 淦，感觉面试官对我没兴趣
+
+
+#### 字节测开 三面 30min 0911
+1. 项目实习
+2. leetcode25 合并两个排序的链表
+3. 喜欢b站的话怎么测试他的弹幕呢
+4. 能来实习吗？
+5. 我没啥问题了，你有啥要问的？
+问：有，为啥这么快。答：你已经充分展示你的能力了，我就不问一些无意义的问题
+问：那我过了吗？答：不是跟你说了吗
+
