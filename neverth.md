@@ -10,7 +10,7 @@
 本人性格乐观开朗，
 
 #### 投递记录
-1. 0831    科大讯飞   https://www.nowcoder.com/discuss/484191
+1. 0831    科大讯飞   https://www.nowcoder.com/discuss/484191 0912 17-19 笔试
 2. 0831    海康威视   https://www.nowcoder.com/discuss/492811
 3. 0831    滴滴       https://www.nowcoder.com/discuss/466071
 4. 0831    贝壳       https://www.nowcoder.com/discuss/465475   测评截止时间0915
@@ -31,7 +31,7 @@
 19. 0903   b站    
 20. 0903   vivo      https://www.nowcoder.com/discuss/492122
 21. 0903   爱奇艺    https://www.nowcoder.com/discuss/468917
-22. 0904   好未来                                              0912 13.5-15笔试
+22. 0904   好未来                                                                                      0912 13.5-15笔试
 23. 0909   广联达     https://www.nowcoder.com/discuss/496297
 24. 0909   小米       https://www.nowcoder.com/discuss/498003
 25. 0910   美团       https://www.nowcoder.com/discuss/491079

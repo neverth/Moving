@@ -505,7 +505,7 @@ class CQueue {
     }
     
     public int deleteHead() {
-        // 只要出栈中存在元素，栈顶代表是对头
+        // 只要出栈中存在元素，栈顶代表是队头
         if(!stack2.isEmpty()){
             return stack2.pop();
         }else{
@@ -1935,10 +1935,22 @@ public List<List<Integer>> levelOrder1(TreeNode root) {
 输出: true
 ```
 
-#### 解法一（）
+#### 解法一（递归分支）
+
+根据二叉搜索树的定义，可以通过递归，判断所有子树的 **正确性** （即其后序遍历是否满足二叉搜索树的定义） ，若所有子树都正确，则此序列为二叉搜索树的后序遍历。
 
 ```java
-
+public boolean verifyPostorder(int[] postorder) {
+    return recur(postorder, 0, postorder.length - 1);
+}
+boolean recur(int[] postorder, int i, int j) {
+    if(i >= j) return true;
+    int p = i;
+    while(postorder[p] < postorder[j]) p++;
+    int m = p;
+    while(postorder[p] > postorder[j]) p++;
+    return p == j && recur(postorder, i, m - 1) && recur(postorder, m, j - 1);
+}
 ```
 
 ### [39. 数组中出现次数超过一半的数字](https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/)
@@ -1964,7 +1976,7 @@ public List<List<Integer>> levelOrder1(TreeNode root) {
 
 #### 解法三（摩尔投票法）
 
-利用数量优势，一对一抵消，最后的那个即为求值。设置一个votes变量，遍历数组，当votes为0时即当前遍历的值为众数，在进行遍历，和众数相同votes++，否则--，到0就重复刚刚选的过程。时间、空间复杂度分别问O(n)、O(1)
+利用数量优势，一对一抵消，最后的那个即为求值。设置一个votes变量，遍历数组，**当votes为0时即当前遍历的值为众数**，在进行遍历，和众数相同votes++，否则--，到0就重复刚刚选的过程。时间、空间复杂度分别问O(n)、O(1)
 
 ```java
 public int majorityElement(int[] nums) {
@@ -2001,7 +2013,7 @@ public int majorityElement(int[] nums) {
 
 #### 解法一（最大堆）
 
-最大堆是一种数据结构，它首先是一颗完全二叉树（），并且，它所有父节点的值大于或等于两个子节点的值。
+最大堆是一种数据结构，它首先是一颗完全二叉树，并且，它所有父节点的值大于或等于两个子节点的值。
 
 一棵深度为 k 的有n个结点的二叉树，对树中的结点按从上至下、从左到右的顺序进行编号，如果编号为i（1≤i≤n）的结点与满二叉树中编号为i的结点在二叉树中的位置相同，则这棵二叉树称为完全二叉树。
 
@@ -2260,7 +2272,7 @@ public int missingNumber(int[] nums) {
             right = mid - 1;
         }
     }
-    eturn left;
+    return left;
 }
 ```
 
@@ -2287,7 +2299,7 @@ public int missingNumber(int[] nums) {
 
 #### 解法一（单调队列）
 
-单调增队列实现，使用双向链表，当入队的时候将前面比入队元素小的全部给清除掉，保证当前队列元素单调递增。你可以想象，加入数字的大小代表人的体重，把前面体重不足的都压扁了，直到遇到更大的量级才停住。
+单调增队列实现，使用双向链表，当入队的时候将前面比入队元素小的全部给清除掉，保证当前队列元素单调递增。**你可以想象，加入数字的大小代表人的体重，把前面体重不足的都压扁了，直到遇到更大的量级才停住**。
 
 在本题中，因为滑动窗口需要删除队头的值，但是我们想删除的队头元素 n 可能已经被「压扁」了，这时候就不用删除了
 
@@ -2442,7 +2454,7 @@ public int[] twoSum(int[] nums, int target) {
     }
     for (int i = 0; i < nums.length; i++) {
         int complement = target - nums[i];
-        // 从map中找到符合的值并返回下标
+        // 从map中找到符合的值并且并不是重复值，然后返回下标
         if (map.containsKey(complement) && map.get(complement) != i) {
             return new int[] { i, map.get(complement) };
         }
@@ -2569,7 +2581,7 @@ public List<List<Integer>> threeSum(int[] nums) {
         if (nums[0] > 0) {
             return res;
         }
-        // 因为不能包含重复的三元组，所有跳过
+        // 因为不能包含重复的三元组，所以跳过
         if (i > 0 && (nums[i] == nums[i - 1])) {
             continue;
         }
@@ -2635,7 +2647,6 @@ public boolean isValid(String s) {
     map.put('{', '}');
     map.put('[', ']');
     map.put('(', ')');
-    map.put('?', '?');
     // 不包含有效左字符
     if (!map.containsKey(s.charAt(0))) {
         return false;
@@ -2725,15 +2736,13 @@ private void dfs(int[] candidates, int target, List<Integer> combine, int idx) {
 
 
 
-
-
-
-
 ### [42. 接雨水](https://leetcode-cn.com/problems/trapping-rain-water/)
 
 详情请点击链接跳转。
 
-#### 解法一（DP）
+#### 解法一（暴力）
+
+直接按问题描述进行。对于数组中的每个元素，我们找出下雨后水能达到的最高位置，等于两边最大高度的较小值减去当前高度的值。
 
 ```java
 
@@ -2864,19 +2873,57 @@ public boolean hasCycle(ListNode head) {
 解释：链表中有一个环，其尾部连接到第二个节点。
 ```
 
-示例 2：
-
-```
-输入：head = [1,2], pos = 0
-输出：tail connects to node index 0
-解释：链表中有一个环，其尾部连接到第一个节点。
-```
-
-#### 解法一（）
+#### 解法一（HashSet）
 
 ```java
-
+// 时间复杂度O(n)
+public ListNode detectCycle(ListNode head) {
+    Set<ListNode> visited = new HashSet<ListNode>();
+    ListNode node = head;
+    while (node != null) {
+        // 包含重复，代表入口
+        if (visited.contains(node)) {
+            return node;
+        }
+        visited.add(node);
+        node = node.next;
+    }
+    return null;
+}
 ```
+
+#### 解法二（双指针）
+
+分两个步骤，首先通过快慢指针的方法判断链表是否有环；
+
+接下来找入口，具体的方法为，首先假定链表起点到入环的第一个节点A的长度为a【未知】，到快慢指针相遇的节点B的长度为（a + b）【这个长度是已知的】。现在我们想知道a的值，注意到快指针p2始终是慢指针p走过长度的2倍，所以慢指针p从B继续走（a + b）又能回到B点，如果只走a个长度就能回到节点A。但是a的值是不知道的，解决思路是曲线救国，注意到起点到A的长度是a，**那么可以用一个从起点开始的新指针q和从节点B开始的慢指针p同步走，相遇的地方必然是入环的第一个节点A。**
+
+```java
+public ListNode detectCycle(ListNode head) {
+    ListNode p = head, p2 = head;
+    boolean hasCycle = false;
+    while (p2.next != null && p2.next.next != null) {
+        p = p.next;
+        p2 = p2.next.next;
+        if (p == p2) {
+            hasCycle = true;
+            break;
+        }
+    }
+    // 步骤二：若有环，找到入环开始的节点
+    if (hasCycle) {
+        ListNode q = head;
+        while (p != q) {
+            p = p.next;
+            q = q.next;
+        }
+        return q;
+    } else 
+        return null;
+}
+```
+
+
 
 ### [215. 数组中的第K个最大元素](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
 
