@@ -12,7 +12,7 @@
 #### 投递记录
 1. 0831    科大讯飞   https://www.nowcoder.com/discuss/484191  0912 19-21 笔试，已做
 2. 0831    海康威视   https://www.nowcoder.com/discuss/492811
-3. 0831    滴滴       https://www.nowcoder.com/discuss/466071
+3. 0831    滴滴       https://www.nowcoder.com/discuss/466071  0913 19-20:40 笔试
 4. 0831    贝壳       https://www.nowcoder.com/discuss/465475 
 5. 0831    欢聚时代   https://www.nowcoder.com/discuss/490748
 6. 0831    快手       https://www.nowcoder.com/discuss/493696
@@ -39,6 +39,7 @@
 27. 0910   哈罗出行   https://www.nowcoder.com/discuss/487796
 28. 0910   招银网络   https://www.nowcoder.com/discuss/501312 
 29. 0910   网易                                                0912 15-17笔试，已做
+30. 0913   百度                                                0914 19-21笔试s
 
 	
 #### 蔚来 
