@@ -118,10 +118,6 @@ public class Didi0913 {
             return;
         }
         for (Node node1 : node.next.keySet()) {
-//            if (node.next.get(node1) > k){
-//                System.out.println("No");
-//                return;
-//            }
             dfs(node1);
         }
     }
