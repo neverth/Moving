@@ -47,13 +47,13 @@
 21. 0903   爱奇艺    https://www.nowcoder.com/discuss/468917
 22. 0904   好未来                                              0912 13.5-15笔试，已做
 23. 0909   广联达     https://www.nowcoder.com/discuss/496297
-24. 0909   小米       https://www.nowcoder.com/discuss/498003  0915 19-20.5笔试
+24. 0909   小米       https://www.nowcoder.com/discuss/498003  0915 19-20.5笔试，已做
 25. 0910   美团       https://www.nowcoder.com/discuss/491079  0913 10-12笔试，已做
 26. 0910   网易游戏   https://www.nowcoder.com/discuss/446261
 27. 0910   哈罗出行   https://www.nowcoder.com/discuss/487796
 28. 0910   招银网络   https://www.nowcoder.com/discuss/501312 
 29. 0910   网易                                                0912 15-17笔试，已做
-30. 0913   百度                                                0914 19-21笔试
+30. 0913   百度                                                0914 19-21笔试，错过
 31. 0913   华为
 32. 0913   深信服     https://www.nowcoder.com/discuss/504134
 33. 0913   携程     0916结束测评
@@ -247,4 +247,11 @@
 5. 我没啥问题了，你有啥要问的？
 问：有，为啥这么快。答：你已经充分展示你的能力了，我就不问一些无意义的问题
 问：那我过了吗？答：不是跟你说了吗
+
+#### 字节测开 hr面 10min 0914
+1. 面试体验
+2. 职业规划
+3. 还在面啥公司
+4. 为什么选测开，我看你也有在面Java开发的流程
+5. 能实习吗
 
