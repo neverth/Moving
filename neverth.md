@@ -38,7 +38,7 @@
 12. 0903   360       https://www.nowcoder.com/discuss/473000   0911 20-22笔试，已做
 13. 0903   三七互娱   https://www.nowcoder.com/discuss/496186
 14. 0903   顺丰       https://www.nowcoder.com/discuss/481241
-15. 0903   京东       https://www.nowcoder.com/discuss/492586 
+15. 0903   京东       https://www.nowcoder.com/discuss/492586   0917 19-21笔试
 16. 0903   4399      https://www.nowcoder.com/discuss/464230   0912 19-21笔试，放弃
 17. 0903   虎牙      https://www.nowcoder.com/discuss/496510
 18. 0903   有赞       https://www.nowcoder.com/discuss/493590  0911 15-16笔试，错过
@@ -55,7 +55,7 @@
 29. 0910   网易                                                0912 15-17笔试，已做
 30. 0913   百度                                                0914 19-21笔试，错过
 31. 0913   华为
-32. 0913   深信服     https://www.nowcoder.com/discuss/504134
+32. 0913   深信服     https://www.nowcoder.com/discuss/504134  0917 19-21笔试
 33. 0913   携程     0916结束测评
 
 	
@@ -255,3 +255,13 @@
 4. 为什么选测开，我看你也有在面Java开发的流程
 5. 能实习吗
 
+#### 海康威视 一面 25min 0917
+1. 实习项目
+2. redis什么快
+3. 讲一下多路复用
+4. jvm怎么创建线程
+5. jvm性能优化手段
+6. http整体框架了解吗
+7. springboot注解怎么被使用
+8. 自己对java哪里没有那么了解
+9. 有啥想问的
