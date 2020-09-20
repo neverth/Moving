@@ -25,7 +25,7 @@
 
 #### 投递记录
 1. 0831    科大讯飞   https://www.nowcoder.com/discuss/484191  0912 19-21 笔试，已做
-2. 0831    海康威视   https://www.nowcoder.com/discuss/492811
+2. 0831    海康威视   https://www.nowcoder.com/discuss/492811  0914 19-21 笔试，已做，有面试
 3. 0831    滴滴       https://www.nowcoder.com/discuss/466071  0913 19-20:40 笔试，已做
 4. 0831    贝壳       https://www.nowcoder.com/discuss/465475 
 5. 0831    欢聚时代   https://www.nowcoder.com/discuss/490748
@@ -33,12 +33,12 @@
 7. 0831    小红书     https://www.nowcoder.com/discuss/482047
 8. 0903    大华       https://www.nowcoder.com/discuss/482437
 9. 0903    oppo      https://www.nowcoder.com/discuss/484502
-10. 0903   度小满     https://www.nowcoder.com/discuss/488771
+10. 0903   度小满     https://www.nowcoder.com/discuss/488771  0920 20-21:30笔试，已做
 11. 0903   搜狗       https://www.nowcoder.com/discuss/492461
 12. 0903   360       https://www.nowcoder.com/discuss/473000   0911 20-22笔试，已做
 13. 0903   三七互娱   https://www.nowcoder.com/discuss/496186
 14. 0903   顺丰       https://www.nowcoder.com/discuss/481241
-15. 0903   京东       https://www.nowcoder.com/discuss/492586   0917 19-21笔试
+15. 0903   京东       https://www.nowcoder.com/discuss/492586   0917 19-21笔试，已做
 16. 0903   4399      https://www.nowcoder.com/discuss/464230   0912 19-21笔试，放弃
 17. 0903   虎牙      https://www.nowcoder.com/discuss/496510
 18. 0903   有赞       https://www.nowcoder.com/discuss/493590  0911 15-16笔试，错过
@@ -52,10 +52,10 @@
 26. 0910   网易游戏   https://www.nowcoder.com/discuss/446261
 27. 0910   哈罗出行   https://www.nowcoder.com/discuss/487796
 28. 0910   招银网络   https://www.nowcoder.com/discuss/501312 
-29. 0910   网易                                                0912 15-17笔试，已做
+29. 0910   网易                                                0912 15-17笔试，已做，未通过
 30. 0913   百度                                                0914 19-21笔试，错过
 31. 0913   华为
-32. 0913   深信服     https://www.nowcoder.com/discuss/504134  0917 19-21笔试
+32. 0913   深信服     https://www.nowcoder.com/discuss/504134  0917 19-21笔试，错过
 33. 0913   携程     0916结束测评
 
 	
