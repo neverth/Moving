@@ -509,7 +509,7 @@ public class Part6 {
 
     /**
      * 415. 字符串相加
-     *
+     * <p>
      * 双指针倒叙
      */
     public String addStrings(String num1, String num2) {
@@ -520,7 +520,7 @@ public class Part6 {
         char[] char1 = num1.toCharArray();
         char[] char2 = num2.toCharArray();
         // 当有一个num没有处理完时
-        while(i >= 0 || j >= 0){
+        while (i >= 0 || j >= 0) {
             // 两数相加
             int n1 = i >= 0 ? char1[i] - '0' : 0;
             int n2 = j >= 0 ? char2[j] - '0' : 0;
@@ -535,7 +535,7 @@ public class Part6 {
             j--;
         }
         // 再次处理进位
-        if (carry == 1){
+        if (carry == 1) {
             sb.append(1);
         }
         // 因为结果是倒叙存储，因此需要翻转
@@ -544,11 +544,11 @@ public class Part6 {
 
     /**
      * 剑指 Offer 59 - I. 滑动窗口的最大值
-     *
+     * <p>
      * 单调队列
      */
     public int[] maxSlidingWindow(int[] nums, int k) {
-        if (nums.length == 0 || k == 0){
+        if (nums.length == 0 || k == 0) {
             return new int[0];
         }
         // 单调队列要使用双向链表实现
@@ -559,7 +559,7 @@ public class Part6 {
         for (int i = 0; i < k; i++) {
             // 构造单调栈，将队列前面比元素小的全给清除掉，保证当调调递增
             // 你可以想象，加入数字的大小代表人的体重，把前面体重不足的都压扁了，直到遇到更大的量级才停住。
-            while (!deque.isEmpty() && deque.peekLast() < nums[i]){
+            while (!deque.isEmpty() && deque.peekLast() < nums[i]) {
                 deque.removeLast();
             }
             deque.offer(nums[i]);
@@ -570,12 +570,12 @@ public class Part6 {
         for (int i = k; i < nums.length; i++) {
             // 因为在够着单调栈的时候，相对小的元素已经被弹出
             // 我们想删除的队头元素 n 可能已经被「压扁」了，这时候就不用删除了
-            if (deque.peek() == nums[i - k]){
+            if (deque.peek() == nums[i - k]) {
                 deque.poll();
             }
             // 构造单调栈，将队列前面比元素小的全给清除掉
             // 保证当调调递增
-            while (!deque.isEmpty() && deque.peekLast() < nums[i]){
+            while (!deque.isEmpty() && deque.peekLast() < nums[i]) {
                 deque.removeLast();
             }
             deque.offer(nums[i]);
@@ -585,7 +585,7 @@ public class Part6 {
         return res;
     }
 
-    public void test(){
+    public void test() {
 
     }
 
@@ -598,14 +598,14 @@ public class Part6 {
         }
     }
 
-    public ListNode Merge(ListNode l1,ListNode l2) {
+    public ListNode Merge(ListNode l1, ListNode l2) {
         ListNode head = new ListNode(-1);
         ListNode p = head;
-        while(l1 != null && l2 != null){
-            if(l1.val < l2.val){
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
                 p.next = l1;
                 l1 = l1.next;
-            }else{
+            } else {
                 p.next = l2;
                 l2 = l2.next;
             }
@@ -615,12 +615,38 @@ public class Part6 {
         return head.next;
     }
 
+    /**
+     * [33. 二叉搜索树的后序遍历序列](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof/)
+     */
+    public boolean verifyPostorder(int[] postorder) {
+        return recur(postorder, 0, postorder.length - 1);
+    }
+
+    boolean recur(int[] postorder, int i, int j) {
+        // 子序列只有一个元素或者不存在元素，代表符合定义。
+        if (i >= j) return true;
+        // 数组指针，从头开始遍历
+        int p = i;
+        // 正确的二叉搜索树的后序遍历序列的最后一个元素为根节点
+        // 小于根节点的连续子序列为根的左子树
+        while (postorder[p] < postorder[j]) {
+            p++;
+        }
+        // 保存左子树下标
+        int m = p;
+        // 大于跟结点的连续子序列为跟的右子树
+        while (postorder[p] > postorder[j]) {
+            p++;
+        }
+        // 满足定义时，右子树下标必须等于根节点下标，再分别递归判断根节点左右子树的正确性
+        return p == j && recur(postorder, i, m - 1) && recur(postorder, m, j - 1);
+    }
 
 
     public static void main(String[] args) {
         Part6 part6 = new Part6();
-        int[] a = {2, 3, 6, 7};
+        int[] a = {1, 3, 2, 6, 5};
         char[] b = {'1', '2', '3', '4'};
-        part6.isValid("(){}}{");
+        part6.verifyPostorder(a);
     }
 }

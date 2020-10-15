@@ -1939,16 +1939,30 @@ public List<List<Integer>> levelOrder1(TreeNode root) {
 
 根据二叉搜索树的定义，可以通过递归，判断所有子树的 **正确性** （即其后序遍历是否满足二叉搜索树的定义） ，若所有子树都正确，则此序列为二叉搜索树的后序遍历。
 
+符合定义的后序遍历数组的最后一个为根节点，因此从左往右开始遍历，连续且小于根节点的子序列即为根节点的左子树，连续且大于根节点的为右子树，接下来根据左右子树进行递归判断其是否符合定义。
+
 ```java
 public boolean verifyPostorder(int[] postorder) {
-    return recur(postorder, 0, postorder.length - 1);
+        return recur(postorder, 0, postorder.length - 1);
 }
+
 boolean recur(int[] postorder, int i, int j) {
-    if(i >= j) return true;
+    // 子序列只有一个元素或者不存在元素，代表符合定义。
+    if (i >= j) return true;
+    // 数组指针，从头开始遍历
     int p = i;
-    while(postorder[p] < postorder[j]) p++;
+    // 正确的二叉搜索树的后序遍历序列的最后一个元素为根节点
+    // 小于根节点的连续子序列为根的左子树
+    while (postorder[p] < postorder[j]) {
+        p++;
+    }
+    // 保存左子树下标
     int m = p;
-    while(postorder[p] > postorder[j]) p++;
+    // 大于跟结点的连续子序列为跟的右子树
+    while (postorder[p] > postorder[j]) {
+        p++;
+    }
+    // 满足定义时，右子树下标必须等于根节点下标，再分别递归判断根节点左右子树的正确性
     return p == j && recur(postorder, i, m - 1) && recur(postorder, m, j - 1);
 }
 ```
