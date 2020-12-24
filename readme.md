@@ -938,7 +938,7 @@ public int cuttingRope(int n) {
         res = 4;
         n -= 4;
     }
-    // // 比3的倍数大2，直接减2并乘2
+    // 比3的倍数大2，直接减2并乘2
     else if(n % 3 == 2){
         res = 2;
         n -= 2;
@@ -1222,9 +1222,9 @@ public ListNode getKthFromEnd(ListNode head, int k) {
 0 <= 节点个数 <= 5000
 ```
 
-#### 解法一（双指针）
+#### 解法一（三指针）
 
-定义两个指针一个在前一个在后，再定义一个临时指针用于保存后指针的下一个节点，接下来后指针指向前指针反转，再利用临时指针找到下一个节点，循环。
+定义**三个指针一个在前中后**，接下来中指针指向前指针反转，前指针指向中指针，中指针指向后指针，后指针指向下一个指针，循环。
 
 ```java
 
@@ -1234,13 +1234,13 @@ public ListNode reverseList(ListNode head) {
     while(p2 != null){
         // 临时指针，保存后指针的下一个节点
         // 不保存的话交换之后就找不到下一个节点了
-        ListNode tmp = p2.next;
+        ListNode p3 = p2.next;
         // 反转
         p2.next = p1;
         // 前进
         p1 = p2;
         // 前进
-        p2 = tmp;
+        p2 = p3;
     }
     return p1;
 }
@@ -1248,7 +1248,7 @@ public ListNode reverseList(ListNode head) {
 
 #### 解法二（递归）
 
-递归其实就是栈，利用入栈顺序，出栈逆序即可交换，入栈保存一个相邻的节点，出栈的时候利用那个相邻的节点和入参节点即可完成反转。
+递归其实就是栈，利用入栈顺序，出栈逆序即可交换，**入栈保存一个相邻的节点，出栈的时候利用那个相邻的节点和入参节点即可完成反转**。
 
 ```java
 ListNode newHead;
@@ -1402,7 +1402,7 @@ B是A的子结构， 即 A中有出现和B相同的结构和节点值。
 
 #### 解法一（递归）
 
-先序遍历树A中的每个节点Na作为相对根节点，判断树A中以Na为根节点的子树是否包含B树，每次判断的时候使用dfs算法将会遍历到树底，递归比较其左右子树是否对应相等。
+**先序遍历**树A中的每个节点Na作为相对根节点，判断树A中以Na为根节点的子树是否包含B树，每次判断的时候使用dfs算法将会遍历到树底，递归比较其左右子树是否对应相等。
 
 ```java
 public boolean isSubStructure(TreeNode A, TreeNode B) {
@@ -1460,7 +1460,7 @@ boolean dfs(TreeNode A, TreeNode B) {
 
 #### 解法一（递归）
 
- 利用树的后序遍历并将每次的访问左节点和右节点的值保存下来，方便后序遍历之后对根访问的时候左右交换。
+ 利用树的**后序遍历**并将每次的访问左节点和右节点的值保存下来，方便**后序遍历之后对根访问的时候左右交换**。
 
 ```java
 public TreeNode mirrorTree(TreeNode root) {
@@ -1558,7 +1558,7 @@ public TreeNode mirrorTree(TreeNode root) {
 
 #### 解法一（递归）
 
-前序遍历，之间判断左右是否相同，需要注意的是二叉树一个节点有两个节点，两个节点要分别进行比较
+**前序遍历**，之后判断左右是否相同，需要注意的是二叉树一个节点有两个节点，两个节点要分别进行比较
 
 ```java
 public boolean isSymmetric(TreeNode root) {
