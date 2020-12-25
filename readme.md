@@ -2341,7 +2341,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
     res[0] = deque.peek();
     // 形成窗口之后
     for (int i = k; i < nums.length; i++) {
-        // 因为在够着单调栈的时候，相对小的元素已经被弹出
+        // 因为在构造单调栈的时候，相对小的元素已经被弹出
         // 我们想删除的队头元素 n 可能已经被「压扁」了，这时候就不用删除了
         if (deque.peek() == nums[i - k]){
             deque.poll();
@@ -2358,8 +2358,6 @@ public int[] maxSlidingWindow(int[] nums, int k) {
     return res;
 }
 ```
-
-
 
 
 
@@ -2414,7 +2412,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 
 #### 解法一（动态规划）
 
-总是在股票价格最小的时候买入，之后找到一个卖出时的最大利润。
+总是**在股票价格最小的时候买入，之后找到一个卖出时的最大利润。**
 
 ```java
 public int maxProfit(int[] prices) {
@@ -2524,7 +2522,7 @@ public int[] twoSum(int[] nums, int target) {
 
 利用滑动窗口，调整窗口，在满足无重复字符的情况下窗口最大的长度就是所求值。
 
-用hashMap保存当前窗口中存在的元素和对应出现的次数，根据字符出现的次数调整窗口，使其符合条件并更新最大值。
+**用hashMap保存当前窗口中存在的元素和对应出现的次数**，根据字符出现的次数调整窗口，使其符合条件并更新最大值。
 
 ```java
 // 时间复杂度O(n)
@@ -2555,8 +2553,6 @@ public int lengthOfLongestSubstring(String s) {
     return max;
 }
 ```
-
-
 
 
 
@@ -2685,8 +2681,6 @@ public boolean isValid(String s) {
     return stack.size() == 0;
 }
 ```
-
-
 
 
 
@@ -2820,8 +2814,6 @@ public int minPathSum(int[][] grid) {
     return dp[grid.length - 1][grid[0].length - 1];
 }
 ```
-
-
 
 
 
@@ -3012,6 +3004,8 @@ public int lengthOfLIS(int[] nums) {
     return res;
 }
 ```
+
+
 
 #### 解法二（dp+二分）
 
