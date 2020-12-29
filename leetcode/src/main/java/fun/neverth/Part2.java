@@ -10,6 +10,41 @@ import java.util.*;
  */
 public class Part2 {
 
+    public static void main(String[] args) {
+        Part2 part2 = new Part2();
+        int[] a = {1, 1, 1, 1, 2, 2, 3};
+        String[] b = {"0000"};
+
+        int[][] c = new int[][]{{1, 2, 3}, {5, 4, 0}};
+
+
+        Common.TreeNode n1 = new Common.TreeNode(3);
+        Common.TreeNode n2 = new Common.TreeNode(9);
+        Common.TreeNode n3 = new Common.TreeNode(20);
+        Common.TreeNode n4 = new Common.TreeNode(15);
+        Common.TreeNode n5 = new Common.TreeNode(7);
+
+        ListNode l1 = new ListNode(1);
+        ListNode l2 = new ListNode(2);
+        ListNode l3 = new ListNode(3);
+        ListNode l4 = new ListNode(4);
+        ListNode l5 = new ListNode(3);
+
+        l1.next = null;
+        l2.next = null;
+        l3.next = null;
+        l4.next = null;
+
+
+        n1.left = n2;
+        n1.right = n3;
+        n3.left = n4;
+        n3.right = n5;
+
+        System.out.println(part2.longestPalindrome("babad"));
+
+    }
+
     /**
      * 567. 字符串的排列 ①
      */
@@ -163,111 +198,6 @@ public class Part2 {
 
         }
         return maxlen;
-    }
-
-
-    /**
-     * 146. LRU缓存机制
-     */
-    static class LRUCache {
-
-        class Node {
-
-            private int key, val;
-
-            private Node prev, next;
-
-            public Node(int k, int v) {
-                this.key = k;
-                this.val = v;
-            }
-        }
-
-        class DoubleList {
-
-            private Node head, tail;
-
-            private int size;
-
-            public DoubleList() {
-                this.head = new Node(0, 0);
-                this.tail = new Node(0, 0);
-                head.next = tail;
-                tail.prev = head;
-            }
-
-            public void addFirst(Node a) {
-                a.next = head.next;
-                a.prev = head;
-                a.next.prev = a;
-                head.next = a;
-                size++;
-            }
-
-            public void remove(Node a) {
-                a.prev.next = a.next;
-                a.next.prev = a.prev;
-                size--;
-            }
-
-            public Node removeLast() {
-
-                if (tail.prev == head) {
-                    return null;
-                }
-
-                Node realTail = tail.prev;
-
-                remove(realTail);
-
-                return realTail;
-            }
-
-        }
-
-        private Map<Integer, Node> map;
-
-        private DoubleList doubleList;
-
-        private int capacity;
-
-        public LRUCache(int capacity) {
-            this.capacity = capacity;
-            map = new HashMap<>();
-            doubleList = new DoubleList();
-
-        }
-
-        public int get(int key) {
-
-            if (!map.containsKey(key)) {
-                return -1;
-            }
-
-            int val = map.get(key).val;
-
-            put(key, val);
-
-            return val;
-        }
-
-        public void put(int key, int value) {
-
-            Node node = new Node(key, value);
-
-            if (map.containsKey(key)) {
-                doubleList.remove(map.get(key));
-
-            } else {
-                if (capacity == doubleList.size) {
-
-                    Node realTail = doubleList.removeLast();
-                    map.remove(realTail.key);
-                }
-            }
-            doubleList.addFirst(node);
-            map.put(key, node);
-        }
     }
 
     public int strStr(String haystack, String needle) {
@@ -646,7 +576,7 @@ public class Part2 {
 
     /**
      * 42. 接雨水
-     *
+     * <p>
      * 对于数组中的每个元素，我们找出下雨后水能达到的最高位置，
      * 等于两边最大高度的较小值减去当前高度的值。
      */
@@ -678,7 +608,7 @@ public class Part2 {
 
     /**
      * 42. 接雨水
-     *
+     * <p>
      * 双指针
      */
     public int trap1(int[] height) {
@@ -825,26 +755,17 @@ public class Part2 {
         return i;
     }
 
-    public static class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-    }
-
     /**
      * 83. 删除排序链表中的重复元素
      */
     public ListNode deleteDuplicates(ListNode head) {
-        if(head == null){
+        if (head == null) {
             return null;
         }
         ListNode slow = head, fast = head.next;
 
-        while(fast != null){
-            if(slow.val != fast.val){
+        while (fast != null) {
+            if (slow.val != fast.val) {
                 slow.next = fast;
                 slow = slow.next;
             }
@@ -852,13 +773,13 @@ public class Part2 {
         }
         slow.next = null;
         return head;
-    } 
+    }
 
     /**
      * 24. 两两交换链表中的节点
      */
     public ListNode swapPairs(ListNode head) {
-        if(head == null){
+        if (head == null) {
             return null;
         }
 
@@ -867,9 +788,9 @@ public class Part2 {
 
         ListNode p = newHead;
 
-        while(p.next != null){
+        while (p.next != null) {
 
-            if (p.next.next == null){
+            if (p.next.next == null) {
                 break;
             }
 
@@ -890,9 +811,11 @@ public class Part2 {
     /**
      * 25. K 个一组翻转链表
      */
-    public ListNode reverse(ListNode a, ListNode b){
+    public ListNode reverse(ListNode a, ListNode b) {
         ListNode pre, cur, next;
-        pre = null; cur = a; next = a;
+        pre = null;
+        cur = a;
+        next = a;
         while (cur != b) {
             next = cur.next;
             cur.next = pre;
@@ -904,13 +827,13 @@ public class Part2 {
     }
 
     public ListNode reverseKGroup(ListNode head, int k) {
-        if (head == null){
+        if (head == null) {
             return null;
         }
         ListNode a, b;
         a = b = head;
         for (int i = 0; i < k; i++) {
-            if (b == null){
+            if (b == null) {
                 return head;
             }
             b = b.next;
@@ -927,7 +850,7 @@ public class Part2 {
         int len = s.length();
         String res = "";
 
-        for(int i = 0; i < len; i++){
+        for (int i = 0; i < len; i++) {
 
             String res1 = palindrome(s, i, i);
 
@@ -941,9 +864,9 @@ public class Part2 {
         return res;
     }
 
-    public String palindrome(String s, int left, int right){
+    public String palindrome(String s, int left, int right) {
 
-        while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)){
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
             left--;
             right++;
         }
@@ -951,38 +874,103 @@ public class Part2 {
         return s.substring(left + 1, right);
     }
 
-    public static void main(String[] args) {
-        Part2 part2 = new Part2();
-        int[] a = {1, 1, 1, 1, 2, 2, 3};
-        String[] b = {"0000"};
+    public static class ListNode {
+        int val;
+        ListNode next;
 
-        int[][] c = new int[][]{{1, 2, 3}, {5, 4, 0}};
+        ListNode(int x) {
+            val = x;
+        }
+    }
 
+    /**
+     * 146. LRU缓存机制
+     */
+    public class LRUCache {
+        private Map<Integer, DoubleList> cache = new HashMap<>();
+        private int size;
+        private int capacity;
+        private DoubleList head, tail;
 
-        Common.TreeNode n1 = new Common.TreeNode(3);
-        Common.TreeNode n2 = new Common.TreeNode(9);
-        Common.TreeNode n3 = new Common.TreeNode(20);
-        Common.TreeNode n4 = new Common.TreeNode(15);
-        Common.TreeNode n5 = new Common.TreeNode(7);
+        public LRUCache(int capacity) {
+            this.size = 0;
+            this.capacity = capacity;
+            // 使用伪头部和伪尾部节点
+            head = new DoubleList(0, 0);
+            tail = new DoubleList(0, 0);
+            head.next = tail;
+            tail.prev = head;
+        }
 
-        ListNode l1 = new ListNode(1);
-        ListNode l2 = new ListNode(2);
-        ListNode l3 = new ListNode(3);
-        ListNode l4 = new ListNode(4);
-        ListNode l5 = new ListNode(3);
+        public int get(int key) {
+            DoubleList node = cache.get(key);
+            if (node == null) {
+                return -1;
+            }
+            // 如果 key 存在，先通过哈希表定位，再移到头部
+            moveToHead(node);
+            return node.v;
+        }
 
-        l1.next = null;
-        l2.next = null;
-        l3.next = null;
-        l4.next = null;
+        public void put(int key, int value) {
+            DoubleList node = cache.get(key);
+            if (node == null) {
+                // 如果 key 不存在，创建一个新的节点
+                DoubleList newNode = new DoubleList(key, value);
+                // 添加进哈希表
+                cache.put(key, newNode);
+                // 添加至双向链表的头部
+                addToHead(newNode);
+                ++size;
+                if (size > capacity) {
+                    // 如果超出容量，删除双向链表的尾部节点
+                    DoubleList tail = removeTail();
+                    // 删除哈希表中对应的项
+                    cache.remove(tail.k);
+                    --size;
+                }
+            } else {
+                // 如果 key 存在，先通过哈希表定位，再修改 value，并移到头部
+                node.v = value;
+                moveToHead(node);
+            }
+        }
 
+        // 头插法，修改4个指针
+        private void addToHead(DoubleList node) {
+            node.prev = head;
+            node.next = head.next;
+            head.next.prev = node;
+            head.next = node;
+        }
 
-        n1.left = n2;
-        n1.right = n3;
-        n3.left = n4;
-        n3.right = n5;
+        // 删除两个指针
+        private void removeNode(DoubleList node) {
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+        }
 
-        System.out.println(part2.longestPalindrome("babad"));
+        private void moveToHead(DoubleList node) {
+            removeNode(node);
+            addToHead(node);
+        }
 
+        private DoubleList removeTail() {
+            DoubleList res = tail.prev;
+            removeNode(res);
+            return res;
+        }
+
+        class DoubleList {
+            int k;
+            int v;
+            DoubleList prev;
+            DoubleList next;
+
+            public DoubleList(int k, int v) {
+                k = k;
+                v = v;
+            }
+        }
     }
 }

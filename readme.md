@@ -2956,6 +2956,117 @@ public ListNode detectCycle(ListNode head) {
 }
 ```
 
+### [146. LRU 缓存机制](https://leetcode-cn.com/problems/lru-cache/)
+
+运用你所掌握的数据结构，设计和实现一个 [LRU (最近最少使用) 缓存机制](https://baike.baidu.com/item/LRU) 。
+
+实现 `LRUCache` 类：
+
+- `LRUCache(int capacity)` 以正整数作为容量 `capacity` 初始化 LRU 缓存
+- `int get(int key)` 如果关键字 `key` 存在于缓存中，则返回关键字的值，否则返回 `-1` 。
+- void put(int key, int value) 如果关键字已经存在，则变更其数据值；如果关键字不存在，则插入该组「关键字-值」。当缓存容量达到上限时，它应该在写入新数据之前删除最久未使用的数据值，从而为新的数据值留出空间。
+
+**进阶**：你是否可以在 `O(1)` 时间复杂度内完成这两种操作？
+
+#### 解法一
+
+使用HashMap和双向链表实现，链表用来存放元素和具体顺序，map存放key和对应的Node，方便在O(1)获得该元素，典型的空间换时间。
+
+get时，在map中获取这个元素并在双向链表中删除这个元素并将其放置到对头
+
+put时，key不存在的话直接放置到对头并修改value，key存在时则创建Node放入map并放置到对头。
+
+```java
+// 
+public class LRUCache {
+  private Map<Integer, DoubleList> cache = new HashMap<>();
+  private int size;
+  private int capacity;
+  private DoubleList head, tail;
+
+  public LRUCache(int capacity) {
+    this.size = 0;
+    this.capacity = capacity;
+    // 使用伪头部和伪尾部节点
+    head = new DoubleList(0, 0);
+    tail = new DoubleList(0, 0);
+    head.next = tail;
+    tail.prev = head;
+  }
+
+  public int get(int key) {
+    DoubleList node = cache.get(key);
+    if (node == null) {
+      return -1;
+    }
+    // 如果 key 存在，先通过哈希表定位，再移到头部
+    moveToHead(node);
+    return node.v;
+  }
+
+  public void put(int key, int value) {
+    DoubleList node = cache.get(key);
+    if (node == null) {
+      // 如果 key 不存在，创建一个新的节点
+      DoubleList newNode = new DoubleList(key, value);
+      // 添加进哈希表
+      cache.put(key, newNode);
+      // 添加至双向链表的头部
+      addToHead(newNode);
+      ++size;
+      if (size > capacity) {
+        // 如果超出容量，删除双向链表的尾部节点
+        DoubleList tail = removeTail();
+        // 删除哈希表中对应的项
+        cache.remove(tail.k);
+        --size;
+      }
+    } else {
+      // 如果 key 存在，先通过哈希表定位，再修改 value，并移到头部
+      node.v = value;
+      moveToHead(node);
+    }
+  }
+
+  // 头插法，修改4个指针
+  private void addToHead(DoubleList node) {
+    node.prev = head;
+    node.next = head.next;
+    head.next.prev = node;
+    head.next = node;
+  }
+
+  // 删除两个指针
+  private void removeNode(DoubleList node) {
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+  }
+
+  private void moveToHead(DoubleList node) {
+    removeNode(node);
+    addToHead(node);
+  }
+
+  private DoubleList removeTail() {
+    DoubleList res = tail.prev;
+    removeNode(res);
+    return res;
+  }
+
+  class DoubleList {
+    int k;
+    int v;
+    DoubleList prev;
+    DoubleList next;
+
+    public DoubleList(int k, int v) {
+      k = k;
+      v = v;
+    }
+  }
+}
+```
+
 
 
 ### [215. 数组中的第K个最大元素](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
