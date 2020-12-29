@@ -760,7 +760,7 @@ public boolean dfs(
 }
 ```
 
-### 13. [机器人的运动范围](https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/)
+### [13. 机器人的运动范围](https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/)
 
 地上有一个m行n列的方格，从坐标 `[0,0]` 到坐标 `[m-1,n-1]` 。一个机器人从坐标 `[0, 0] `的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？
 
@@ -1307,7 +1307,7 @@ public void re(ListNode head) {
 ```java
 public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
     // 创建一个链表
-    ListNode head = new ListNode();
+    ListNode head = new Li			stNode();
     ListNode p = head;
     while(l1 != null && l2 != null){
         // 根据大小，选择相应的插入到新链表
@@ -1402,7 +1402,7 @@ B是A的子结构， 即 A中有出现和B相同的结构和节点值。
 
 #### 解法一（递归）
 
-**先序遍历**树A中的每个节点Na作为相对根节点，判断树A中以Na为根节点的子树是否包含B树，每次判断的时候使用dfs算法将会遍历到树底，递归比较其左右子树是否对应相等。
+**前序遍历**树A中的每个节点Na作为相对根节点，判断树A中以Na为根节点的子树是否包含B树，每次判断的时候使用dfs算法将会遍历到树底，递归比较其左右子树是否对应相等。
 
 ```java
 public boolean isSubStructure(TreeNode A, TreeNode B) {
@@ -1460,7 +1460,7 @@ boolean dfs(TreeNode A, TreeNode B) {
 
 #### 解法一（递归）
 
- 利用树的**后序遍历**并将每次的访问左节点和右节点的值保存下来，方便**后序遍历之后对根访问的时候左右交换**。
+**重点是后序遍历**，利用树的**后序遍历**并将每次的访问左节点和右节点的值保存下来，方便**后序遍历之后对根访问的时候左右交换**。
 
 ```java
 public TreeNode mirrorTree(TreeNode root) {
@@ -1479,7 +1479,7 @@ public TreeNode mirrorTree(TreeNode root) {
 }
 ```
 
-#### 解法二（DFS）
+#### 解法二（BFS）
 
 无论是BFS还是DFS都会访问到每一个节点，访问每个节点的时候交换他的左右子节点，直到所有的节点都访问完为止，代码如下
 
@@ -1643,7 +1643,7 @@ public boolean isSymmetric1(TreeNode root) {
 
 #### 解法一（常规）
 
-因为是顺时针，所以会有四个遍历方向，创建四个变量分别代表上下左右，这四个变量所围起来的范围就是有效的范围，循环在边界进行遍历。
+因为是顺时针，所以会有四个遍历方向，**创建四个变量分别代表上下左右**，这四个变量所围起来的范围就是有效的范围，循环在边界进行遍历。
 
 ```java
 public int[] spiralOrder(int[][] matrix) {
@@ -2384,7 +2384,17 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 #### 解法一（动态规划）
 
 ```java
-
+public double[] twoSum(int n) {
+  double pre[]={1/6d,1/6d,1/6d,1/6d,1/6d,1/6d};
+  for(int i=2;i<=n;i++){
+    double tmp[]=new double[5*i+1];
+    for(int j=0;j<pre.length;j++)
+      for(int x=0;x<6;x++)
+        tmp[j+x]+=pre[j]/6;
+    pre=tmp;
+  }
+  return pre;
+}
 ```
 
 
@@ -2588,7 +2598,7 @@ public List<List<Integer>> threeSum(int[] nums) {
     Arrays.sort(nums);
     // 先固定 a
     for (int i = 0; i < nums.length - 2; i++) {
-        // a 必须要小于 0，否者三树不可能为0
+        // a 必须要小于 0，否者三数不可能为0
         if (nums[0] > 0) {
             return res;
         }
@@ -2754,7 +2764,23 @@ private void dfs(int[] candidates, int target, List<Integer> combine, int idx) {
 直接按问题描述进行。对于数组中的每个元素，我们找出下雨后水能达到的最高位置，等于两边最大高度的较小值减去当前高度的值。
 
 ```java
-
+public int trap(int[] height) {
+    int ans = 0;
+    int size = height.length;
+    for (int i = 1; i < size - 1; i++) {
+        int max_left = 0, max_right = 0;
+        // Search the left part for max bar size
+        for (int j = i; j >= 0; j--) { 
+            max_left = Math.max(max_left, height[j]);
+        }
+        // Search the right part for max bar size
+        for (int j = i; j < size; j++) { 
+            max_right = Math.max(max_right, height[j]);
+        }
+        ans += Math.min(max_left, max_right) - height[i];
+    }
+    return ans;
+}
 ```
 
 ### [64. 最小路径和](https://leetcode-cn.com/problems/minimum-path-sum/)
@@ -2787,7 +2813,7 @@ private void dfs(int[] candidates, int target, List<Integer> combine, int idx) {
 ```java
 public int minPathSum(int[][] grid) {
     // 代表直到走到 (i,j)的最小路径和。
-    // 可以共用grid，次吃是为了方便理解
+    // 可以共用grid，这里是为了方便理解
     int[][] dp = new int[grid.length][grid[0].length];
     // 遍历路径
     for (int i = 0; i < grid.length; i++) {
@@ -2976,7 +3002,7 @@ public ListNode detectCycle(ListNode head) {
 
 1. dp：下标为 i 的元素的值代表对应下标之前数组中最长的子序列长度
 2. 初始值：所有项的初始值都为 1
-3. 转移方程：用 i 遍历数组得到dp对应的最大值，但是由于子序列并不要求连续，因此用 j 遍历 i 的左边，j 小于 i 代表 i 可以接到 j 的后面，此时可以退出状态转移方程`dp[i] = Math.max(dp[i], dp[j] + 1)`找到 i 子序列中最大的上升长度。
+3. 转移方程：用 i 遍历数组得到dp对应的最大值，但是由于子序列并不要求连续，因此用 j 遍历 i 的左边，j 小于 i 代表 i 可以接到 j 的后面，此时可以推出状态转移方程`dp[i] = Math.max(dp[i], dp[j] + 1)`找到 i 子序列中最大的上升长度。
 
 ```java
 public int lengthOfLIS(int[] nums) {
