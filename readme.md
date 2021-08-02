@@ -662,6 +662,7 @@ public int numWays(int n) {
 public int minArray(int[] numbers) {
     int left = 0, right = numbers.length - 1;
     while(left < right) {
+        // 防止溢出
         int mid = left + (right - left) / 2;
         // 因为有可能不旋转，跟右边判断能匹配这种情况
         // 中间元素大于右边，代表最小值范围在中间元素的右边
@@ -678,6 +679,16 @@ public int minArray(int[] numbers) {
     return numbers[left];
 }
 ```
+
+假如是在一个先增长后减小的数组中找到最大值
+
+```	java
+二分一次找到中点，如果中点Array[mid]比Array[mid-1]和Array[mid+1]都大，那么就返回mid。否则，如果Array[mid]>Array[mid-1], 则最大值在mid右边，如果
+
+Array[mid]>Array[mid+1], 则最大值在mid左边。不断进行下去，直到找到为止。
+```
+
+
 
 ### [12. 矩阵中的路径](https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/)
 
